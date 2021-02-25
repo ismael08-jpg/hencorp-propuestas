@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CotCatalogoCreditoController;
+use App\Models\CotCatalogoCredito;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+route::get('catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
