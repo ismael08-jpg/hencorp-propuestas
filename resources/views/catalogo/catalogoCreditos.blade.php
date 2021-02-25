@@ -35,5 +35,5 @@
     </div>
         
     @endforeach
-    {{$catalogo->links()}} --}}
+    {{ $catalogo->links() }}
 @endsection

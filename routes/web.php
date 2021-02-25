@@ -19,4 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-route::get('catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
+route::get('/catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
