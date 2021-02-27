@@ -1,0 +1,63 @@
+/* Colores de hencorp */
+
+.filtrar {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #d88920;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 20px;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.filtrar:hover {
+    background-color: #ac6509;
+}
+
+.numero {
+    width: 100%;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #0684fc;
+    border-radius: 4px;
+}
+
+.foliva {
+    background-image: url('../img/fondo.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.bg-azul {
+    background-color: #02163a;
+}
+
+.bg-naranja {
+    background-color: #d88920;
+}
+
+.bg-griz-100 {
+    background-color: #606060;
+}
+
+.bg-griz {
+    background-color: #b7b7b7;
+}
+
+
+/* fin de los colores */
+
+table,
+th,
+td {
+    border: 2px solid #0684fc;
+}
+
+th {
+    background-color: #02163a;
+    color: white;
+}
