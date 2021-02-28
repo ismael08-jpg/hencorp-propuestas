@@ -16,6 +16,7 @@
                     <label for="password">Contraseña</label>
                     <div class="position-r">
                         <input type="password" id="password" name="password" class="form-control" required>
+                        <i class="fas fa-eye-slash icono-password" id="icono-password"></i>
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -24,4 +25,8 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript" src="{{ asset('assets/js/icon-password.js') }}"></script>
 @endsection

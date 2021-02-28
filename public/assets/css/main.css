@@ -64,6 +64,18 @@ th {
 
 /* Formulario de login */
 
+.position-r {
+    position: relative !important;
+}
+
+.icono-password {
+    position: absolute;
+    right: .5em;
+    top: .4em;
+    font-size: 1.4em;
+    cursor: pointer ;
+}
+
 .frm-login {
     background-color: #FFFFFF;
     width: 100%;
