@@ -1,4 +1,4 @@
-<nav class="navbar row navbar-white bg-azul">
+<nav class="navbar navbar-white bg-azul">
     
         <div class="col-md-4">
             

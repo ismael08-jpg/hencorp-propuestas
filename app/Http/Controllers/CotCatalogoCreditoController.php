@@ -7,14 +7,31 @@ use Illuminate\Http\Request;
 
 class CotCatalogoCreditoController extends Controller
 {
-    public function index( Request $request){
-        $may_men = $request;
+    public function index($filtros = []){
+        $catalogo = CotCatalogoCredito::all();
+        $mayorA = '';
+        $menorA = '';
 
-        if($may_men->mayor_a!=null)
-        $catalogo =  CotCatalogoCredito::where('NLP', '>', $may_men->mayor_a)->where('NLP', '<', $may_men->menor_a)->paginate(10);    
-        else
-        $catalogo=CotCatalogoCredito::paginate(7);
-        return view('catalogo.catalogoCreditos', compact('catalogo'));
+        if (count($filtros) > 0) {
+            $mayorA = $filtros[0];
+            $menorA = $filtros[1];
+            $catalogo = CotCatalogoCredito::where('NLP', '>', $mayorA)
+                ->where('NLP', '<', $menorA)
+                ->get();
+        }
         
+        return view('catalogo.catalogoCreditos', compact('catalogo', 'mayorA', 'menorA'));
+    }
+
+    public function postIndex(Request $request) {
+        $validacion = $request->validate([
+            'mayorA' => 'required|numeric|min:0.01',
+            'menorA' => 'required|numeric|min:' . (is_numeric($request->mayorA) ? $request->mayorA + 0.01 : 0.01),
+        ]);
+
+        $mayorA = $request->mayorA;
+        $menorA = $request->menorA;
+
+        return $this->index([$mayorA, $menorA]);
     }
 }
