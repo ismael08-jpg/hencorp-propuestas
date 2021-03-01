@@ -6,10 +6,6 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
-            </form>
         </div>
     </div>
     <div class="row">
@@ -73,9 +69,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-2 col-xs-12 bg-naranja">
-            <div class="menu-1">
-
+        <div class="col-md-2 col-xs-12 bg-naranja d-flex flex-column align-items-center">
+            <div class="menu-1 mt-4">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+                </form>
             </div>
         </div>
     </div>
