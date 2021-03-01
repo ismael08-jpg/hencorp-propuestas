@@ -23,7 +23,18 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                $redireccion = '';
+                
+                switch(Auth::user()->tipo_usuario){
+                    case 1:
+                        $redireccion = '/admin/index';
+                    break;
+                    case 2:
+                        $redireccion = '/catalogo-creditos';
+                    break;
+                }
+
+                return redirect($redireccion);
             }
         }
 
