@@ -6,7 +6,10 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <br>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+            </form>
         </div>
     </div>
     <div class="row">

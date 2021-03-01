@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\CotCatalogoCreditoController;
 use App\Models\CotCatalogoCredito;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
 Route::post('/catalogo-creditos', [CotCatalogoCreditoController::class, 'postIndex'])->name('catalogo-creditos.post');
+Route::get('/admin/index', [AdministradorController::class, 'index'])->name('administrador.index');
+Auth::routes(['register' => false]);
+

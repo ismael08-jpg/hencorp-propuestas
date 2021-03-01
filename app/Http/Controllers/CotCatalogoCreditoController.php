@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\CotCatalogoCredito;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CotCatalogoCreditoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');   
+    }
+
     public function index($filtros = []){
+        Auth::user()->autorizarRol([1,2]);
+        
         $catalogo = CotCatalogoCredito::all();
         $mayorA = '';
         $menorA = '';
