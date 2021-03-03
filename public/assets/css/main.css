@@ -1,5 +1,36 @@
 /* Colores de hencorp */
 
+.boton-exito {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #008f39;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.boton-exito:hover {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #045826;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.monto {
+    background-color: white;
+}
+
+.mayorA {
+    color: black;
+    font-size: large;
+}
+
 .filtrar {
     display: inline-block;
     border-radius: 4px;
@@ -7,7 +38,6 @@
     border: none;
     color: #FFFFFF;
     text-align: center;
-    font-size: 20px;
     transition: all 0.5s;
     cursor: pointer;
 }
@@ -62,6 +92,7 @@ th {
     color: white;
 }
 
+
 /* Formulario de login */
 
 .position-r {
@@ -73,7 +104,7 @@ th {
     right: .5em;
     top: .4em;
     font-size: 1.4em;
-    cursor: pointer ;
+    cursor: pointer;
 }
 
 .frm-login {
@@ -89,7 +120,7 @@ th {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255,255,255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .encabezado-login {
@@ -115,7 +146,7 @@ th {
 }
 
 .btn-azul:hover {
-   background-color: #02163a !important;
+    background-color: #02163a !important;
 }
 
 .div-error {
@@ -126,7 +157,7 @@ th {
 
 .texto-error {
     color: #c0392b !important;
-    font-size: 0.9em !important; 
+    font-size: 0.9em !important;
 }
 
 .hay-error {
