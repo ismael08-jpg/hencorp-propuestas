@@ -24,7 +24,7 @@ class CotCatalogoCreditoController extends Controller
         Auth::user()->autorizarRol([1,2]);
         
         $catalogo = CotCatalogoCredito::all();
-        $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante')->get();    
+        $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante', 'DESC')->limit(5)->get();    
         
         $mayorA = '';
         $parti = '';
@@ -72,23 +72,12 @@ class CotCatalogoCreditoController extends Controller
                         'dias_al_vencimiento' => $fila->dias_al_vencimiento,
                         'des_linea_negocio' => $fila->des_linea_negocio,
                         'ESTADO' => $fila->ESTADO
-                    ]);
-
-                    
-                    
+                    ]); 
                 }               
             }
-
-            
-            
-            // $acumulado = 0;
-            // foreach($inversionesDisponibles as $inversion) {
-            //     $acumulado += $inversion['NLP'];
-            // }
-
-            // return $acumulado;
         }
         
+        session(['inversionesDisponibles' => $inversionesDisponibles]);
         return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante'));
     }
 
@@ -110,98 +99,47 @@ class CotCatalogoCreditoController extends Controller
             $montoTotal = $request->montoTotal;
             $parti = $request->partiInput;
             return $this->store([$monto, $saldo, $montoTotal, $parti]);
-        }
-
-        
+        }     
     }
 
     public function store($filtros = []){
         Auth::user()->autorizarRol([1,2]);
+
         $monto = $filtros[0];
         $saldo = $filtros[1];
         $montoTotal = $filtros[2];
-        $parti = $filtros[3];
+        $parti = $filtros[3];       
+        $encabezado = new CotCreditosEnc();
+        $calcuTasaPonderada=0;
+        $calcuDiasPonderados=0;
+        $totalNPL=0;
 
-        
-           
-        
-       
-        
-        $inversionesDisponibles = [];
-        $bandera = 0;
-        
-        
-
-        if (count($filtros) > 0) {
-            
-            $acumuladoInversion = 0;
-
-            $catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldo->saldo)*0.2 )
-                ->orderby('NLP')
-                ->get();
-            
-            $encabezado = new CotCreditosEnc();
-            $detalle = new CotCreditosDet();
-            // $curso = new Curso();
-
-            // $curso->nombre=$request->nombre;
-            // $curso->descripcion=$request->descripcion;
-            // $curso->categoria=$request->categoria;
-
-            // $curso->save();
-
+        if(session('inversionesDisponibles') != null) {
             $now = Carbon::now();
-            $now1 = $now->format('Y-m-d h:i');
-
             $encabezado->monto_cot =$montoTotal;
             $encabezado->estado_cot = 'A';
-            $encabezado->usuario_cot = 'Caonsultor'; //Aquí se debe de poner el usuario del sistema;
+            $encabezado->usuario_cot = Auth::user()->id; //Aquí se debe de poner el usuario del sistema;
             $encabezado->nombre_deudor = $parti;
             $encabezado->fecha_cot = $now;
-
             $encabezado->save();
+    
+            foreach(session('inversionesDisponibles') as $inversion) {
+                $detalle = new CotCreditosDet();                   
+                $detalle->id_credito = $encabezado->id_cotizacion;
+                $detalle->grupo_economico = $inversion['grupo_economico'];
+                $detalle->monto_cot = $inversion['NLP'];
+                $detalle->tasa_cot = $inversion['tasa_credito'];
+                $detalle->fecha_cot = $inversion['fecha_vencimiento'];
+                $detalle->save();
 
-            foreach($catalogo as $fila) {
-                $acumuladoInversion += $fila->NLP;
-                if($acumuladoInversion <= ($monto*1.5)) {
-                    array_push($inversionesDisponibles, 
-                    [
-                        'fecha_cartera' => $fila->fecha_cartera,
-                        'id_credito' => $fila->id_credito,
-                        'nombre_deudor' => $fila->nombre_deudor,
-                        'grupo_economico' => $fila->grupo_economico,
-                        'cant_participaciones' => $fila->cant_participaciones,
-                        'saldo_principal' => $fila->saldo_principal,
-                        'tasa_credito' => $fila->tasa_credito,
-                        'porc_saldo_principal' => $fila->porc_saldo_principal,
-                        'NLP' => $fila->NLP,
-                        'costo_ponderado' => $fila->costo_ponderado,
-                        'fecha_apertura' => $fila->fecha_apertura,
-                        'fecha_vencimiento' => $fila->fecha_vencimiento,
-                        'dias_inventario' => $fila->dias_inventario,
-                        'dias_al_vencimiento' => $fila->dias_al_vencimiento,
-                        'des_linea_negocio' => $fila->des_linea_negocio,
-                        'ESTADO' => $fila->ESTADO
-                    ]);
-
-
-
-                    
-                    
-                }               
+                $totalNPL +=  $inversion['NLP'];
+                $calcuDiasPonderados += ($inversion['dias_al_vencimiento']*$inversion['NLP']);
+                $calcuDiasPonderados += ($inversion['tasa_credito']*$inversion['NLP']);
             }
-
-            
-            
-            // $acumulado = 0;
-            // foreach($inversionesDisponibles as $inversion) {
-            //     $acumulado += $inversion['NLP'];
-            // }
-
-            // return $acumulado;
         }
-        
-        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante'));
+        session(['inversionesDisponibles' => null]);
+        return "todo bien";
+
     }
 
     

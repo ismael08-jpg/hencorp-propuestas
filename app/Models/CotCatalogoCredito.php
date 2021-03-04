@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $grupo_economico
  * @property int|null $cant_participaciones
  * @property float $saldo_principal
+ * @property float|null $tasa_credito
  * @property float|null $porc_saldo_principal
  * @property float|null $NLP
  * @property float|null $costo_ponderado
@@ -41,6 +42,7 @@ class CotCatalogoCredito extends Model
 		'id_credito' => 'int',
 		'cant_participaciones' => 'int',
 		'saldo_principal' => 'float',
+		'tasa_credito' => 'float',
 		'porc_saldo_principal' => 'float',
 		'NLP' => 'float',
 		'costo_ponderado' => 'float',
@@ -60,6 +62,7 @@ class CotCatalogoCredito extends Model
 		'grupo_economico',
 		'cant_participaciones',
 		'saldo_principal',
+		'tasa_credito',
 		'porc_saldo_principal',
 		'NLP',
 		'costo_ponderado',

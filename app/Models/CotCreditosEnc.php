@@ -55,6 +55,6 @@ class CotCreditosEnc extends Model
 
 	public function cot_creditos_dets()
 	{
-		return $this->hasMany(CotCreditosDet::class, 'id_cotizacion');
+		return $this->hasMany(CotCreditosDet::class, 'id_credito');
 	}
 }
