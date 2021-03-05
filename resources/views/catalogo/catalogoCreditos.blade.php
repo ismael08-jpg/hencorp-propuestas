@@ -116,12 +116,17 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-2 col-xs-12 bg-naranja d-flex flex-column align-items-center">
-            <div class="menu-1 mt-4">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
-                </form>
+
+        <div class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
+            <div>
+                <div class="menu-1 mt-5 ">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+                    </form>
+                    <button class="btn btn-round btn-naranja mt-2">Mis propuestas</button>
+                    
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,10 @@
 /* Colores de hencorp */
 
+.bg-white {
+    background-color: azure;
+    border-radius: 25%;
+}
+
 .boton-exito {
     display: inline-block;
     border-radius: 4px;
@@ -143,10 +148,22 @@ th {
     background-color: #0684fc !important;
     color: #fff !important;
     transition: all 300ms ease-in;
+    width: 150px;
 }
 
 .btn-azul:hover {
     background-color: #02163a !important;
+}
+
+.btn-naranja {
+    background-color: #d88920 !important;
+    color: #fff !important;
+    transition: all 300ms ease-in;
+    width: 150px;
+}
+
+.btn-naranja:hover {
+    background-color: #926122 !important;
 }
 
 .div-error {

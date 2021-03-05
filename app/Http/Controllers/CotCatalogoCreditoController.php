@@ -110,19 +110,22 @@ class CotCatalogoCreditoController extends Controller
         $montoTotal = $filtros[2];
         $parti = $filtros[3];       
         $encabezado = new CotCreditosEnc();
-        $calcuTasaPonderada=0;
-        $calcuDiasPonderados=0;
-        $totalNPL=0;
+        $calcuTasaPonderada=0; //Acumula la tasa * NLP
+        $calcuDiasPonderados=0; 
+        $totalNLP=0; 
+        $id=0;
 
         if(session('inversionesDisponibles') != null) {
             $now = Carbon::now();
             $encabezado->monto_cot =$montoTotal;
             $encabezado->estado_cot = 'A';
-            $encabezado->usuario_cot = Auth::user()->id; //Aquí se debe de poner el usuario del sistema;
+            $encabezado->usuario_cot = Auth::user()->id;
             $encabezado->nombre_deudor = $parti;
             $encabezado->fecha_cot = $now;
             $encabezado->save();
-    
+            
+            
+
             foreach(session('inversionesDisponibles') as $inversion) {
                 $detalle = new CotCreditosDet();                   
                 $detalle->id_credito = $encabezado->id_cotizacion;
@@ -132,13 +135,23 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
                 $detalle->save();
 
-                $totalNPL +=  $inversion['NLP'];
-                $calcuDiasPonderados += ($inversion['dias_al_vencimiento']*$inversion['NLP']);
-                $calcuDiasPonderados += ($inversion['tasa_credito']*$inversion['NLP']);
+                $totalNLP =  $totalNLP + $inversion['NLP'];
+                $calcuDiasPonderados += ($inversion['dias_inventario']*$inversion['NLP']);
+                $calcuTasaPonderada += ($inversion['tasa_credito']*$inversion['NLP']);
             }
+
+            $encabezado->tasa_ponderada = $calcuDiasPonderados/$totalNLP;
+            $encabezado->dias_ponderados = $calcuTasaPonderada/$totalNLP;
+            $encabezado->save();
         }
         session(['inversionesDisponibles' => null]);
-        return "todo bien";
+     
+        $det = CotCreditosDet::where('id_credito', '=', $encabezado->id_cotizacion)->get();
+        $enc = CotCreditosEnc::where('id_cotizacion', '=', $encabezado->id_cotizacion)->first();
+        
+        $id=$encabezado->id_cotizacion;
+        return view('cotizacion.cotizacion', compact('enc', 'det'));
+        
 
     }
 
