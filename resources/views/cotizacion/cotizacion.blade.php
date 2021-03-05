@@ -41,14 +41,14 @@
             </form>
 
             
-            <table with="100%" class="w-100 table-hover tabla" id="tabla-catalogo">
+            <table style="text-align:center;" with="100%" class="w-100 table-hover tabla" id="tabla-catalogo">
                 <thead class="">
                     <tr>
                         <th scope="col">Monto</th>
                         <th scope="col">Tasa %</th>
                         <th scope="col">Fecha Vencimiento</th>
                         <th>Grupo/país</th>
-                        <th>Acción</th>
+                        
                     </tr>
                 </thead>
                 {{$acumTasa=0, $acumMonto=0}}
@@ -56,14 +56,13 @@
                     @foreach ($det as $detalles)
                     
                         <tr>
-                            <td scope="row">{{ $detalles->monto_cot }}</td>
-                            <td>{{ $detalles->tasa_cot }}</td>
+                            <td scope="row">${{ $detalles->monto_cot }}</td>
+                            <td>{{ $detalles->tasa_cot }}%</td>
                             <td>{{ $detalles->fecha_cot }}</td>
                             <td>{{ $detalles->grupo_economico }}</td>
-                            <td>{{ $detalles->grupo_economico }}</td>
-                            <td>
-                                <button class="btn btn-danger">DEL</button>
-                                <button class="btn btn-success">UPD</button>
+                            <td style="border-block-color: white">
+                                <button class="btn btn-danger rounded-pill">DEL</button>
+                                <button class="btn btn-success rounded-pill">UPD</button>
                             </td>
                         </tr>
                     {{$acumTasa+=$detalles->tasa_cot, $acumMonto+=$detalles->monto_cot }}
@@ -73,7 +72,7 @@
                         <th>{{$acumTasa}}</th>
                         <th>-</th>
                         <th>-</th>
-                        <th>-</th>
+                        
                     </tr>
                 </tbody>
             </table>
@@ -81,14 +80,19 @@
         <br>
         </div>
         
-        <div class="col-md-2 col-xs-12 bg-naranja d-flex flex-column align-items-center">
-            <div class="menu-1 mt-4">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
-                </form>
+        <div class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
+            <div>
+                <div class="menu-1 mt-5 ">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+                    </form>
+                    <button class="btn btn-round btn-naranja mt-2">Mis propuestas</button>
+                    
+                </div>
             </div>
         </div>
+
     </div>
 
 @endsection

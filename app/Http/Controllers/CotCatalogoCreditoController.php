@@ -114,6 +114,8 @@ class CotCatalogoCreditoController extends Controller
         $calcuDiasPonderados=0; 
         $totalNLP=0; 
         $id=0;
+        $totalTasa = 0;
+        $totalDias = 0;
 
         if(session('inversionesDisponibles') != null) {
             $now = Carbon::now();
@@ -124,7 +126,9 @@ class CotCatalogoCreditoController extends Controller
             $encabezado->fecha_cot = $now;
             $encabezado->save();
             
-            
+            foreach(session('inversionesDisponibles') as $inversion) {
+                $totalNLP =  $totalNLP + $inversion['NLP'];
+            }//Calculamos el Total de NLP pra calcular la tasa ponderada y los días ponderados;
 
             foreach(session('inversionesDisponibles') as $inversion) {
                 $detalle = new CotCreditosDet();                   
@@ -134,14 +138,13 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->tasa_cot = $inversion['tasa_credito'];
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
                 $detalle->save();
-
-                $totalNLP =  $totalNLP + $inversion['NLP'];
-                $calcuDiasPonderados += ($inversion['dias_inventario']*$inversion['NLP']);
-                $calcuTasaPonderada += ($inversion['tasa_credito']*$inversion['NLP']);
+                $calcuDiasPonderados += (($inversion['dias_inventario']*$inversion['NLP'])/$totalNLP);
+                $calcuTasaPonderada += (($inversion['tasa_credito']*$inversion['NLP'])/$totalNLP);
+                
             }
 
-            $encabezado->tasa_ponderada = $calcuDiasPonderados/$totalNLP;
-            $encabezado->dias_ponderados = $calcuTasaPonderada/$totalNLP;
+            $encabezado->tasa_ponderada = $calcuDiasPonderados;
+            $encabezado->dias_ponderados = $calcuTasaPonderada;
             $encabezado->save();
         }
         session(['inversionesDisponibles' => null]);

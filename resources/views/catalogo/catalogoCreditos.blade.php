@@ -92,7 +92,7 @@
             </form>
 
             
-            <table with="100%" class="w-100 table-hover tabla" id="tabla-catalogo">
+            <table with="100%" style="text-align:center;" class="w-100 table-hover tabla" id="tabla-catalogo">
                 <thead class="">
                     <tr>
                         <th scope="col">Deudor</th>
@@ -107,8 +107,8 @@
                     @foreach ($inversionesDisponibles as $catalogos)
                         <tr>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
-                            <td>{{ $catalogos['NLP'] }}</td>
-                            <td>{{ $catalogos['costo_ponderado'] }}</td>
+                            <td>${{ $catalogos['NLP'] }}</td>
+                            <td>{{ $catalogos['tasa_credito']-1.5 }}%</td>
                             <td>{{ $catalogos['fecha_vencimiento'] }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
                         </tr>
