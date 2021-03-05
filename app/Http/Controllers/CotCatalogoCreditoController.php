@@ -24,7 +24,7 @@ class CotCatalogoCreditoController extends Controller
         Auth::user()->autorizarRol([1,2]);
         
         $catalogo = CotCatalogoCredito::all();
-        $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante', 'DESC')->get();    
+        $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante', 'ASC')->get();    
         
         $mayorA = '';
         $parti = '';
