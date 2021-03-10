@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id_cotizacion
  * @property int $id_credito
+ * @property string $nombre_deudor
  * @property string|null $grupo_economico
  * @property float|null $monto_cot
  * @property float|null $tasa_cot
@@ -37,6 +38,7 @@ class CotCreditosDet extends Model
 
 	protected $fillable = [
 		'id_credito',
+		'nombre_deudor',
 		'grupo_economico',
 		'monto_cot',
 		'tasa_cot',

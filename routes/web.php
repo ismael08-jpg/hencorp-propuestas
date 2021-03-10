@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
 Route::post('/catalogo-creditos', [CotCatalogoCreditoController::class, 'postIndex'])->name('catalogo-creditos.post');
 Route::get('/admin/index', [AdministradorController::class, 'index'])->name('administrador.index');
-route::get('/cotizacion/{id}', [CotCreditosController::class,'index'])->name('cotizacion.index');
-Auth::routes(['register' => false]);
+Route::get('/cotizacion/{id}', [CotCreditosController::class,'index'])->name('cotizacion.index');
 
+
+Route::get('/envio-cotizacion/{id}', [CotCreditosController::class, 'mostrar'])->name('cotizacion.mostrar');
+
+Route::post('/envio-cotizacion', [CotCreditosController::class, 'enviar'])->name('cotizacion.enviar');
+Auth::routes(['register' => false]);

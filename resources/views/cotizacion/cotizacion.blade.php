@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Catalogo de Créditos')
+@section('title', 'Propuesta')
 
 
 @section('content')
@@ -12,13 +12,14 @@
     <div class="row">
         <div style="background-color: white"
             class="ml-md-5 col-xs-12 table-responsive table-responsive col-md-9 rounded-lg mb-5">
+            
             <br>
             
             <form action="" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
-                        <center><h3>{{$enc->nombre_deudor}}</h3></center>
+                        <center><h3>{{$enc->nombre_cotizacion}}</h3></center>
                     </div>
                     
                 </div>
@@ -51,7 +52,7 @@
                         
                     </tr>
                 </thead>
-                {{$acumTasa=0, $acumMonto=0}}
+                <p style="color:white">{{$acumTasa=0, $acumMonto=0}}</p>
                 <tbody>
                     @foreach ($det as $detalles)
                     
@@ -69,7 +70,7 @@
                     @endforeach
                     <tr>
                         <th>{{$acumMonto}}</th>
-                        <th>{{$acumTasa}}</th>
+                        <th>{{$enc->dias_ponderados}}</th>
                         <th>-</th>
                         <th>-</th>
                         
@@ -85,10 +86,9 @@
                 <div class="menu-1 mt-5 ">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+                        <input type="submit"  class="btn btn-round btn-azul" value="Cerrar sesión">
                     </form>
-                    <button class="btn btn-round btn-naranja mt-2">Mis propuestas</button>
-                    
+                    <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn btn-round btn-naranja mt-2" name="btnPropuesta">Mis propuestas</a>   
                 </div>
             </div>
         </div>

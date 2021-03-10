@@ -29,10 +29,13 @@
                     </div>
                     <div class="col-md-6">
                         <center><label class="mayorA">Participante</label></center>
-                        <select name="parti"  class="form-control" value='{{$parti}}' id="">
-                        @foreach ($participante as $participantes)
-                            <option value="{{$participantes->nom_participante}}">{{$participantes->nom_participante}}</option>
-                        @endforeach
+                        <select name="parti"  class="form-control" value='{{$parti}}'>
+                            @if ($parti!=null)
+                                <option value="{{$parti}}">{{$parti}}</option>
+                            @endif
+                            @foreach ($participante as $participantes)
+                                <option value="{{$participantes->nom_participante}}">{{$participantes->nom_participante}}</option>
+                            @endforeach
                         </select>
                         <span class="text-danger">
                             @error('participante')
@@ -51,50 +54,14 @@
                     </div>
                     <div class="col-md-5"></div>
                 </div>
-                <br>
-                
-                <?php 
-                    
-                    if($bandera == 1){   
-                        if ($saldoParti->saldo==null)
-                        $saldoParti->saldo=0;
-
-                        $montoTotal = $saldoParti->saldo + $monto;
-                        
-                        echo "<div class='row'>
-                                <div class='col-12' id='hidden'>
-                                    <div class='alert alert-success' role='alert'>
-                                            ¡Tu propuesta se generó con éxito! Pulsa continuar para guardar y editar la porpuesta 
-                                            <button class='ml-1 boton-exito' type='submit' name='save'> Continuar</button>
-                                    </div>   
-                                </div>
-                            </div>
-
-                            <div class='row'>
-
-                                <div class='col-6'>
-                                    <label class='form-controll'>Participante</label>
-                                    <input type='text' class='numero' name='partiInput' value='$parti'> 
-                                </div>
-
-                                <div class='col-6'>
-                                    
-                                    <label class='form-controll'>Monto con el saldo $saldoParti->saldo+$monto</label>
-                                    <input type='text' class='numero' name='montoTotal' value='$montoTotal'>
-                                    <input type='hidden' name='montoInput' value='$monto'>
-                                    <input type='hidden' name='saldo' value='$saldoParti->saldo'>
-                                </div>
-                            </div>
-                            ";
-                        }
-                ?>
-
+                <br>                
             </form>
 
             
             <table with="100%" style="text-align:center;" class="w-100 table-hover tabla" id="tabla-catalogo">
                 <thead class="">
                     <tr>
+                        <th>ID</th>
                         <th scope="col">Deudor</th>
                         <th scope="col">Monto disponible hasta por</th>
                         <th scope="col">Tasa %</th>
@@ -106,6 +73,7 @@
                 <tbody>
                     @foreach ($inversionesDisponibles as $catalogos)
                         <tr>
+                            <td>{{$catalogos['id']}}</td>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
                             <td>${{ $catalogos['NLP'] }}</td>
                             <td>{{ $catalogos['tasa_credito']-1.5 }}%</td>
@@ -124,7 +92,27 @@
                         @csrf
                         <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
                     </form>
-                    <button class="btn btn-round btn-naranja mt-2">Mis propuestas</button>
+                    <form action="{{ route('catalogo-creditos.post') }}" method="POST" >
+                        @csrf
+                        <?php 
+                    
+                            if($bandera == 1){   
+                                if ($saldoParti->saldo==null)
+                                $saldoParti->saldo=0;
+
+                                $montoTotal = $saldoParti->saldo + $monto;
+                        
+                                echo " <button class='btn btn-round btn-naranja mt-2' type='submit' name='save'>Guardar propuesta</button>
+                                    <input type='hidden' class='numero' name='partiInput' value='$parti'>     
+                                    <input type='hidden' name='montoTotal' value='$montoTotal'>
+                                    <input type='hidden' name='montoInput' value='$monto'>
+                                    <input type='hidden' name='saldo' value='$saldoParti->saldo'>
+                                   
+                                     ";
+                            }
+                    ?>
+                    </form>
+                    
                     
                 </div>
             </div>

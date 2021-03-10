@@ -45,10 +45,12 @@ class CotCatalogoCreditoController extends Controller
                 ->where('nom_participante', '=', $parti)
                 ->first();
 
-            $catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldoParti->saldo)*0.2 )
+            /*$catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldoParti->saldo)*0.2 )
+                ->orderby('NLP')
+                ->get();*/
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $monto )
                 ->orderby('NLP')
                 ->get();
-            
             
 
             foreach($catalogo as $fila) {
@@ -56,6 +58,7 @@ class CotCatalogoCreditoController extends Controller
                 if($acumuladoInversion <= ($monto*1.5)) {
                     array_push($inversionesDisponibles, 
                     [
+                        'id' => $fila->id_credito,
                         'fecha_cartera' => $fila->fecha_cartera,
                         'id_credito' => $fila->id_credito,
                         'nombre_deudor' => $fila->nombre_deudor,
@@ -82,24 +85,23 @@ class CotCatalogoCreditoController extends Controller
     }
 
     public function postIndex(Request $request) {
-        $validacion = $request->validate([
-            'mayorA' => 'required|numeric|min:0.01',
-            'parti' => 'required'
-        ]);
-
-        $mayorA = $request->mayorA;
-        $parti = $request->parti;
         
-        if($request->filtrar!=null){
 
+        if($request->filtrar!=null){
+            $validacion = $request->validate([
+                'mayorA' => 'required|numeric|min:0.01',
+                'parti' => 'required'
+            ]);
+            $mayorA = $request->mayorA;
+            $parti = $request->parti;
             return $this->index([$mayorA, $parti]);
-        }else{
+        }else if($request->save=!null){
             $monto = $request->montoInput;
             $saldo = $request->saldo;
             $montoTotal = $request->montoTotal;
             $parti = $request->partiInput;
             return $this->store([$monto, $saldo, $montoTotal, $parti]);
-        }     
+        }    
     }
 
     public function store($filtros = []){
@@ -122,7 +124,7 @@ class CotCatalogoCreditoController extends Controller
             $encabezado->monto_cot =$montoTotal;
             $encabezado->estado_cot = 'A';
             $encabezado->usuario_cot = Auth::user()->id;
-            $encabezado->nombre_deudor = $parti;
+            $encabezado->nombre_cotizacion = $parti;
             $encabezado->fecha_cot = $now;
             $encabezado->save();
             
@@ -137,6 +139,7 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->monto_cot = $inversion['NLP'];
                 $detalle->tasa_cot = $inversion['tasa_credito'];
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
+                $detalle->nombre_deudor = $inversion['nombre_deudor'];
                 $detalle->save();
                 $calcuDiasPonderados += (($inversion['dias_inventario']*$inversion['NLP'])/$totalNLP);
                 $calcuTasaPonderada += (($inversion['tasa_credito']*$inversion['NLP'])/$totalNLP);
@@ -148,12 +151,18 @@ class CotCatalogoCreditoController extends Controller
             $encabezado->save();
         }
         session(['inversionesDisponibles' => null]);
-     
-        $det = CotCreditosDet::where('id_credito', '=', $encabezado->id_cotizacion)->get();
-        $enc = CotCreditosEnc::where('id_cotizacion', '=', $encabezado->id_cotizacion)->first();
+        
+        //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
+
+        $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_credito')->
+        where('nom_participante', '=', $parti)->get();
+
+        
         
         $id=$encabezado->id_cotizacion;
-        return view('cotizacion.cotizacion', compact('enc', 'det'));
+        //return view('cotizacion.cotizacion', compact('enc', 'det'));
+        return redirect()->route('cotizacion.index', ['id' => $id]);
+        //return $PortafolioParti;
         
 
     }

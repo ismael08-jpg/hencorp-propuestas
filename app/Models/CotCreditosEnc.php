@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $monto_cot
  * @property float|null $tasa_ponderada
  * @property float|null $dias_ponderados
+ * @property string $nombre_cotizacion
  * @property string|null $estado_cot
  * @property int|null $usuario_cot
- * @property string $nombre_deudor
  * @property Carbon|null $fecha_cot
  * 
  * @property Collection|CotCreditosDet[] $cot_creditos_dets
@@ -47,9 +47,9 @@ class CotCreditosEnc extends Model
 		'monto_cot',
 		'tasa_ponderada',
 		'dias_ponderados',
+		'nombre_cotizacion',
 		'estado_cot',
 		'usuario_cot',
-		'nombre_deudor',
 		'fecha_cot'
 	];
 
