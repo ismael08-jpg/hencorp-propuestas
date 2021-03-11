@@ -92,14 +92,14 @@ class CotCatalogoCreditoController extends Controller
             foreach($catalogo as $fila) {
                 //$acumuladoInversion += $fila->NLP;
                 //if($acumuladoInversion <= ($monto*1.5)) {
-                    $bandera = 0;
+                    $bandera = true;
                     foreach($excluci as $ex){
-                        if(strtoupper(trim($fila->grupo_economico)) != strtoupper(trim($ex['grupo_economico']))){
-                             $bandera++;
+                        if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
+                             $bandera=false;
                         }
                     }
 
-                    if($bandera == 1){
+                    if($bandera){
                         array_push($inversionesDisponibles, 
                             [
                                 'id' => $fila->id_credito,
