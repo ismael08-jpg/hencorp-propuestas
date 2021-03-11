@@ -40,19 +40,54 @@ class CotCatalogoCreditoController extends Controller
             $acumuladoInversion = 0;
             $bandera = 1;
             
-
+            //Llama al saldo del partisipante
             $saldoParti = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'))
                 ->where('nom_participante', '=', $parti)
                 ->first();
+            //tabla temporal para calcular los grupos económicos que no nos interesan
+            $temTableParticipantes = VwSaldosXParticipacion::select('grupo_economico', DB::raw('SUM(saldo) as saldo'))
+                ->where('nom_participante', '=', $parti)
+                ->groupBy('grupo_economico')
+                ->get();
+
+
+            //gruardamos en la siguente variable la división de cada
+            $parametrosParticipantes=[];
+
+            foreach ($temTableParticipantes as $item) {
+                if($saldoParti->saldo>0){
+                    $var = $item->saldo/$saldoParti->saldo;
+                }
+                
+                array_push($parametrosParticipantes, 
+                    [
+                        'grupo_economico' => $item->grupo_economico,
+                        'saldo' => $var
+                    ]); 
+            }
+
+
+            //Exclusi guarda los rupos economicos que debemos excluir del catalogo !important
+            $excluci = [];
+            foreach ($parametrosParticipantes as $parametro) {
+                if($parametro['saldo']>0.2){
+                    array_push($excluci, 
+                    [
+                        'grupo_economico' => $parametro['grupo_economico']
+                    ]); 
+                }
+            }
 
             /*$catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldoParti->saldo)*0.2 )
                 ->orderby('NLP')
                 ->get();*/
-                $catalogo = CotCatalogoCredito::where('NLP', '>=', $monto )
+
+             //Llamamos los catalogos, en este caso, >= al monto   
+            $catalogo = CotCatalogoCredito::where('NLP', '>=', $monto )
                 ->orderby('NLP')
                 ->get();
             
-
+            
             foreach($catalogo as $fila) {
                 $acumuladoInversion += $fila->NLP;
                 if($acumuladoInversion <= ($monto*1.5)) {
@@ -81,6 +116,7 @@ class CotCatalogoCreditoController extends Controller
         }
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
+        
         return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante'));
     }
 

@@ -62,7 +62,7 @@ class CotCreditosController extends Controller
         ];
 
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'));
+        $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'))->setPaper('a4', 'landscape');
 
         Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
             // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
