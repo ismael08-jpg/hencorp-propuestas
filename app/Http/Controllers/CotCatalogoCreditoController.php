@@ -87,32 +87,44 @@ class CotCatalogoCreditoController extends Controller
                 ->orderby('NLP')
                 ->get();
             
+
             
             foreach($catalogo as $fila) {
-                $acumuladoInversion += $fila->NLP;
-                if($acumuladoInversion <= ($monto*1.5)) {
-                    array_push($inversionesDisponibles, 
-                    [
-                        'id' => $fila->id_credito,
-                        'fecha_cartera' => $fila->fecha_cartera,
-                        'id_credito' => $fila->id_credito,
-                        'nombre_deudor' => $fila->nombre_deudor,
-                        'grupo_economico' => $fila->grupo_economico,
-                        'cant_participaciones' => $fila->cant_participaciones,
-                        'saldo_principal' => $fila->saldo_principal,
-                        'tasa_credito' => $fila->tasa_credito,
-                        'porc_saldo_principal' => $fila->porc_saldo_principal,
-                        'NLP' => $fila->NLP,
-                        'costo_ponderado' => $fila->costo_ponderado,
-                        'fecha_apertura' => $fila->fecha_apertura,
-                        'fecha_vencimiento' => $fila->fecha_vencimiento,
-                        'dias_inventario' => $fila->dias_inventario,
-                        'dias_al_vencimiento' => $fila->dias_al_vencimiento,
-                        'des_linea_negocio' => $fila->des_linea_negocio,
-                        'ESTADO' => $fila->ESTADO
-                    ]); 
-                }               
+                //$acumuladoInversion += $fila->NLP;
+                //if($acumuladoInversion <= ($monto*1.5)) {
+                    $bandera = false;
+                    foreach($excluci as $ex){
+                        if($fila->grupo_economico != $ex['grupo_economico']){
+                             $bandera = true;
+                        }
+                    }
+
+                    if($bandera){
+                        array_push($inversionesDisponibles, 
+                            [
+                                'id' => $fila->id_credito,
+                                'fecha_cartera' => $fila->fecha_cartera,
+                                'id_credito' => $fila->id_credito,
+                                'nombre_deudor' => $fila->nombre_deudor,
+                                'grupo_economico' => $fila->grupo_economico,
+                                'cant_participaciones' => $fila->cant_participaciones,
+                                'saldo_principal' => $fila->saldo_principal,
+                                'tasa_credito' => $fila->tasa_credito,
+                                'porc_saldo_principal' => $fila->porc_saldo_principal,
+                                'NLP' => $fila->NLP,
+                                'costo_ponderado' => $fila->costo_ponderado,
+                                'fecha_apertura' => $fila->fecha_apertura,
+                                'fecha_vencimiento' => $fila->fecha_vencimiento,
+                                'dias_inventario' => $fila->dias_inventario,
+                                'dias_al_vencimiento' => $fila->dias_al_vencimiento,
+                                'des_linea_negocio' => $fila->des_linea_negocio,
+                                'ESTADO' => $fila->ESTADO
+                            ]);
+                    }
+                //}               
             }
+
+            
         }
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
