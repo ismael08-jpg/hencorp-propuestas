@@ -94,7 +94,7 @@ class CotCatalogoCreditoController extends Controller
                 //if($acumuladoInversion <= ($monto*1.5)) {
                     $bandera = 0;
                     foreach($excluci as $ex){
-                        if($fila->grupo_economico != $ex['grupo_economico']){
+                        if(strtoupper(trim($fila->grupo_economico)) != strtoupper(trim($ex['grupo_economico']))){
                              $bandera++;
                         }
                     }
