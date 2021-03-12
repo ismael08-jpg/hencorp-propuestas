@@ -1,5 +1,14 @@
 /* Colores de hencorp */
 
+.save-img {
+    background-image: url('../img/save.png');
+    background-size: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* background-attachment: fixed; */
+    /*background-size: cover;*/
+}
+
 .bg-white {
     background-color: azure;
     border-radius: 25%;

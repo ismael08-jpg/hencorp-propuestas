@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @yield('csrf-token')
     <title>@yield('title')</title>
-    <!--Bootstrap-->
+    <!--Styles-->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <!--Select2 CSS-->
+    <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet" />
+    <!--Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.css"/>
@@ -37,7 +40,7 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.js"></script>
-
+    <script src="{{asset('assets/select2/dist/js/select2.min.js')}}"></script>
     @yield('scripts')
 </body>
 

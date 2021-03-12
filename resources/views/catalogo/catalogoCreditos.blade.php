@@ -10,7 +10,7 @@
     </div>
     <br>
     <div class="row">
-        <div style="background-color: white"
+        <div style="background-color: white; "
             class="ml-md-5 col-xs-12 table-responsive table-responsive col-md-9 rounded-lg mb-5">
             <br>
             
@@ -19,17 +19,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <center><label class="mayorA">Monto por invertir</label></center>
-                        <input type="number" name="mayorA" class="numero" id="mayorA" value="{{ $monto }}" autofocus
+                        <input type="number" name="monto" class="numero" id="mayorA" value="{{old('monto', $monto)}}" autofocus
                             required>
                         <span class="text-danger">
-                            @error('mayorA')
+                            @error('monto')
                                 {{ $message }}
                             @enderror
                         </span>
                     </div>
                     <div class="col-md-6">
                         <center><label class="mayorA">Participante</label></center>
-                        <select name="parti"  class="form-control" value='{{$parti}}'>
+                        <select name="parti"  id="participantes" class="numero" value='{{$parti}}'>
                             @if ($parti!=null)
                                 <option value="{{$parti}}">{{$parti}}</option>
                             @endif
@@ -44,7 +44,28 @@
                         </span>
                     </div>
                     
+                </div><div class="row">
+                    <div class="col-md-6">
+                        <center><label class="mayorA">Monto mayor a</label></center>
+                        <input type="number" name="mayorA" class="numero" id="mayorA" value="{{old('mayorA', $mayorA)}}">
+                        <span class="text-danger">
+                            @error('mayorA')
+                                {{ $message }}
+                            @enderror
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <center><label class="mayorA">Monto menor a</label></center>
+                        <input type="number" name="menorA" class="numero" id="menorA" value="{{old('menorA', $menorA)}}">
+                        <span class="text-danger">
+                            @error('menorA')
+                                {{ $message }}
+                            @enderror
+                        </span>
+                    </div>
+                    
                 </div>
+
                 <div class="row">
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
@@ -58,7 +79,7 @@
             </form>
 
             
-            <table with="100%" style="text-align:center;" class="w-100 table-hover tabla" id="tabla-catalogo">
+            <table with="100%" style="" class="w-100 table-hover tabla" id="tabla-catalogo">
                 <thead class="">
                     <tr>
                         <th>ID</th>
@@ -77,7 +98,7 @@
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
                             <td>${{ $catalogos['NLP'] }}</td>
                             <td>{{ $catalogos['tasa_credito']-1.5 }}%</td>
-                            <td>{{ $catalogos['fecha_vencimiento'] }}</td>
+                            <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
                         </tr>
                     @endforeach
@@ -85,12 +106,12 @@
             </table>
         </div>
 
-        <div class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
+        <div style="height:70%" class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
             <div>
                 <div class="menu-1 mt-5 ">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <input type="submit" class="btn btn-round btn-azul" value="Cerrar sesión">
+                        <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
                     </form>
                     <form action="{{ route('catalogo-creditos.post') }}" method="POST" >
                         @csrf
@@ -102,7 +123,7 @@
 
                                 $montoTotal = $saldoParti->saldo + $monto;
                         
-                                echo " <button class='btn btn-round btn-naranja mt-2' type='submit' name='save'>Guardar propuesta</button>
+                                echo " <button class='btn btn-round btn-naranja  mb-5'  type='submit' name='save'>guardar</button>
                                     <input type='hidden' class='numero' name='partiInput' value='$parti'>     
                                     <input type='hidden' name='montoTotal' value='$montoTotal'>
                                     <input type='hidden' name='montoInput' value='$monto'>
@@ -128,6 +149,8 @@
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
             });
+
+            $('#participantes').select2();
         });
     </script>
 @endsection

@@ -23,10 +23,11 @@ class CotCatalogoCreditoController extends Controller
     public function index($filtros = []){
         Auth::user()->autorizarRol([1,2]);
         
-        $catalogo = CotCatalogoCredito::all();
+        
         $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante', 'ASC')->get();    
         
         $mayorA = '';
+        $menorA = '';
         $parti = '';
         $monto = '';
         $inversionesDisponibles = [];
@@ -34,9 +35,12 @@ class CotCatalogoCreditoController extends Controller
         $saldoParti = 0.0;
         
 
-        if (count($filtros) > 0) {
+        if (count($filtros) > 0) { 
             $monto = $filtros[0];
-            $parti = $filtros[1];
+            $mayorA = $filtros[1];
+            $menorA = $filtros[2];
+            $parti = $filtros[3];
+
             $acumuladoInversion = 0;
             $bandera = 1;
             
@@ -83,9 +87,23 @@ class CotCatalogoCreditoController extends Controller
                 ->get();*/
 
              //Llamamos los catalogos, en este caso, >= al monto   
-            $catalogo = CotCatalogoCredito::where('NLP', '>=', $monto )
+            if($mayorA!=null and $menorA !=null ){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
                 ->orderby('NLP')
                 ->get();
+            } else if($mayorA != null and $menorA == null){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->orderby('NLP')
+                ->get();
+            } else if($menorA!=null and $mayorA==null){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('NLP', '<=', $menorA)
+                ->orderby('NLP')
+                ->get();
+            }else{
+                $catalogo = CotCatalogoCredito::all();
+            }
             
 
             
@@ -129,26 +147,27 @@ class CotCatalogoCreditoController extends Controller
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
         
-        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante'));
+        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA'));
     }
 
     public function postIndex(Request $request) {
         
+        $parti = $request->parti;
+        $monto = $request->monto;
 
         if($request->filtrar!=null){
             $validacion = $request->validate([
                 'mayorA' => 'required|numeric|min:0.01',
+                'menorA' => 'numeric|min:' . (is_numeric($request->mayorA) ? $request->mayorA + 0.01 : 0.01),
                 'parti' => 'required'
             ]);
             $mayorA = $request->mayorA;
-            $parti = $request->parti;
-            return $this->index([$mayorA, $parti]);
+            $menorA = $request->menorA;
+            return $this->index([$monto, $mayorA, $menorA, $parti]);
         }else if($request->save=!null){
             $monto = $request->montoInput;
-            $saldo = $request->saldo;
-            $montoTotal = $request->montoTotal;
             $parti = $request->partiInput;
-            return $this->store([$monto, $saldo, $montoTotal, $parti]);
+            return $this->store([$monto, $parti]);
         }    
     }
 
@@ -156,9 +175,9 @@ class CotCatalogoCreditoController extends Controller
         Auth::user()->autorizarRol([1,2]);
 
         $monto = $filtros[0];
-        $saldo = $filtros[1];
-        $montoTotal = $filtros[2];
-        $parti = $filtros[3];       
+        $parti = $filtros[1];
+        //$montoTotal = $filtros[2];
+        //$parti = $filtros[3];       
         $encabezado = new CotCreditosEnc();
         $calcuTasaPonderada=0; //Acumula la tasa * NLP
         $calcuDiasPonderados=0; 
@@ -169,7 +188,7 @@ class CotCatalogoCreditoController extends Controller
 
         if(session('inversionesDisponibles') != null) {
             $now = Carbon::now();
-            $encabezado->monto_cot =$montoTotal;
+            $encabezado->monto_cot =$monto;
             $encabezado->estado_cot = 'A';
             $encabezado->usuario_cot = Auth::user()->id;
             $encabezado->nombre_cotizacion = $parti;
