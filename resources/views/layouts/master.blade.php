@@ -9,14 +9,16 @@
     <title>@yield('title')</title>
     <!--Styles-->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-    <!--Select2 CSS-->
-    <link href="{{asset('assets/select2/dist/css/select2.css')}}" rel="stylesheet" />
     <!--Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!--Select2 CSS-->
+    <link href="{{asset('assets/select2/dist/css/select2.css')}}" rel="stylesheet" />
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.css"/>
     <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
     <!--favicon-->
+    
     <!--Estilos-->
     @yield('styles')
 </head>

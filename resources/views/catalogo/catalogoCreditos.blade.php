@@ -11,11 +11,54 @@
     <br>
     <div class="row">
         <div style="background-color: white; "
-            class="ml-md-5 col-xs-12 table-responsive table-responsive col-md-9 rounded-lg mb-5">
+            class="ml-md-5 col-xs-12 table-responsive col-md-9 rounded-lg mb-5">
             <br>
             
             <form action="{{ route('catalogo-creditos.post') }}" method="POST">
                 @csrf
+                <div class="row">
+                    
+                    <div class="col-md-12">
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Participante Actual</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Nuevo Participante</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <br>
+                                <select name="parti"  id="participantes" class="numero" value='{{$parti}}'>
+                                    @if ($parti!=null)
+                                        <option value="{{$parti}}">{{$parti}}</option>
+                                    @endif
+                                    @foreach ($participante as $participantes)
+                                        <option value="{{$participantes->nom_participante}}">{{$participantes->nom_participante}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger">
+                                    @error('participante')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <br>
+                                <input type="text" class="txt-parti" name="" id="">
+                            </div>
+                           
+                        </div>
+
+                        
+                    </div>
+                    
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-md-6">
                         <center><label class="mayorA">Monto por invertir</label></center>
@@ -27,25 +70,7 @@
                             @enderror
                         </span>
                     </div>
-                    <div class="col-md-6">
-                        <center><label class="mayorA">Participante</label></center>
-                        <select name="parti"  id="participantes" class="numero" value='{{$parti}}'>
-                            @if ($parti!=null)
-                                <option value="{{$parti}}">{{$parti}}</option>
-                            @endif
-                            @foreach ($participante as $participantes)
-                                <option value="{{$participantes->nom_participante}}">{{$participantes->nom_participante}}</option>
-                            @endforeach
-                        </select>
-                        <span class="text-danger">
-                            @error('participante')
-                                {{ $message }}
-                            @enderror
-                        </span>
-                    </div>
-                    
-                </div><div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <center><label class="mayorA">Monto mayor a</label></center>
                         <input type="number" name="mayorA" class="numero" id="mayorA" value="{{old('mayorA', $mayorA)}}">
                         <span class="text-danger">
@@ -54,7 +79,7 @@
                             @enderror
                         </span>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <center><label class="mayorA">Monto menor a</label></center>
                         <input type="number" name="menorA" class="numero" id="menorA" value="{{old('menorA', $menorA)}}">
                         <span class="text-danger">
@@ -65,7 +90,7 @@
                     </div>
                     
                 </div>
-
+                <br>
                 <div class="row">
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
