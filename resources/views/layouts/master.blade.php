@@ -10,7 +10,7 @@
     <!--Styles-->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <!--Select2 CSS-->
-    <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/select2/dist/css/select2.css')}}" rel="stylesheet" />
     <!--Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
