@@ -4,6 +4,115 @@
 
 
 @section('content')
+<script>
+    function eliminar(variable){
+        swal.fire({
+        type: "question",
+        title: "¿Desea eliminar registro?",
+        text: "No se prodrá recuperar el registro",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        ShowConfirmButton: true,
+        confirmButtonColor: '#5cb85c',
+        confirmButtonText: "Sí, eliminar"
+        }).then((result) => {
+            if (result.value) {
+                $('#question').append("<input type='hidden' name='btnDelete'> <input type='hidden' name='id' value='"+variable+"'>");
+                $('#frmCotizacion').submit();
+            }
+        });
+        console.log(variable);
+    }
+
+
+    function editar(idEnc, idDet, monto, tasa, comentarios){
+        $('#monto').val('');
+        $('#tasa').val('');
+        $('#comentarios').val('');
+        $('#idEnc').val('');
+        $('#idDet').val('');
+
+        $('#monto').val(monto);
+        $('#tasa').val(tasa);
+        $('#comentarios').val(comentarios);
+        $('#idEnc').val(idEnc);
+        $('#idDet').val(idDet);
+        $('#modificar').modal();
+    }
+</script>
+
+
+
+
+
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modificar">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modificar Cartera</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('cotizazcion.update')}}" method="POST">
+        @csrf
+        @method('put')
+        <div class="modal-body">
+        
+            
+
+            
+                
+                <input type="hidden" name="idEnc" id="idEnc">
+                <input type="hidden" name="idDet" id="idDet">
+                <div class="row">
+                    <div class="col-6">
+                        <label>Monto Cotización</label>
+                        <input type="number" name="monto" class="form-control" id="monto">
+                    </div>
+                    <div class="col-6">
+                        <label>Tasa Cotización</label>
+                        <input type="text" name="tasa" id="tasa" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>comentarios</label>
+                        <input type="text" name="comentarios" class="form-control" id="comentarios" cols="15" rows="5">
+                    </div>
+                </div>
+           
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
     <div class="row">
         <div class="col-12">
         </div>
@@ -15,8 +124,13 @@
             
             <br>
             
-            <form action="" method="POST">
+            
+            <form action="{{route('cotizazcion.destroy')}}" id="frmCotizacion" method="POST">
                 @csrf
+                @method('delete')
+            
+                <div id="question"></div>
+            </form>
                 <div class="row">
                     <div class="col-md-12">
                         <center><h3>{{$enc->nombre_cotizacion}}</h3></center>
@@ -39,12 +153,13 @@
                     <div class="col-md-5"></div>
                 </div>
                 
-            </form>
+            
 
             
-            <table style="text-align:center;" with="100%" class="w-100 table-hover tabla" id="tabla-catalogo">
+            <table style="text-align:center;" with="100%" class="w-100 table-hover" id="tabla-catalogo">
                 <thead class="">
                     <tr>
+                        <th scope="col">Deudor</th>
                         <th scope="col">Monto</th>
                         <th scope="col">Tasa %</th>
                         <th scope="col">Fecha Vencimiento</th>
@@ -52,25 +167,29 @@
                         
                     </tr>
                 </thead>
-                <p style="color:white">{{$acumTasa=0, $acumMonto=0}}</p>
+                
                 <tbody>
                     @foreach ($det as $detalles)
                     
                         <tr>
+                            <td scope="row">${{ $detalles->nombre_deudor }}</td>
                             <td scope="row">${{ $detalles->monto_cot }}</td>
                             <td>{{ $detalles->tasa_cot }}%</td>
-                            <td>{{ $detalles->fecha_cot }}</td>
-                            <td>{{ $detalles->grupo_economico }}</td>
+                            <td>{{ substr($detalles->fecha_cot, 0, -8) }}</td>
+                            <td>{{ $detalles->grupo_economico }}/{{$detalles->pais}}</td>
                             <td style="border-block-color: white">
-                                <button class="btn btn-danger rounded-pill">DEL</button>
-                                <button class="btn btn-success rounded-pill">UPD</button>
+                                <input type="image" class="rounded-pill" height="40" width="40" 
+                                src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}')"  />
+                                <input type="image" class="rounded-pill" height="40" width="40" 
+                                src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
                             </td>
                         </tr>
-                    {{$acumTasa+=$detalles->tasa_cot, $acumMonto+=$detalles->monto_cot }}
+                    
                     @endforeach
                     <tr>
-                        <th>{{$acumMonto}}</th>
+                        <th>{{$sumMonto->monto}}</th>
                         <th>{{$enc->dias_ponderados}}</th>
+                        <th>-</th>
                         <th>-</th>
                         <th>-</th>
                         
@@ -81,18 +200,19 @@
         <br>
         </div>
         
-        <div class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
+        <div style="height: 80%" class="col-md-2 col-xs-12 rounded-lg ml-2  bg-white d-flex flex-column align-items-center">
             <div>
                 <div class="menu-1 mt-5 ">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <input type="submit"  class="btn btn-round btn-azul" value="Cerrar sesión">
                     </form>
-                    <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn btn-round btn-naranja mt-2" name="btnPropuesta">Mis propuestas</a>   
+                    <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn mb-5 btn-round btn-naranja mt-2" name="btnPropuesta">Mis propuestas</a>   
                 </div>
             </div>
+            <input type="button" value="sisi" name="" id="fd">
         </div>
-
+        
     </div>
 
 @endsection
@@ -104,6 +224,11 @@
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
             });
+
+            
+
+            
         });
+
     </script>
 @endsection

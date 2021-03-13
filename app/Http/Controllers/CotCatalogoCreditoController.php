@@ -136,7 +136,8 @@ class CotCatalogoCreditoController extends Controller
                                 'dias_inventario' => $fila->dias_inventario,
                                 'dias_al_vencimiento' => $fila->dias_al_vencimiento,
                                 'des_linea_negocio' => $fila->des_linea_negocio,
-                                'ESTADO' => $fila->ESTADO
+                                'ESTADO' => $fila->ESTADO,
+                                'pais' => $fila->pais
                             ]);
                     }
                 //}               
@@ -171,6 +172,10 @@ class CotCatalogoCreditoController extends Controller
         }    
     }
 
+
+
+
+    //Con esta función guardamos los datos 
     public function store($filtros = []){
         Auth::user()->autorizarRol([1,2]);
 
@@ -207,6 +212,7 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->tasa_cot = $inversion['tasa_credito'];
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
                 $detalle->nombre_deudor = $inversion['nombre_deudor'];
+                $detalle->pais = $inversion['pais'];
                 $detalle->save();
                 $calcuDiasPonderados += (($inversion['dias_inventario']*$inversion['NLP'])/$totalNLP);
                 $calcuTasaPonderada += (($inversion['tasa_credito']*$inversion['NLP'])/$totalNLP);

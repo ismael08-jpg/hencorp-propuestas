@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $tasa_cot
  * @property string|null $fecha_cot
  * @property string|null $comentarios
+ * @property string|null $pais
  * 
  * @property CotCreditosEnc $cot_creditos_enc
  *
@@ -43,7 +44,8 @@ class CotCreditosDet extends Model
 		'monto_cot',
 		'tasa_cot',
 		'fecha_cot',
-		'comentarios'
+		'comentarios',
+		'pais'
 	];
 
 	public function cot_creditos_enc()

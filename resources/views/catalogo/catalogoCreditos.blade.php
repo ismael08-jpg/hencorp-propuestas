@@ -49,7 +49,7 @@
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <br>
-                                <input type="text" class="txt-parti" name="" id="">
+                                <input type="text" class="txt-parti" disabled  name="parti" id="nuevoParti" placeholder="Nombre del nuevo participante">
                             </div>
                            
                         </div>
@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <center><label class="mayorA">Monto por invertir</label></center>
-                        <input type="number" name="monto" class="numero" id="mayorA" value="{{old('monto', $monto)}}" autofocus
+                        <input type="number" name="monto" class="numero" id="monto" value="{{old('monto', $monto)}}" autofocus
                             required>
                         <span class="text-danger">
                             @error('monto')
@@ -95,7 +95,7 @@
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
                         <center>
-                            <button class="filtrar" type="submit" name="filtrar" value="filter">Filtrar</button>
+                            <button  class="filtrar" type="submit" name="filtrar" value="filter">Filtrar</button>
                         </center>
                     </div>
                     <div class="col-md-5"></div>
@@ -124,7 +124,7 @@
                             <td>${{ $catalogos['NLP'] }}</td>
                             <td>{{ $catalogos['tasa_credito']-1.5 }}%</td>
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
-                            <td>{{ $catalogos['grupo_economico'] }}</td>
+                            <td>{{ $catalogos['grupo_economico'] }}/{{$catalogos['pais']}}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -157,9 +157,8 @@
                                      ";
                             }
                     ?>
+                    
                     </form>
-                    
-                    
                 </div>
             </div>
         </div>
@@ -170,12 +169,29 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+
+
             $('#tabla-catalogo').DataTable({
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
             });
 
             $('#participantes').select2();
+
+            $( "#profile-tab" ).click(function() {
+               $('#participantes').attr("disabled", true);
+               $('#nuevoParti').attr("disabled", false);
+            });
+            $( "#home-tab" ).click(function() {
+               $('#participantes').attr("disabled", false);
+               $('#nuevoParti').attr("disabled", true);
+            }); 
+
+            
         });
+        
+        
+
+        
     </script>
 @endsection

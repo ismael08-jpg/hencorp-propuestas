@@ -96,21 +96,27 @@
     background-color: white;
     border: 1px solid #aaa;
     border-radius: 4px;
+    height: 28px;
+    width: 100%;
 }
 
 
 /* fin de los colores */
 
-table,
+.tabla,
 th,
-td {
+td,
+tr {
     border: 2px solid #0684fc;
 }
 
+.tabla,
 td {
-    border-radius: 15px;
+    background-color: white;
+    color: black;
 }
 
+.tabla,
 th {
     background-color: #02163a;
     color: white;
