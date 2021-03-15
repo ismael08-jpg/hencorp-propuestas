@@ -42,17 +42,6 @@
 </script>
 
 
-
-
-
-
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modificar">
-    Launch demo modal
-  </button>
-  
   <!-- Modal -->
   <div class="modal fade" id="modificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     
@@ -156,7 +145,7 @@
             
 
             
-            <table style="text-align:center;" with="100%" class="w-100 table-hover" id="tabla-catalogo">
+            <table style="text-align:center;" with="100%" class="w-100 table-hover" id="tabla-cot">
                 <thead class="">
                     <tr>
                         <th scope="col">Deudor</th>
@@ -164,6 +153,7 @@
                         <th scope="col">Tasa %</th>
                         <th scope="col">Fecha Vencimiento</th>
                         <th>Grupo/país</th>
+                        <th>Accción</th>
                         
                     </tr>
                 </thead>
@@ -192,6 +182,7 @@
                         <th>-</th>
                         <th>-</th>
                         <th>-</th>
+                        <th>Acción</th>
                         
                     </tr>
                 </tbody>
@@ -207,10 +198,12 @@
                         @csrf
                         <input type="submit"  class="btn btn-round btn-azul" value="Cerrar sesión">
                     </form>
-                    <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn mb-5 btn-round btn-naranja mt-2" name="btnPropuesta">Mis propuestas</a>   
+                    <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn mb-5 btn-round btn-naranja mt-2" name="btnPropuesta">Enviar</a>
+                    <br>
+                    <a href="{{route('propuestas.index')}}" class="btn mb-5 btn-round btn-azul mt-2" name="btnPropuesta">Mis propuestas</a>
                 </div>
             </div>
-            <input type="button" value="sisi" name="" id="fd">
+        
         </div>
         
     </div>
@@ -220,9 +213,9 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#tabla-catalogo').DataTable({
-                'pageLength' : 15,
-                'lengthMenu' : [15, 25, 40],
+            $('#tabla-cot').DataTable({
+                'pageLength' : 20,
+                'lengthMenu' : [20, 30, 45],
             });
 
             

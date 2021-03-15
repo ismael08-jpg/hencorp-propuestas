@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\CotCatalogoCreditoController;
 use App\Http\Controllers\cotCreditosController;
+use App\Http\Controllers\MisPropuestasController;
 use App\Models\CotCatalogoCredito;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,7 @@ route::put('/cotizacion/update', [CotCreditosController::class, 'update'])->name
 
 Route::get('/envio-cotizacion/{id}', [CotCreditosController::class, 'mostrar'])->name('cotizacion.mostrar');
 Route::post('/envio-cotizacion', [CotCreditosController::class, 'enviar'])->name('cotizacion.enviar');
+
+Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
 
 Auth::routes(['register' => false]);

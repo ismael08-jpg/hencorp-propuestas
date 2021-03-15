@@ -103,25 +103,6 @@
 
 /* fin de los colores */
 
-.tabla,
-th,
-td,
-tr {
-    border: 2px solid #0684fc;
-}
-
-.tabla,
-td {
-    background-color: white;
-    color: black;
-}
-
-.tabla,
-th {
-    background-color: #02163a;
-    color: white;
-}
-
 
 /* Formulario de login */
 

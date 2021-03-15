@@ -2,6 +2,29 @@
 
 @section('title', 'Catalogo de Créditos')
 
+@section('styles')
+    <style>
+        
+        .tabla,
+        th,
+        td,
+        tr {
+            border: 2px solid #0684fc;
+        }
+
+        .tabla,
+        td {
+            background-color: white;
+            color: black;
+        }
+
+        .tabla,
+        th {
+            background-color: #02163a;
+            color: white;
+        }
+    </style>   
+@endsection
 
 @section('content')
     <div class="row">
@@ -121,7 +144,7 @@
                         <tr>
                             <td>{{$catalogos['id']}}</td>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
-                            <td>${{ $catalogos['NLP'] }}</td>
+                            <td>${{ number_format($catalogos['NLP'], 2, '.', ',' ) }}</td>
                             <td>{{ $catalogos['tasa_credito']-1.5 }}%</td>
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}/{{$catalogos['pais']}}</td>
@@ -138,6 +161,7 @@
                         @csrf
                         <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
                     </form>
+                    <a href="{{route('propuestas.index')}}" class="btn mb-3 btn-round btn-azul mt-2" name="btnPropuesta">Mis propuestas</a>
                     <form action="{{ route('catalogo-creditos.post') }}" method="POST" >
                         @csrf
                         <?php 
@@ -169,9 +193,27 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-
-
             $('#tabla-catalogo').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Carteras",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "No hay carteras para el rango",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
             });

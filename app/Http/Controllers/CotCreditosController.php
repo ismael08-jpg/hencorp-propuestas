@@ -25,22 +25,30 @@ class CotCreditosController extends Controller
     public function index($id){
         Auth::user()->autorizarRol([1,2]);
 
-        $det = CotCreditosDet::where('id_credito', '=', $id)->get();
-        $enc = CotCreditosEnc::where('id_cotizacion', '=', $id)->first();
-        $sumMonto = CotCreditosDet::select(DB::raw('SUM(monto_cot) as monto'))
-        ->where('id_credito', '=', $id)
-        ->first();
         
+        $enc = CotCreditosEnc::where('id_cotizacion', '=', $id)->where('usuario_cot', '=', Auth::user()->id)->first();
 
-        return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto'));
+        if($enc != []){
+          $det = CotCreditosDet::where('id_credito', '=', $id)->get();
+          $sumMonto = CotCreditosDet::select(DB::raw('SUM(monto_cot) as monto'))
+          ->where('id_credito', '=', $id)
+          ->first();
+          return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto'));
+        }else{
+          return redirect()->route('catalogo-creditos.index');
+        }
     }
 
+
+
+
     public function mostrar($id){
+      Auth::user()->autorizarRol([1,2]);
         return view('cotizacion.envioCotizacion', compact('id'));
     }
 
     public function enviar(Request $request){
-
+      Auth::user()->autorizarRol([1,2]);
         $det = CotCreditosDet::where('id_credito', '=', $request->id)->get();
         $enc = CotCreditosEnc::where('id_cotizacion', '=', $request->id)->first();
 
@@ -84,6 +92,7 @@ class CotCreditosController extends Controller
     }
 
   public function destroy(Request $request){
+    Auth::user()->autorizarRol([1,2]);
     $id_propuesta=0;
     $detalle = CotCreditosDet::find($request->id);
     $id_propuesta = $detalle->id_credito;// Id de la propuesta
@@ -116,7 +125,7 @@ class CotCreditosController extends Controller
   }
 
   public function update(Request $request){
-    
+    Auth::user()->autorizarRol([1,2]);
     //monto, tasa, comentarios
     $idDet = $request->idDet;
     $idEnc = $request->idEnc;
@@ -134,6 +143,8 @@ class CotCreditosController extends Controller
     return redirect()->route('cotizacion.index', $idEnc);
    
   }
+
+  
 
     
 }
