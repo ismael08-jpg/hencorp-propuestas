@@ -67,11 +67,11 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Monto Cotización</label>
-                        <input type="number" name="monto" class="form-control" id="monto">
+                        <input type="number" step="0.01" min="0" name="monto" class="form-control" id="monto">
                     </div>
                     <div class="col-6">
                         <label>Tasa Cotización</label>
-                        <input type="text" name="tasa" id="tasa" class="form-control">
+                        <input type="number" step="0.01" min="0" name="tasa" id="tasa" class="form-control">
                     </div>
                 </div>
                 <div class="row">
@@ -163,8 +163,8 @@
                     
                         <tr>
                             <td scope="row">${{ $detalles->nombre_deudor }}</td>
-                            <td scope="row">${{ $detalles->monto_cot }}</td>
-                            <td>{{ $detalles->tasa_cot }}%</td>
+                            <td scope="row">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
+                            <td>{{ number_format($detalles->tasa_cot, 2, '.' ) }}%</td>
                             <td>{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td>{{ $detalles->grupo_economico }}/{{$detalles->pais}}</td>
                             <td style="border-block-color: white">
@@ -176,16 +176,17 @@
                         </tr>
                     
                     @endforeach
-                    <tr>
-                        <th>{{$sumMonto->monto}}</th>
-                        <th>{{$enc->dias_ponderados}}</th>
-                        <th>-</th>
-                        <th>-</th>
-                        <th>-</th>
-                        <th>Acción</th>
-                        
-                    </tr>
+                    
                 </tbody>
+                <tr>
+                    <th>-</th>
+                    <th>${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
+                    <th>{{number_format($enc->tasa_ponderada, 2, '.' )}}</th>
+                    <th>-</th>
+                    <th>-</th>
+                    <th>Acción</th>
+                    
+                </tr>
             </table>
             <br>
         <br>

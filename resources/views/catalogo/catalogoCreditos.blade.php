@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <center><label class="mayorA">Monto por invertir</label></center>
-                        <input type="number" name="monto" class="numero" id="monto" value="{{old('monto', $monto)}}" autofocus
+                        <input type="number" step="0.01"  name="monto" class="numero" id="monto" value="{{old('monto', $monto)}}" autofocus
                             required>
                         <span class="text-danger">
                             @error('monto')
@@ -95,7 +95,7 @@
                     </div>
                     <div class="col-md-3">
                         <center><label class="mayorA">Monto mayor a</label></center>
-                        <input type="number" name="mayorA" class="numero" id="mayorA" value="{{old('mayorA', $mayorA)}}">
+                        <input type="number" step="0.01"  name="mayorA" class="numero" id="mayorA" value="{{old('mayorA', $mayorA)}}">
                         <span class="text-danger">
                             @error('mayorA')
                                 {{ $message }}
@@ -104,7 +104,7 @@
                     </div>
                     <div class="col-md-3">
                         <center><label class="mayorA">Monto menor a</label></center>
-                        <input type="number" name="menorA" class="numero" id="menorA" value="{{old('menorA', $menorA)}}">
+                        <input type="number" step="0.01"  name="menorA" class="numero" id="menorA" value="{{old('menorA', $menorA)}}">
                         <span class="text-danger">
                             @error('menorA')
                                 {{ $message }}

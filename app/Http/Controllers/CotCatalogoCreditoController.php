@@ -207,6 +207,7 @@ class CotCatalogoCreditoController extends Controller
             foreach(session('inversionesDisponibles') as $inversion) {
                 $detalle = new CotCreditosDet();                   
                 $detalle->id_credito = $encabezado->id_cotizacion;
+                $detalle->id_cotizacion = $inversion['id'];
                 $detalle->grupo_economico = $inversion['grupo_economico'];
                 $detalle->monto_cot = $inversion['NLP'];
                 $detalle->tasa_cot = $inversion['tasa_credito'];
@@ -219,16 +220,16 @@ class CotCatalogoCreditoController extends Controller
                 
             }
 
-            $encabezado->tasa_ponderada = $calcuDiasPonderados;
-            $encabezado->dias_ponderados = $calcuTasaPonderada;
+            $encabezado->tasa_ponderada = $calcuTasaPonderada;
+            $encabezado->dias_ponderados = $calcuDiasPonderados;
             $encabezado->save();
         }
         session(['inversionesDisponibles' => null]);
         
         //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
 
-        $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_credito')->
-        where('nom_participante', '=', $parti)->get();
+        // $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_credito')->
+        // where('nom_participante', '=', $parti)->get();
 
         
         

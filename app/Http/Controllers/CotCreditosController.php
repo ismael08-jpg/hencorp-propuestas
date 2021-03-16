@@ -107,11 +107,12 @@ class CotCreditosController extends Controller
     
     foreach($detalle as $det){
       $totalMonto = $totalMonto + $det->monto_cot;
-     }
+    }
 
     foreach($detalle as $det){
+      $catalogo = CotCatalogoCredito::find($det->id_cotizacion);
       $tasaPonderada = $tasaPonderada + ($det->tasa_cot*$det->monto_cot)/$totalMonto;
-      $diasPonderados = $diasPonderados + ($det->dias_inventario*$det->monto_cot)/$totalMonto;
+      $diasPonderados = $diasPonderados + ($catalogo->dias_inventario*$det->monto_cot)/$totalMonto;
     }
 
     $encabezado = CotCreditosEnc::find($id_propuesta);
@@ -130,15 +131,36 @@ class CotCreditosController extends Controller
     $idDet = $request->idDet;
     $idEnc = $request->idEnc;
     $monto = $request->monto;
-    $tasa = $request->monto;
+    $tasa = $request->tasa;
     $comentarios = $request->comentarios;
 
     $detalle = CotCreditosDet::find($idDet);
     $detalle->monto_cot = $monto;
     $detalle->tasa_cot = $tasa;
     $detalle->comentarios = $comentarios;
-
     $detalle->save();
+
+    //Recalculamos La tasa ponderada y los días ponderados.
+    $totalMonto = 0;
+    $tasaPonderada =0;
+    $diasPonderados =0;
+    $detalle = CotCreditosDet::where('id_credito', '=', $idEnc)->get();
+    
+    foreach($detalle as $det){
+      $totalMonto = $totalMonto + $det->monto_cot;
+    }
+
+    foreach($detalle as $det){
+      $catalogo = CotCatalogoCredito::find($det->id_cotizacion);
+      $tasaPonderada = $tasaPonderada + ($det->tasa_cot*$det->monto_cot)/$totalMonto;
+      $diasPonderados = $diasPonderados + ($catalogo->dias_inventario*$det->monto_cot)/$totalMonto;
+    }
+
+    $encabezado = CotCreditosEnc::find($idEnc);
+    $encabezado->tasa_ponderada = $tasaPonderada;
+    $encabezado->dias_ponderados = $diasPonderados;//Se deben poner los días ponderados bien
+    $encabezado->save();
+
     
     return redirect()->route('cotizacion.index', $idEnc);
    
