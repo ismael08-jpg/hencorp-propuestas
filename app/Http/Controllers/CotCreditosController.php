@@ -80,7 +80,7 @@ class CotCreditosController extends Controller
 
         $porce = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'), 'grupo_economico')
         ->groupBy('grupo_economico')
-        ->first();
+        ->get();
 
         $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'))->setPaper('a4', 'landscape');
 
