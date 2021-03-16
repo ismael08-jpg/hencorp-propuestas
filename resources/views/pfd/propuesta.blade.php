@@ -20,6 +20,10 @@
             
         }
 
+        html{
+            background-color: blue;
+        }
+
         .tabla, 
         tr, 
         th{
@@ -78,9 +82,9 @@
                 @foreach ($det as $detalle)
                     <tr>
                         <td scope="row">{{ $detalle->grupo_economico }}</td>
-                        <td>${{ $detalle->monto_cot }}</td>
-                        <td>{{ $detalle->tasa_cot }}%</td>
-                        <td>{{ $detalle->fecha_cot }}</td>
+                        <td>${{ number_format($detalle->monto_cot, 2, '.', ',' )  }}</td>
+                        <td>{{ number_format($detalle->tasa_cot, 2, '.' )  }}%</td>
+                        <td>{{ substr($detalle->fecha_cot, 0, -8) }}</td>
                     </tr>
                 @endforeach
             </tbody>

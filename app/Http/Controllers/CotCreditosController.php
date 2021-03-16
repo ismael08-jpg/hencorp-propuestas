@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use PDF;
 use QuickChart;
 use App\Mail\PropuestaMailable;
+use App\Models\VwSaldosXParticipacion;
 use Illuminate\Support\Facades\DB;
 
 
@@ -77,16 +78,19 @@ class CotCreditosController extends Controller
             'titulo' => 'Styde.net'
         ];
 
+        $porce = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'), 'grupo_economico')
+        ->groupBy('grupo_economico')
+        ->first();
 
         $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'))->setPaper('a4', 'landscape');
 
-        Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
-            // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
-            $mail->to($correo);
-            $mail->attachData($pdf->output(), 'test.pdf');
-        });
+        // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
+        //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
+        //     $mail->to($correo);
+        //     $mail->attachData($pdf->output(), 'test.pdf');
+        // });
         
-        return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
+        return $porce;//$pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 
         
     }
