@@ -78,11 +78,54 @@ class CotCreditosController extends Controller
             'titulo' => 'Styde.net'
         ];
 
+        $saldoParti = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'))
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)
+        ->first();
+
         $porce = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'), 'grupo_economico')
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)
         ->groupBy('grupo_economico')
         ->get();
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'))->setPaper('a4', 'landscape');
+        $tablaPdf=[];
+
+        foreach($porce as $por){
+        if($saldoParti->saldo>0)
+        $por->saldo=($por->saldo/$saldoParti->saldo)*100;
+        else
+        $por->saldo = 0;
+          
+
+        }
+
+        foreach($det as $det){
+          $bandera=true;
+          $valor = 0;
+          foreach($porce as $por){
+            if($por->grupo_economico == $det->grupo_economico)
+            {
+              $valor = $por->saldo;
+            }
+          }
+          array_push($tablaPdf, 
+          [
+              'id_cotizacion' => $det->id_cotizacion,
+              'id_credito' => $det->id_credito,
+              'nombre_deudor' => $det->nombre_deudor,
+              'grupo_economico' => $det->grupo_economico,
+              'monto_cot' => $det->monto_cot,
+              'tasa_cot' => $det->tasa_cot,
+              'fecha_cot' => $det->fecha_cot,
+              'comentarios' => $det->comentarios,
+              'pais' => $det->pais,
+              'concentracion' => $valor
+              
+          ]);
+        }
+
+
+
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart'))->setPaper('a4', 'landscape');
 
         // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
         //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
@@ -90,7 +133,7 @@ class CotCreditosController extends Controller
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
         
-        return $porce;//$pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
+        return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 
         
     }

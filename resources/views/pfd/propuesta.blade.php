@@ -7,6 +7,10 @@
     <title>Propuesta</title>
     
     <style>
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+
         .page-break {
             page-break-after: always;
         }
@@ -17,7 +21,6 @@
             align-items: center;
             text-align: center;
             color: azure;
-            
         }
 
         html{
@@ -30,6 +33,7 @@
             border: 2px solid  #02163a ;
             border-radius: 50%;
             width: 100%;
+            font-family: 'Arimo', sans-serif;
         }
 
         
@@ -71,20 +75,26 @@
         <table style="text-align:;" class="tabla">
             <thead class="">
                 <tr>
-                    <th>Grupo Económico</th>
+                    <th>Deudor</th>
                     <th>Monto disponible hasta por</th>
                     <th>Tasa %</th>
-                    <th>Fecha</th>
+                    <th>Vencimiento</th>
+                    <th>Grupo</th>
+                    <th>Pais</th>
+                    <th>Concentración</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($det as $detalle)
+                @foreach ($tablaPdf as $tb)
                     <tr>
-                        <td scope="row">{{ $detalle->grupo_economico }}</td>
-                        <td>${{ number_format($detalle->monto_cot, 2, '.', ',' )  }}</td>
-                        <td>{{ number_format($detalle->tasa_cot, 2, '.' )  }}%</td>
-                        <td>{{ substr($detalle->fecha_cot, 0, -8) }}</td>
+                        <td scope="row">{{$tb['nombre_deudor'] }}</td>
+                        <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
+                        <td>{{ number_format($tb['tasa_cot'], 2, '.' )  }}%</td>
+                        <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
+                        <td>{{$tb['grupo_economico']}}</td>
+                        <td>{{$tb['pais']}}</td>
+                        <td>{{$tb['concentracion']}}%</td>
                     </tr>
                 @endforeach
             </tbody>
