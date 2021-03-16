@@ -226,10 +226,7 @@ class CotCatalogoCreditoController extends Controller
         }
         session(['inversionesDisponibles' => null]);
         
-        //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
-
-        // $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_credito')->
-        // where('nom_participante', '=', $parti)->get();
+       
 
         
         

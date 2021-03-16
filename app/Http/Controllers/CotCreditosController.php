@@ -12,6 +12,7 @@ use QuickChart;
 use App\Mail\PropuestaMailable;
 use App\Models\VwSaldosXParticipacion;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 
@@ -86,6 +87,17 @@ class CotCreditosController extends Controller
         ->where('nom_participante', '=', $enc->nombre_cotizacion)
         ->groupBy('grupo_economico')
         ->get();
+        $now = Carbon::now();
+         //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
+       
+       
+         // $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
+        // ->where('nom_participante', '=', $parti)->get();
+
+        // foreach ($PortafolioParti as $porta){
+
+
+        // }
 
         $tablaPdf=[];
 
