@@ -63,7 +63,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            height: 750px;
+            height: 780px;
             /* position: fixed; */
             
 

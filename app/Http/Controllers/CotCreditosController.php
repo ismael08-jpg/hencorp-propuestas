@@ -97,6 +97,10 @@ class CotCreditosController extends Controller
         $diasPortafolio=0;
         $totalSaldo=0;
 
+        
+
+
+
         foreach ($PortafolioParti as $porta){
           $totalSaldo += $porta->saldo;
          }
@@ -145,11 +149,11 @@ class CotCreditosController extends Controller
 
         $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafoloio'))->setPaper('letter', 'landscape');
 
-        // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
-        //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
-        //     $mail->to($correo);
-        //     $mail->attachData($pdf->output(), 'test.pdf');
-        // });
+        Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
+            // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
+            $mail->to($correo);
+            $mail->attachData($pdf->output(), 'test.pdf');
+        });
         
         return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 
@@ -191,6 +195,11 @@ class CotCreditosController extends Controller
   }
 
   public function update(Request $request){
+    $validacion = $request->validate([
+      'tasa' => 'required|numeric|min:0.01',
+      'monto' => 'required|numeric'
+  ]);
+
     Auth::user()->autorizarRol([1,2]);
     //monto, tasa, comentarios
     $idDet = $request->idDet;
