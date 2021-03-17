@@ -135,12 +135,6 @@
             <tbody>
                 @foreach ($tablaPdf as $tb)
                     <tr>
-<<<<<<< HEAD
-                        <td scope="row">{{ $detalle->grupo_economico }}</td>
-                        <td>${{ number_format($detalle->monto_cot, 2, '.', ',' )  }}</td>
-                        <td>{{ $detalle->tasa_cot }}%</td>
-                        <td>{{ substr($detalle->fecha_cot, 0, -8) }}</td>
-=======
                         <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
@@ -148,7 +142,6 @@
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
                         <td>{{number_format($tb['concentracion'], 2, '.' )}}%</td>
->>>>>>> master
                     </tr>
                 @endforeach
             </tbody>
