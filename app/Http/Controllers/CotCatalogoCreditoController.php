@@ -147,6 +147,10 @@ class CotCatalogoCreditoController extends Controller
         }
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
+
+        if($inversionesDisponibles == []){
+            $bandera = 0;
+        }
         
         return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA'));
     }

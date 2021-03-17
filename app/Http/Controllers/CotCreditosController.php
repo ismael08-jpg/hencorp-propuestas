@@ -91,13 +91,19 @@ class CotCreditosController extends Controller
          //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
        
        
-         // $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
-        // ->where('nom_participante', '=', $parti)->get();
+         $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)->get();
+        $tasaPortafoloio=0;
+        $diasPortafolio=0;
+        $totalSaldo=0;
 
-        // foreach ($PortafolioParti as $porta){
+        foreach ($PortafolioParti as $porta){
+          $totalSaldo += $porta->saldo;
+         }
 
-
-        // }
+        foreach($PortafolioParti as $porta){
+          $tasaPortafoloio += (($porta->tasa_interes*$porta->saldo)/$totalSaldo);
+        }
 
         $tablaPdf=[];
 
@@ -137,7 +143,7 @@ class CotCreditosController extends Controller
 
 
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafoloio'))->setPaper('letter', 'landscape');
 
         // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
         //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');

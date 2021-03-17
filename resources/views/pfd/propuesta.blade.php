@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="margin">
 <head>
     
     <meta charset="UTF-8">
@@ -16,36 +16,56 @@
             page-break-after: always;
         }
         .titulo{
-            border: 2px solid azure;
-            border-radius: 15px;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: azure;
         }
 
-        html{
-            background-color: blue;
-        }
 
         .tabla, 
         tr, 
         th{
-            border: 2px solid  #02163a ;
             border-radius: 50%;
+            
             width: 100%;
+            font-family: Arial;
             
         }
+        th{
+            background-color: #02163a;
+            color: azure;
+        }
 
+        .tabla,
+        tr  
+        {
+            border: 2px solid #0684fc;
+        }
+
+        td{
+            border-top: 2px solid #0684fc;
+            border-right: 2px solid #0684fc;
+        }
         
-
+        .margin{
+            margin: 0%;
+        }
         
 
         .fondo{
+            top: 0cm;
+            left: 0cm;
+            right: 0cm;
+            
+            
             background-color: #02163a;
             justify-content: center;
             align-items: center;
             text-align: center;
+            height: 750px;
+            /* position: fixed; */
+            
 
         }
 
@@ -53,12 +73,21 @@
             margin-bottom: 200px;
             
         }
+
+        .principal{
+            margin-top: 2.5cm;
+            margin-left: 3cm;
+            margin-bottom: 2.5cm;
+            margin-right: 2.5cm;
+
+        }
         
     </style>
 </head>
 <body>
     <section class="fondo">
-        <header class="titulo"> {{$enc->nombre_cotizacion}}</header>
+        <br>
+        <header class="titulo"><h2 style="margin-top: 70px">{{$enc->nombre_cotizacion}}</h2></header>
         <br>
         <br>
         <br>
@@ -66,13 +95,12 @@
         <img class="ima" height="150" width="500" src="{{ asset('assets/img/hencorp.jpeg') }}" alt="HOla mundo">
         
     </section>
-    
-    <footer style="position: absolute; bottom: 0;">
-        <p style="text-align: center;">Informe generado {{date("Y-m-d")}}</p>
+    <footer style="position: absolute; bottom: 0; background-color: #02163a;">
+        <p style="text-align: center; color: azure">Informe generado {{date("Y-m-d")}}</p>
     </footer>
     
-    <div class="page-break"></div><!--Termina la primera Pagina-->
-    <div>
+    <div class="page-break" style="margin-bottom: 2.5cm"></div><!--Termina la primera Pagina-->
+    <div class="principal">
         <table style="text-align:;" class="tabla">
             <thead class="">
                 <tr>
@@ -102,7 +130,8 @@
         </table>
     </div>
     <div>
-        <img src="{{$chart->getUrl()}}" alt="">
+        {{-- <img src="{{$chart->getUrl()}}" alt=""> --}}
+        <div><h1>{{$tasaPortafoloio}}</h1></div>
     </div>
     <footer style="position: absolute; bottom: 0;">
         <p style="text-align: center;">Informe generado {{date("Y-m-d")}}</p>
