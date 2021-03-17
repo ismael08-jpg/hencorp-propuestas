@@ -135,7 +135,8 @@
                         <th scope="col">Monto disponible hasta por</th>
                         <th scope="col">Tasa %</th>
                         <th scope="col">Vencimiento</th>
-                        <th>Grupo/país</th>
+                        <th>Grupo</th>
+                        <th>País</th>
                     </tr>
                 </thead>
 
@@ -147,7 +148,8 @@
                             <td>${{ number_format($catalogos['NLP'], 2, '.', ',' ) }}</td>
                             <td>{{ number_format($catalogos['tasa_credito']-1.5, 2, '.' )  }}%</td>
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
-                            <td>{{ $catalogos['grupo_economico'] }}/{{$catalogos['pais']}}</td>
+                            <td>{{ $catalogos['grupo_economico'] }}</td>
+                            <td>{{$catalogos['pais']}}</td>
                         </tr>
                     @endforeach
                 </tbody>
