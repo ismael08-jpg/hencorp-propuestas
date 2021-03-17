@@ -86,24 +86,24 @@ class CotCatalogoCreditoController extends Controller
                 ->orderby('NLP')
                 ->get();*/
 
-             //Llamamos los catalogos, en este caso, >= al monto   
-            // if($mayorA!=null and $menorA !=null ){
-            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-            //     ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
-            //     ->orderby('NLP')
-            //     ->get();
-            // } else if($mayorA != null and $menorA == null){
-            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-            //     ->orderby('NLP')
-            //     ->get();
-            // } else if($menorA!=null and $mayorA==null){
-            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-            //     ->where('NLP', '<=', $menorA)
-            //     ->orderby('NLP')
-            //     ->get();
-            // }else{
+             // Llamamos los catalogos, en este caso, >= al monto   
+            if($mayorA!=null and $menorA !=null ){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
+                ->orderby('NLP')
+                ->get();
+            } else if($mayorA != null and $menorA == null){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->orderby('NLP')
+                ->get();
+            } else if($menorA!=null and $mayorA==null){
+                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('NLP', '<=', $menorA)
+                ->orderby('NLP')
+                ->get();
+            }else{
                 $catalogo = CotCatalogoCredito::all();
-            // }
+            }
             
 
             

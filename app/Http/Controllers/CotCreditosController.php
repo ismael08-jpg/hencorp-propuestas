@@ -90,7 +90,8 @@ class CotCreditosController extends Controller
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
         
-        return $porce;//$pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
+        set_time_limit(60000);
+        return $pdf->download('Propuesta.pdf');//$pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 
         
     }

@@ -83,7 +83,7 @@
                     <tr>
                         <td scope="row">{{ $detalle->grupo_economico }}</td>
                         <td>${{ number_format($detalle->monto_cot, 2, '.', ',' )  }}</td>
-                        <td>{{ number_format($detalle->tasa_cot, 2, '.' )  }}%</td>
+                        <td>{{ $detalle->tasa_cot }}%</td>
                         <td>{{ substr($detalle->fecha_cot, 0, -8) }}</td>
                     </tr>
                 @endforeach

@@ -34,3 +34,10 @@ Route::post('/envio-cotizacion', [CotCreditosController::class, 'enviar'])->name
 Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
 
 Auth::routes(['register' => false]);
+
+Route::get('/prueba', function() {
+    $fecha = new DateTime(date('Y-m-d'));
+    $fecha2 = new DateTime('2021-03-18');
+    $diff = $fecha2->diff($fecha);
+    return $diff->days;
+});
