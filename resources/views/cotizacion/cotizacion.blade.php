@@ -56,12 +56,7 @@
         <form action="{{route('cotizazcion.update')}}" method="POST">
         @csrf
         @method('put')
-        <div class="modal-body">
-        
-            
-
-            
-                
+        <div class="modal-body">  
                 <input type="hidden" name="idEnc" id="idEnc">
                 <input type="hidden" name="idDet" id="idDet">
                 <div class="row">
@@ -80,8 +75,6 @@
                         <input type="text" name="comentarios" class="form-control" id="comentarios" cols="15" rows="5">
                     </div>
                 </div>
-           
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

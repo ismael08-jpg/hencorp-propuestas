@@ -12,6 +12,8 @@ use QuickChart;
 use App\Mail\PropuestaMailable;
 use App\Models\VwSaldosXParticipacion;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use DateTime;
 
 
 
@@ -78,11 +80,87 @@ class CotCreditosController extends Controller
             'titulo' => 'Styde.net'
         ];
 
+        $saldoParti = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'))
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)
+        ->first();
+
         $porce = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'), 'grupo_economico')
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)
         ->groupBy('grupo_economico')
         ->get();
+        $now = Carbon::now();
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('det', 'enc', 'chart'))->setPaper('a4', 'landscape');
+
+
+         //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
+       
+       
+         $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
+        ->where('nom_participante', '=', $enc->nombre_cotizacion)->get();
+        $tasaPortafolio=0;
+        $diasPortafolio=0;
+        $totalSaldo=0;
+
+
+        //Calculo de días al vencimiento
+        
+
+
+        foreach ($PortafolioParti as $porta){
+          $totalSaldo += $porta->saldo;
+         }
+
+         $fechaActual = new DateTime(date('Y-m-d'));
+        foreach($PortafolioParti as $porta){ 
+          $fecha = new DateTime($porta->fecha_vencimiento);
+          $diff = $fecha->diff($fechaActual);
+          $diff->days;
+
+          $tasaPortafolio += (($porta->tasa_interes*$porta->saldo)/$totalSaldo);
+          $diasPortafolio += (($diff->days*$porta->saldo)/$totalSaldo);
+        }
+
+        //----------------------------
+
+        $tablaPdf=[];
+
+        foreach($porce as $por){
+        if($saldoParti->saldo>0)
+        $por->saldo=($por->saldo/$saldoParti->saldo)*100;
+        else
+        $por->saldo = 0;
+          
+
+        }
+
+        foreach($det as $det){
+          $bandera=true;
+          $valor = 0;
+          foreach($porce as $por){
+            if($por->grupo_economico == $det->grupo_economico)
+            {
+              $valor = $por->saldo;
+            }
+          }
+          array_push($tablaPdf, 
+          [
+              'id_cotizacion' => $det->id_cotizacion,
+              'id_credito' => $det->id_credito,
+              'nombre_deudor' => $det->nombre_deudor,
+              'grupo_economico' => $det->grupo_economico,
+              'monto_cot' => $det->monto_cot,
+              'tasa_cot' => $det->tasa_cot,
+              'fecha_cot' => $det->fecha_cot,
+              'comentarios' => $det->comentarios,
+              'pais' => $det->pais,
+              'concentracion' => $valor
+              
+          ]);
+        }
+
+
+
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
 
         // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
         //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
@@ -90,8 +168,7 @@ class CotCreditosController extends Controller
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
         
-        set_time_limit(60000);
-        return $pdf->download('Propuesta.pdf');//$pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
+        return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 
         
     }
@@ -131,6 +208,11 @@ class CotCreditosController extends Controller
   }
 
   public function update(Request $request){
+    $validacion = $request->validate([
+      'tasa' => 'required|numeric|min:0.01',
+      'monto' => 'required|numeric'
+  ]);
+
     Auth::user()->autorizarRol([1,2]);
     //monto, tasa, comentarios
     $idDet = $request->idDet;

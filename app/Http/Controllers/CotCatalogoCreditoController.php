@@ -147,6 +147,10 @@ class CotCatalogoCreditoController extends Controller
         }
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
+
+        if($inversionesDisponibles == []){
+            $bandera = 0;
+        }
         
         return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA'));
     }
@@ -226,10 +230,7 @@ class CotCatalogoCreditoController extends Controller
         }
         session(['inversionesDisponibles' => null]);
         
-        //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
-
-        // $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_credito')->
-        // where('nom_participante', '=', $parti)->get();
+       
 
         
         
