@@ -164,7 +164,7 @@
                         <tr>
                             <td scope="row">${{ $detalles->nombre_deudor }}</td>
                             <td scope="row">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-                            <td>{{ number_format($detalles->tasa_cot, 2, '.' ) }}%</td>
+                            <td>{{ $detalles->tasa_cot }}%</td>
                             <td>{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td>{{ $detalles->grupo_economico }}/{{$detalles->pais}}</td>
                             <td style="border-block-color: white">
@@ -181,7 +181,7 @@
                 <tr>
                     <th>-</th>
                     <th>${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
-                    <th>{{number_format($enc->tasa_ponderada, 2, '.' )}}</th>
+                    <th>{{number_format($enc->tasa_ponderada, 2)}}</th>
                     <th>-</th>
                     <th>-</th>
                     <th>Acción</th>

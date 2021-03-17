@@ -145,7 +145,7 @@
                             <td>{{$catalogos['id']}}</td>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
                             <td>${{ number_format($catalogos['NLP'], 2, '.', ',' ) }}</td>
-                            <td>{{ number_format($catalogos['tasa_credito']-1.5, 2, '.' )  }}%</td>
+                            <td>{{ $catalogos['tasa_credito']  }}%</td>
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}/{{$catalogos['pais']}}</td>
                         </tr>

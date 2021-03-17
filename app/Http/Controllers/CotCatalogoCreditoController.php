@@ -87,23 +87,23 @@ class CotCatalogoCreditoController extends Controller
                 ->get();*/
 
              //Llamamos los catalogos, en este caso, >= al monto   
-            if($mayorA!=null and $menorA !=null ){
-                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-                ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
-                ->orderby('NLP')
-                ->get();
-            } else if($mayorA != null and $menorA == null){
-                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-                ->orderby('NLP')
-                ->get();
-            } else if($menorA!=null and $mayorA==null){
-                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-                ->where('NLP', '<=', $menorA)
-                ->orderby('NLP')
-                ->get();
-            }else{
+            // if($mayorA!=null and $menorA !=null ){
+            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+            //     ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
+            //     ->orderby('NLP')
+            //     ->get();
+            // } else if($mayorA != null and $menorA == null){
+            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+            //     ->orderby('NLP')
+            //     ->get();
+            // } else if($menorA!=null and $mayorA==null){
+            //     $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+            //     ->where('NLP', '<=', $menorA)
+            //     ->orderby('NLP')
+            //     ->get();
+            // }else{
                 $catalogo = CotCatalogoCredito::all();
-            }
+            // }
             
 
             
@@ -111,11 +111,11 @@ class CotCatalogoCreditoController extends Controller
                 //$acumuladoInversion += $fila->NLP;
                 //if($acumuladoInversion <= ($monto*1.5)) {
                     $band = true;
-                    foreach($excluci as $ex){
-                        if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
-                             $band=false;
-                        }
-                    }
+                    // foreach($excluci as $ex){
+                    //     if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
+                    //          $band=false;
+                    //     }
+                    // }
 
                     if($band){
                         array_push($inversionesDisponibles, 
