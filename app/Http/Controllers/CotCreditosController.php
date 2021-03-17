@@ -13,6 +13,7 @@ use App\Mail\PropuestaMailable;
 use App\Models\VwSaldosXParticipacion;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use DateTime;
 
 
 
@@ -88,26 +89,38 @@ class CotCreditosController extends Controller
         ->groupBy('grupo_economico')
         ->get();
         $now = Carbon::now();
+
+
+
          //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
        
        
          $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
         ->where('nom_participante', '=', $enc->nombre_cotizacion)->get();
-        $tasaPortafoloio=0;
+        $tasaPortafolio=0;
         $diasPortafolio=0;
         $totalSaldo=0;
 
-        
 
+        //Calculo de días al vencimiento
+        
 
 
         foreach ($PortafolioParti as $porta){
           $totalSaldo += $porta->saldo;
          }
 
-        foreach($PortafolioParti as $porta){
-          $tasaPortafoloio += (($porta->tasa_interes*$porta->saldo)/$totalSaldo);
+         $fechaActual = new DateTime(date('Y-m-d'));
+        foreach($PortafolioParti as $porta){ 
+          $fecha = new DateTime($porta->fecha_vencimiento);
+          $diff = $fecha->diff($fechaActual);
+          $diff->days;
+
+          $tasaPortafolio += (($porta->tasa_interes*$porta->saldo)/$totalSaldo);
+          $diasPortafolio += (($diff->days*$porta->saldo)/$totalSaldo);
         }
+
+        //----------------------------
 
         $tablaPdf=[];
 
@@ -147,13 +160,13 @@ class CotCreditosController extends Controller
 
 
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafoloio'))->setPaper('letter', 'landscape');
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
 
-        Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
-            // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
-            $mail->to($correo);
-            $mail->attachData($pdf->output(), 'test.pdf');
-        });
+        // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
+        //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
+        //     $mail->to($correo);
+        //     $mail->attachData($pdf->output(), 'test.pdf');
+        // });
         
         return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
 

@@ -23,7 +23,7 @@
         }
 
 
-        .tabla, 
+        /* .tabla, 
         tr, 
         th{
             border-radius: 50%;
@@ -46,7 +46,27 @@
         td{
             border-top: 2px solid #0684fc;
             border-right: 2px solid #0684fc;
+        } */
+        .tabla,
+        th,
+        td,
+        tr {
+            
         }
+
+        .tabla,
+        td {
+            background-color: white;
+            color: black;
+        }
+
+        .tabla,
+        th {
+            background-color: #02163a;
+            color: white;
+            border-color: #02163a;
+        }
+        
         
         .margin{
             margin: 0%;
@@ -63,7 +83,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            height: 780px;
+            height: 750px;
             /* position: fixed; */
             
 
@@ -92,8 +112,9 @@
         <br>
         <br>
         
-        <img class="ima" height="150" width="500" src="{{ asset('assets/img/hencorp.jpeg') }}" alt="HOla mundo">
-        
+        <img  height="250" width="800" src="{{ asset('assets/img/hencorp.png') }}" alt="Hencorp">
+        <header class="titulo"><h2 style="margin-top: 50px">Contacto</h2></header>
+        <p style="color: #0684fc; font-family: sans-serif; font-size:20px">propuestas@hencorp.com</p>
     </section>
     <footer style="position: absolute; bottom: 0; background-color: #02163a;">
         <p style="text-align: center; color: azure">Informe generado {{date("Y-m-d")}}</p>
@@ -101,29 +122,30 @@
     
     <div class="page-break" style="margin-bottom: 2.5cm"></div><!--Termina la primera Pagina-->
     <div class="principal">
-        <table style="text-align:;" class="tabla">
+        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
+        <table style="font-family: Arial, Helvetica, sans-serif" class="tabla">
             <thead class="">
                 <tr>
-                    <th>Deudor</th>
-                    <th>Monto disponible hasta por</th>
-                    <th>Tasa %</th>
-                    <th>Vencimiento</th>
                     <th>Grupo</th>
-                    <th>Pais</th>
-                    <th>Concentración</th>
+                    <th>Deudor</th>
+                    <th>Monto disponible hasta por (US$)</th>
+                    <th>Rendimiento Promedio (%)</th>
+                    <th>Vencimiento</th> 
+                    <th>País</th>
+                    <th>Concentración actual en el  Grupo (%)</th>
                 </tr>
             </thead>
 
             <tbody>
                 @foreach ($tablaPdf as $tb)
                     <tr>
+                        <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
                         <td>{{ number_format($tb['tasa_cot'], 2, '.' )  }}%</td>
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
-                        <td>{{$tb['grupo_economico']}}</td>
                         <td>{{$tb['pais']}}</td>
-                        <td>{{$tb['concentracion']}}%</td>
+                        <td>{{number_format($tb['concentracion'], 2, '.' )}}%</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -131,10 +153,21 @@
     </div>
     <div>
         {{-- <img src="{{$chart->getUrl()}}" alt=""> --}}
-        <div><h1>{{$tasaPortafoloio}}</h1></div>
+        <table style="margin-right: 3cm; float: right; text-align:center;" class="tabla">
+            <tr>
+                <th>Total invertido (US$)</th>
+                <th>Rendimiento Promedio (%)</th>
+                <th>Plazo Promedio (Días)</th>
+            </tr>
+            <tr>
+                <td>${{number_format($totalSaldo, 2, '.' )}}</td>
+                <td><p>{{number_format($tasaPortafolio, 2, '.' )}}%</p></td>
+                <td><p>{{number_format($diasPortafolio, 2, '.' )}}</p></td>
+            </tr>
+        </table>
     </div>
     <footer style="position: absolute; bottom: 0;">
-        <p style="text-align: center;">Informe generado {{date("Y-m-d")}}</p>
+        <p style="text-align: right; margin-right: 3cm;">Informe generado {{date("Y-m-d")}}</p>
     </footer>
 </body>
 </html>
