@@ -218,6 +218,7 @@
                 },
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
+                "order": [[ 2, "desc" ]],
             });
 
             $('#participantes').select2();

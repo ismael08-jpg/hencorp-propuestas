@@ -38,6 +38,11 @@
         $('#idEnc').val(idEnc);
         $('#idDet').val(idDet);
         $('#modificar').modal();
+
+        $("#monto").attr({
+        "max" : monto,        
+        "min" : 0          
+        });
     }
 </script>
 
@@ -62,11 +67,11 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Monto Cotización</label>
-                        <input type="number" step="0.01" min="0" name="monto" class="form-control" id="monto">
+                        <input type="number" step="0.000000001" required min="0" name="monto" class="form-control" id="monto">
                     </div>
                     <div class="col-6">
                         <label>Tasa Cotización</label>
-                        <input type="number" step="0.01" min="0" name="tasa" id="tasa" class="form-control">
+                        <input type="number" step="0.000000001" required min="0" name="tasa" id="tasa" class="form-control">
                     </div>
                 </div>
                 <div class="row">
@@ -122,11 +127,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Tasa Ponderada</label>
-                        <input type="text"  class="numero" value="{{$enc->tasa_ponderada}}">
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->tasa_ponderada, 2, '.') }}">
                     </div>
                     <div class="col-md-6">
                         <label>Días Ponderados</label>
-                        <input type="text"  class="numero" value="{{$enc->dias_ponderados}}">
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->dias_ponderados, 2, '.')}}">
                     </div>
                 </div>
                 <div class="row">

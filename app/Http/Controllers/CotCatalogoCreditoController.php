@@ -8,6 +8,7 @@ use App\Models\CotCreditosEnc;
 use App\Models\Fecha;
 use App\Models\Participante;
 use App\Models\VwSaldosXParticipacion;
+use App\Models\VwSaldosXCredito;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -74,7 +75,7 @@ class CotCatalogoCreditoController extends Controller
             //Exclusi guarda los rupos economicos que debemos excluir del catalogo !important
             $excluci = [];
             foreach ($parametrosParticipantes as $parametro) {
-                if($parametro['saldo']>0.2){
+                if($parametro['saldo']>0.15){
                     array_push($excluci, 
                     [
                         'grupo_economico' => $parametro['grupo_economico']
@@ -82,27 +83,35 @@ class CotCatalogoCreditoController extends Controller
                 }
             }
 
+            //Orden del catalogo según los creditos y el grupo economico con mayor desponibilidad
+
+           
+
+
+
+
             /*$catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldoParti->saldo)*0.2 )
                 ->orderby('NLP')
                 ->get();*/
 
-             //Llamamos los catalogos, en este caso, >= al monto   
+             //Llamamos los catalogos, en este caso, >= al los filtros indicados en la vista 
             if($mayorA!=null and $menorA !=null ){
                 $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
                 ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
-                ->orderby('NLP')
+                ->orderby('NLP', 'desc')
                 ->get();
             } else if($mayorA != null and $menorA == null){
                 $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
                 ->orderby('NLP')
                 ->get();
             } else if($menorA!=null and $mayorA==null){
-                $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-                ->where('NLP', '<=', $menorA)
+                $catalogo = CotCatalogoCredito::where('NLP', '<=', $menorA)
                 ->orderby('NLP')
                 ->get();
             }else{
-                $catalogo = CotCatalogoCredito::all();
+                $catalogo = CotCatalogoCredito::where('tasa_credito', '>', 0)
+                ->orderBy('NLP')
+                ->get();
             }
             
 
@@ -161,11 +170,33 @@ class CotCatalogoCreditoController extends Controller
         $monto = $request->monto;
 
         if($request->filtrar!=null){
-            $validacion = $request->validate([
-                'mayorA' => 'required|numeric|min:0.01',
-                'menorA' => 'numeric|min:' . (is_numeric($request->mayorA) ? $request->mayorA + 0.01 : 0.01),
-                'parti' => 'required'
-            ]);
+            
+
+
+            if($request->mayorA!=null and $request->menorA!=null){
+                $validacion = $request->validate([
+                    'mayorA' => 'required|numeric|min:0.01',
+                    'menorA' => 'required|numeric|min:' . (is_numeric($request->mayorA) ? $request->mayorA + 0.01 : 0.01),
+                    'parti' => 'required'
+                ]);
+            }else if ($request->mayorA!=null and $request->menorA==null){
+                $validacion = $request->validate([
+                    
+                    'mayorA' => 'required|numeric|min:0.01',
+                    'parti' => 'required'
+                ]);
+            } else if($request->mayorA==null and $request->menorA!=null){//Esta bien!
+                $validacion = $request->validate([
+                    'menorA' => 'required|numeric|min:0.01',
+                    'parti' => 'required'
+                ]);
+            }
+
+
+
+
+
+
             $mayorA = $request->mayorA;
             $menorA = $request->menorA;
             return $this->index([$monto, $mayorA, $menorA, $parti]);
