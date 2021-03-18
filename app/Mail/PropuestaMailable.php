@@ -12,15 +12,18 @@ class PropuestaMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = "Hencorp - Nueva propuesta";
+    public $subject = 'Hencorp - Nueva propuesta';
+    public $enc = '';
+    public $pdf = '';
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($informacion, $pdf)
     {
-        //
+        $this->enc = $informacion;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -30,6 +33,9 @@ class PropuestaMailable extends Mailable
      */
     public function build()
     {
-        return $this->view('email.emailPropuesta');
+        return $this->view('email.emailPropuesta')
+                    ->attachData($this->pdf, 'Propuesta.pdf', [
+                        'mime' => 'application/pdf',
+                    ]);
     }
 }

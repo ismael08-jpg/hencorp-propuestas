@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\CotCatalogoCredito;
 use App\Models\CotCreditosDet;
 use App\Models\CotCreditosEnc;
@@ -167,8 +168,10 @@ class CotCreditosController extends Controller
         //     $mail->to($correo);
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
-        
-        return $pdf->setPaper('a4', 'landscape')->stream('prouesta.pdf');
+        set_time_limit(60000);
+        Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+        return 'Correo enviado';
+        //return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf');
 
         
     }

@@ -66,6 +66,10 @@ return [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),
         ],
+        
+        'sendgrid' => [
+            'transport' => 'sendgrid',
+        ],
 
         'array' => [
             'transport' => 'array',

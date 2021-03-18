@@ -138,10 +138,10 @@
                         <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
-                        <td>{{ number_format($tb['tasa_cot'], 2, '.' )  }}%</td>
+                        <td>{{ number_format($tb['tasa_cot'], 2, '.', ',' )  }}%</td>
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
-                        <td>{{number_format($tb['concentracion'], 2, '.' )}}%</td>
+                        <td>{{number_format($tb['concentracion'], 2, '.', ',' )}}%</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -156,9 +156,9 @@
                 <th>Plazo Promedio (Días)</th>
             </tr>
             <tr>
-                <td>${{number_format($totalSaldo, 2, '.' )}}</td>
-                <td><p>{{number_format($tasaPortafolio, 2, '.' )}}%</p></td>
-                <td><p>{{number_format($diasPortafolio, 2, '.' )}}</p></td>
+                <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
+                <td><p>{{number_format($tasaPortafolio, 2, '.', ',' )}}%</p></td>
+                <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
             </tr>
         </table>
     </div>
