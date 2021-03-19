@@ -165,6 +165,7 @@ class CotCatalogoCreditoController extends Controller
     }
 
     public function postIndex(Request $request) {
+        Auth::user()->autorizarRol([1,2]);
         
         $parti = $request->parti;
         $monto = $request->monto;
