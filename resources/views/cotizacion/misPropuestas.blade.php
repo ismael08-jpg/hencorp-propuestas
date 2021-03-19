@@ -72,8 +72,8 @@
                         <td>{{$enc->id_cotizacion}}</td>
                         <td>{{$enc->nombre_cotizacion}}</td>
                         <td>{{number_format($enc->monto_cot, 2, '.', ',' )}}</td>
-                        <td>{{number_format($enc->tasa_ponderada, 2, '.')}}</td>
-                        <td>{{number_format($enc->dias_ponderados, 2, '.' )}}</td>
+                        <td>{{number_format($enc->tasa_ponderada, 2, '.', ',')}}</td>
+                        <td>{{number_format($enc->dias_ponderados, 2, '.', ',' )}}</td>
                         <td>{{$enc->fecha_cot}}</td>
                         <td>{{ $enc->estado_cot }}</td>
                         <td><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}">ver</a></td>

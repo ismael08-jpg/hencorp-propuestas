@@ -173,10 +173,7 @@ class CotCreditosController extends Controller
         // });
         set_time_limit(60000);
         Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
-        return 'Correo enviado';
-        //return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf');
-
-        
+        return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
     }
 
   public function destroy(Request $request){
