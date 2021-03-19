@@ -93,9 +93,13 @@
         .principal{
             margin-top: 2.5cm;
             margin-left: 3cm;
-            margin-bottom: 2.5cm;
+            margin-bottom: 0.5cm;
             margin-right: 2.5cm;
 
+        }
+
+        .arial{
+            font-family: "Arial Bold";
         }
         
     </style>
@@ -119,7 +123,7 @@
     <div class="page-break" style="margin-bottom: 2.5cm"></div><!--Termina la primera Pagina-->
     <div class="principal">
         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
-        <table style="font-family: Arial, Helvetica, sans-serif" class="tabla">
+        <table style="" class="tabla arial">
             <thead class="">
                 <tr>
                     <th>Grupo</th>
@@ -149,7 +153,7 @@
     </div>
     <div>
         {{-- <img src="{{$chart->getUrl()}}" alt=""> --}}
-        <table style="margin-right: 3cm; float: right; text-align:center;" class="tabla">
+        <table style="margin-right: 2.5cm; float: right; text-align:center;" class="tabla arial">
             <tr>
                 <th>Total invertido (US$)</th>
                 <th>Rendimiento Promedio (%)</th>

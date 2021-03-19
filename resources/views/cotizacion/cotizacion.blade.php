@@ -145,7 +145,8 @@
                         <th scope="col">Monto</th>
                         <th scope="col">Tasa %</th>
                         <th scope="col">Fecha Vencimiento</th>
-                        <th>Grupo/país</th>
+                        <th>Grupo</th>
+                        <th>País</th>
                         <th>Accción</th>
                         
                     </tr>
@@ -155,11 +156,12 @@
                     @foreach ($det as $detalles)
                     
                         <tr>
-                            <td scope="row">${{ $detalles->nombre_deudor }}</td>
+                            <td scope="row">{{ $detalles->nombre_deudor }}</td>
                             <td scope="row">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
                             <td>{{ $detalles->tasa_cot }}%</td>
                             <td>{{ substr($detalles->fecha_cot, 0, -8) }}</td>
-                            <td>{{ $detalles->grupo_economico }}/{{$detalles->pais}}</td>
+                            <td>{{ $detalles->grupo_economico }}</td>
+                            <td>{{$detalles->pais}}</td>
                             <td style="border-block-color: white">
                                 <input type="image" class="rounded-pill" height="40" width="40" 
                                 src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}')"  />

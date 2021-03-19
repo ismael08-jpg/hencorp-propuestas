@@ -112,6 +112,7 @@ class CotCreditosController extends Controller
          }
 
          $fechaActual = new DateTime(date('Y-m-d'));
+         
         foreach($PortafolioParti as $porta){ 
           $fecha = new DateTime($porta->fecha_vencimiento);
           $diff = $fecha->diff($fechaActual);
@@ -120,6 +121,8 @@ class CotCreditosController extends Controller
           $tasaPortafolio += (($porta->tasa_interes*$porta->saldo)/$totalSaldo);
           $diasPortafolio += (($diff->days*$porta->saldo)/$totalSaldo);
         }
+
+        
 
         //----------------------------
 
