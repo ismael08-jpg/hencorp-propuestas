@@ -75,7 +75,12 @@
                         <td>{{number_format($enc->tasa_ponderada, 2, '.')}}</td>
                         <td>{{number_format($enc->dias_ponderados, 2, '.' )}}</td>
                         <td>{{$enc->fecha_cot}}</td>
-                        <td>{{ $enc->estado_cot }}</td>
+                        @if ($enc->estado_cot=="A")
+                            <td>Borrador</td>  
+                        @endif
+                        @if ($enc->estado_cot=="B")
+                            <td>Borrador</td>  
+                        @endif
                         <td><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}">ver</a></td>
                     </tr>
                 @endforeach
@@ -129,6 +134,7 @@
                 },
             'pageLength' : 15,
             'lengthMenu' : [15, 25, 40],
+            "order": [[ 0, "desc" ]],
         });
       
 
