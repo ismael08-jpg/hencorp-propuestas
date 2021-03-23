@@ -2,6 +2,34 @@
 
 @section('title', 'Propuesta')
 
+@section('styles')
+
+    <style>
+        .h{
+            background-color: #02163a;
+            color: white;
+            border: #02163a 2px solid;
+        }
+
+        .bl{
+            border-left: #02163a 2px solid;
+        }
+        .blr{
+            border-left: #02163a 2px solid;
+            border-right: #02163a 2px solid;;
+        }
+
+        .bb{
+            border-bottom:  #02163a 2px solid;
+        }
+
+        .tbh:hover{
+            background-color: rgb(226, 234, 248);
+        }
+    </style>
+    
+@endsection
+
 
 @section('content')
 <script>
@@ -38,6 +66,11 @@
         $('#idEnc').val(idEnc);
         $('#idDet').val(idDet);
         $('#modificar').modal();
+
+        $("#monto").attr({
+        "max" : monto,        
+        "min" : 0          
+        });
     }
 </script>
 
@@ -62,11 +95,11 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Monto Cotización</label>
-                        <input type="number" step="0.01" min="0" name="monto" class="form-control" id="monto">
+                        <input type="number" step="0.000000001" required min="0" name="monto" class="form-control" id="monto">
                     </div>
                     <div class="col-6">
                         <label>Tasa Cotización</label>
-                        <input type="number" step="0.01" min="0" name="tasa" id="tasa" class="form-control">
+                        <input type="number" step="0.000000001" required min="0" name="tasa" id="tasa" class="form-control">
                     </div>
                 </div>
                 <div class="row">
@@ -121,12 +154,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Tasa Ponderada</label>
-                        <input type="text"  class="numero" value="{{$enc->tasa_ponderada}}">
+                        <label>Rendimiento Promedio Ponderado (%)</label>
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->tasa_ponderada, 2, '.') }}">
                     </div>
                     <div class="col-md-6">
-                        <label>Días Ponderados</label>
-                        <input type="text"  class="numero" value="{{$enc->dias_ponderados}}">
+                        <label>Plazo Promedio Ponderado (Días)</label>
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->dias_ponderados, 2, '.')}}">
                     </div>
                 </div>
                 <div class="row">
@@ -138,48 +171,52 @@
             
 
             
-            <table style="text-align:center;" with="100%" class="w-100 table-hover" id="tabla-cot">
+            <table style="text-align:center;" with="100%" class="w-100" id="tabla-cot">
                 <thead class="">
                     <tr>
-                        <th scope="col">Deudor</th>
-                        <th scope="col">Monto</th>
-                        <th scope="col">Tasa %</th>
-                        <th scope="col">Fecha Vencimiento</th>
-                        <th>Grupo</th>
-                        <th>País</th>
-                        <th>Accción</th>
-                        
+                        <th class="h">Deudor</th>
+                        <th class="h">Monto</th>
+                        <th class="h">Rendimiento (%)</th>
+                        <th class="h">Fecha Vencimiento</th>
+                        <th class="h">Grupo</th>
+                        <th class="h">País</th>
+                        @if ($enc->estado_cot=="A")
+                            <th style="color: white">Accción</th>
+                        @endif
                     </tr>
                 </thead>
                 
                 <tbody>
                     @foreach ($det as $detalles)
                     
-                        <tr>
-                            <td scope="row">{{ $detalles->nombre_deudor }}</td>
-                            <td scope="row">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-                            <td>{{ $detalles->tasa_cot }}%</td>
-                            <td>{{ substr($detalles->fecha_cot, 0, -8) }}</td>
-                            <td>{{ $detalles->grupo_economico }}</td>
-                            <td>{{$detalles->pais}}</td>
-                            <td style="border-block-color: white">
-                                <input type="image" class="rounded-pill" height="40" width="40" 
-                                src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}')"  />
-                                <input type="image" class="rounded-pill" height="40" width="40" 
-                                src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
-                            </td>
+                        <tr class="tbh">
+                            <td class="bl">{{ $detalles->nombre_deudor }}</td>
+                            <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
+                            <td class="bl">{{ number_format($detalles->tasa_cot, 2, '.' ) }}%</td>
+                            <td class="bl">{{ substr($detalles->fecha_cot, 0, -8) }}</td>
+                            <td class="bl">{{ $detalles->grupo_economico }}</td>
+                            <td class="blr" >{{$detalles->pais}}</td>
+                            @if ($enc->estado_cot=="A")
+                                <td  style="border-block-color: white">
+                                    <input type="image" class="rounded-pill" height="40" width="40" 
+                                    src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}')"  />
+                                    <input type="image" class="rounded-pill" height="40" width="40" 
+                                    src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
+                                </td>
+                            @endif
                         </tr>
                     
                     @endforeach
                     
                 </tbody>
-                <tr>
-                    <th>-</th>
-                    <th>${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
-                    <th>{{number_format($enc->tasa_ponderada, 2)}}</th>
-                    <th>-</th>
-                    <th>-</th>
-                    <th>Acción</th>
+                <tr class="bb">
+                    <th class="h">-</th>
+                    <th class="h">${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
+                    <th class="h">{{number_format($enc->tasa_ponderada, 2)}}</th>
+                    <th class="h">-</th>
+                    <th class="h">-</th>
+                    <th class="h">-</th>
+                    
                     
                 </tr>
             </table>
@@ -210,6 +247,26 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tabla-cot').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Carteras",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Carteras",
+                    "infoFiltered": "(Filtrado de _MAX_ Total de Carteras)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Carteras",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
                 'pageLength' : 20,
                 'lengthMenu' : [20, 30, 45],
             });

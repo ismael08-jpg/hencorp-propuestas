@@ -20,8 +20,12 @@ class MisPropuestasController extends Controller
        
     
         $enc = CotCreditosEnc::where('usuario_cot', '=', $idUser)->get();
+
         
-        
-        return view('cotizacion.misPropuestas', compact('enc', $idUser));
+
+        $estado=[];
+        $conta=0;
+               
+        return view('cotizacion.misPropuestas', compact('enc', 'estado', $idUser));
       }
 }

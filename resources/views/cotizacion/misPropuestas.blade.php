@@ -10,12 +10,15 @@
             border-left: 0 ;
             border-radius: 7px;
             border-spacing: 0px;
+            
         }
         
         th{
             background-color: #02163a;
             color: white;
-            border-bottom: 2px solid #d88920
+            border-bottom: 2px solid #d88920;
+            text-align: center;
+            
         }
         th, td {
             padding: 5px 4px 6px 4px; 
@@ -23,10 +26,15 @@
             vertical-align: top;
             
             border-left: 2px solid #d88920;    
+            text-align: center;
         }
 
         td{
-            
+        
+        }
+
+        .enviado{
+            color: #d88920
         }
         
     </style>    
@@ -58,9 +66,9 @@
                     <th>N° Propuesta</th>
                     <th>Participante</th>
                     <th>Monto</th>
-                    <th>Tasa Ponderada</th>
-                    <th>Días Ponderados</th>
-                    <th>fecha</th>
+                    <th>Rendimiento Pormedio (%)</th>
+                    <th>Plazo Promedio (Días)</th>
+                    <th>Fecha</th>
                     <th>Estado</th>
                     <th>-</th>
                 </tr>
@@ -71,11 +79,16 @@
                     <tr>
                         <td>{{$enc->id_cotizacion}}</td>
                         <td>{{$enc->nombre_cotizacion}}</td>
-                        <td>{{number_format($enc->monto_cot, 2, '.', ',' )}}</td>
+                        <td>${{number_format($enc->monto_cot, 2, '.', ',' )}}</td>
                         <td>{{number_format($enc->tasa_ponderada, 2, '.', ',')}}</td>
                         <td>{{number_format($enc->dias_ponderados, 2, '.', ',' )}}</td>
-                        <td>{{$enc->fecha_cot}}</td>
-                        <td>{{ $enc->estado_cot }}</td>
+                        <td>{{$enc->fecha_cot->format('Y-m-d H:i A')}}</td>
+                        @if ($enc->estado_cot=="A")
+                            <td>Borrador</td>  
+                        @endif
+                        @if ($enc->estado_cot=="B")
+                            <td><strong class="enviado">Enviado</strong></td>  
+                        @endif
                         <td><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}">ver</a></td>
                     </tr>
                 @endforeach
@@ -110,12 +123,12 @@
             language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Propuestas",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Propuestas",
+                    "infoFiltered": "(Filtrado de _MAX_ Total de Propuestas)",
                     "infoPostFix": "",
                     "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "lengthMenu": "Mostrar _MENU_ Propuestas",
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
                     "search": "Buscar:",
@@ -129,6 +142,7 @@
                 },
             'pageLength' : 15,
             'lengthMenu' : [15, 25, 40],
+            "order": [[ 0, "desc" ]],
         });
       
 

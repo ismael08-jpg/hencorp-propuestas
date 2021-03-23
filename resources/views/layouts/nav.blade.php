@@ -4,7 +4,7 @@
     <div class="col-md-4">
         <center>
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/img/hencorp.jpeg') }}" width="200" height="" #02163a"
+                <img src="{{ asset('assets/img/hencorp-nav.png') }}" width="200" height="" #02163a"
                     class=" d-inline-block align-top" alt="">
             </a>
         </center>

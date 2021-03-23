@@ -10,6 +10,7 @@
         td,
         tr {
             border: 2px solid #0684fc;
+            text-align: center;
         }
 
         .tabla,
@@ -22,6 +23,7 @@
         th {
             background-color: #02163a;
             color: white;
+            
         }
     </style>   
 @endsection
@@ -118,7 +120,7 @@
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
                         <center>
-                            <button  class="filtrar" type="submit" name="filtrar" value="filter">Filtrar</button>
+                            <button  class="filtrar" id="fill" type="submit" name="filtrar" value="filter">Filtrar</button>
                         </center>
                     </div>
                     <div class="col-md-5"></div>
@@ -133,7 +135,7 @@
                         <th>ID</th>
                         <th scope="col">Deudor</th>
                         <th scope="col">Monto disponible hasta por</th>
-                        <th scope="col">Tasa %</th>
+                        <th scope="col">Rendimiento (%)</th>
                         <th scope="col">Vencimiento</th>
                         <th>Grupo</th>
                         <th>País</th>
@@ -146,7 +148,7 @@
                             <td>{{$catalogos['id']}}</td>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
                             <td>${{ number_format($catalogos['NLP'], 2, '.', ',' ) }}</td>
-                            <td>{{ $catalogos['tasa_credito']  }}%</td>
+                            <td>{{ number_format(($catalogos['tasa_credito']-1.5), 2, '.' )  }}%</td>
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
                             <td>{{$catalogos['pais']}}</td>
@@ -174,7 +176,7 @@
 
                                 $montoTotal = $saldoParti->saldo + $monto;
                         
-                                echo " <button class='btn btn-round btn-naranja  mb-5'  type='submit' name='save'>guardar</button>
+                                echo " <button class='btn btn-round btn-naranja  mb-5'  type='submit' name='save'>Guardar</button>
                                     <input type='hidden' class='numero' name='partiInput' value='$parti'>     
                                     <input type='hidden' name='montoTotal' value='$montoTotal'>
                                     <input type='hidden' name='montoInput' value='$monto'>
@@ -194,6 +196,8 @@
 
 @section('scripts')
     <script type="text/javascript">
+
+        
         $(document).ready(function() {
             $('#tabla-catalogo').DataTable({
                 language: {
@@ -218,6 +222,7 @@
                 },
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
+                "order": [[ 2, "desc" ]],
             });
 
             $('#participantes').select2();
