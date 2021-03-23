@@ -174,6 +174,7 @@
             <table style="text-align:center;" with="100%" class="w-100" id="tabla-cot">
                 <thead class="">
                     <tr>
+                        <th class="h">ID</th>
                         <th class="h">Deudor</th>
                         <th class="h">Monto</th>
                         <th class="h">Rendimiento (%)</th>
@@ -190,6 +191,7 @@
                     @foreach ($det as $detalles)
                     
                         <tr class="tbh">
+                            <td class="bl">{{$detalles->id_cotizacion}}</td>
                             <td class="bl">{{ $detalles->nombre_deudor }}</td>
                             <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
                             <td class="bl">{{ number_format($detalles->tasa_cot, 2, '.' ) }}%</td>
@@ -210,6 +212,7 @@
                     
                 </tbody>
                 <tr class="bb">
+                    <th class="h">-</th>
                     <th class="h">-</th>
                     <th class="h">${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
                     <th class="h">{{number_format($enc->tasa_ponderada, 2)}}</th>
