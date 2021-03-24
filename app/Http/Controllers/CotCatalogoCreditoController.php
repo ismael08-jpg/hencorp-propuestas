@@ -103,32 +103,31 @@ class CotCatalogoCreditoController extends Controller
                 ->get();
             } else if($mayorA != null and $menorA == null){
                 $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
-                ->orderby('NLP')
+                ->where('tasa_credito', '>', 0)
+                ->orderby('NLP', 'desc')
                 ->get();
             } else if($menorA!=null and $mayorA==null){
                 $catalogo = CotCatalogoCredito::where('NLP', '<=', $menorA)
-                ->orderby('NLP')
+                ->where('tasa_credito', '>', 0)
+                ->orderby('NLP', 'desc')
                 ->get();
             }else{
                 $catalogo = CotCatalogoCredito::where('tasa_credito', '>', 0)
-                ->orderBy('NLP')
+                ->orderBy('NLP', 'desc')
                 ->get();
             }
+            
+            
+            
+            //Llamamos al procedimiento almacenado que nos trae la tabla que define el orden de los catalogos
+            $orderTable = DB::select("call consultarOrdenCatalogo()", array());
             
 
             
             foreach($catalogo as $fila) {
-                //$acumuladoInversion += $fila->NLP;
-                //if($acumuladoInversion <= ($monto*1.5)) {
-                    $band = true;
-                    // foreach($excluci as $ex){
-                    //     if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
-                    //          $band=false;
-                    //     }
-                    // }
-
-                    if($band){
-                        array_push($inversionesDisponibles, 
+               
+                    
+                    array_push($inversionesDisponibles, 
                             [
                                 'id' => $fila->id_credito,
                                 'fecha_cartera' => $fila->fecha_cartera,
@@ -148,11 +147,11 @@ class CotCatalogoCreditoController extends Controller
                                 'des_linea_negocio' => $fila->des_linea_negocio,
                                 'ESTADO' => $fila->ESTADO,
                                 'pais' => $fila->pais
-                            ]);
-                    }
-                //}               
+                            ]); 
+                       
             }
 
+                
             
         }
         
