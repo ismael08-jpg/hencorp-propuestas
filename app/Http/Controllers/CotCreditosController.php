@@ -58,29 +58,6 @@ class CotCreditosController extends Controller
 
         $correo = $request->correo;
 
-        // Código que genera los gráficos
-
-        $chart = new QuickChart(array(
-            'width' => 500,
-            'height' => 300
-          ));
-          
-          $chart->setConfig('{
-            type: "bar",
-            "format": "png",
-            data: {
-              labels: ["Hello world", "Test"],
-              datasets: [{
-                label: "Foo",
-                data: [1, 2]
-              }]
-            }
-          }');
-
-        $data = [
-            'titulo' => 'Styde.net'
-        ];
-
         $saldoParti = VwSaldosXParticipacion::select(DB::raw('SUM(saldo) as saldo'))
         ->where('nom_participante', '=', $enc->nombre_cotizacion)
         ->first();
@@ -93,9 +70,7 @@ class CotCreditosController extends Controller
 
 
 
-         //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta
-       
-       
+         //Lllamamos a Saldos_X_participacion para obtener el potafolio del participante de la propuesta    
          $PortafolioParti = VwSaldosXParticipacion::select('saldo', 'tasa_interes', 'fecha_vencimiento')
         ->where('nom_participante', '=', $enc->nombre_cotizacion)->get();
         $tasaPortafolio=0;
@@ -104,8 +79,6 @@ class CotCreditosController extends Controller
 
 
         //Calculo de días al vencimiento
-        
-
 
         foreach ($PortafolioParti as $porta){
           $totalSaldo += $porta->saldo;
@@ -164,15 +137,15 @@ class CotCreditosController extends Controller
 
 
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'chart', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
 
         // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
         //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
         //     $mail->to($correo);
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
-        set_time_limit(60000);
-        Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+        ///set_time_limit(60000);
+        ///Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
         return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
     }
 

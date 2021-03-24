@@ -98,31 +98,25 @@
 
         }
 
-        .arial{
-            font-family: "Arial Bold";
+        .arial{font-family:  "Arial Black", "Arial Bold", sans-serif; font-size: 12px;  
+            
         }
         
     </style>
 </head>
 <body>
     <section class="fondo">
-        <br>
-        <header class="titulo"><h2 style="margin-top: 70px">{{$enc->nombre_cotizacion}}</h2></header>
-        <br>
-        <br>
-        <br>
-        
-        <img  height="250" width="800" src="{{ asset('assets/img/hencorp.png') }}" alt="Hencorp">
-        <header class="titulo"><h2 style="margin-top: 50px">Contacto</h2></header>
-        <p style="color: #0684fc; font-family: sans-serif; font-size:20px">propuestas@hencorp.com</p>
+        <img  height="200" width="750" style="margin-top: 100px" src="{{ asset('assets/img/hencorp-nav.png') }}" alt="Hencorp">
+        <header class="titulo arial"><h2 style="margin-top: 70px">Contacto</h2></header>
+        <p class="arial" style="color: #0684fc; font-size:20px">Correo: propuestas@hencorp.com</p>
     </section>
-    <footer style="position: absolute; bottom: 0; background-color: #02163a;">
-        <p style="text-align: center; color: azure">Informe generado {{date("Y-m-d")}}</p>
+    <footer  style="position: absolute; bottom: 0; background-color: #02163a;">
+        <p class="arial" style="text-align: center; color: azure; font-size: 20px">Informe generado {{date("Y-m-d")}}</p>
     </footer>
     
     <div class="page-break" style="margin-bottom: 2.5cm"></div><!--Termina la primera Pagina-->
     <div class="principal">
-        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
+        <p class="arial" style=" font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
         <table style="" class="tabla arial">
             <thead class="">
                 <tr>

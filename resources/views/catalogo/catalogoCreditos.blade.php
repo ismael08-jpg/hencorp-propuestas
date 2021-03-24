@@ -196,7 +196,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-
+    const botonFiltar = document.querySelector("#fill");
+    botonFiltar.addEventListener("click", () =>{
+        
+    });
         
         $(document).ready(function() {
             $('#tabla-catalogo').DataTable({
