@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CotCatalogoCredito;
 use App\Models\CotCreditosDet;
 use App\Models\CotCreditosEnc;
+use App\Models\ActivosNoDisponible;
 use App\Models\Fecha;
 use App\Models\Participante;
 use App\Models\VwSaldosXParticipacion;
@@ -26,12 +27,13 @@ class CotCatalogoCreditoController extends Controller
         
         
         $participante = DB::table('participante')->distinct()->select('nom_participante')->orderBy('nom_participante', 'ASC')->get();    
-        
+        $noDisponibles = ActivosNoDisponible::all();//Deudorres no disponibles
         $mayorA = '';
         $menorA = '';
         $parti = '';
         $monto = '';
         $inversionesDisponibles = [];
+        
         $bandera = 0;
         $saldoParti = 0.0;
         
@@ -87,33 +89,59 @@ class CotCatalogoCreditoController extends Controller
 
            
 
-
-
-
-            /*$catalogo = CotCatalogoCredito::where('NLP', '>', ($monto+$saldoParti->saldo)*0.2 )
-                ->orderby('NLP')
-                ->get();*/
-
              //Llamamos los catalogos, en este caso, >= al los filtros indicados en la vista 
 
             if($mayorA!=null and $menorA !=null ){
                 $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
                 ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
-                ->orderby('NLP', 'desc')
+                ->orderby('grupo_economico')
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
+                ->get();
+
+                $catalogoSobra = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('NLP', '<=', $menorA)->where('tasa_credito', '>', 0)
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
                 ->get();
             } else if($mayorA != null and $menorA == null){
                 $catalogo = CotCatalogoCredito::where('NLP', '>=', $mayorA)
                 ->where('tasa_credito', '>', 0)
-                ->orderby('NLP', 'desc')
+                ->orderby('grupo_economico')
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
+                ->get();
+
+                $catalogoSobra = CotCatalogoCredito::where('NLP', '>=', $mayorA)
+                ->where('tasa_credito', '>', 0)
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
                 ->get();
             } else if($menorA!=null and $mayorA==null){
                 $catalogo = CotCatalogoCredito::where('NLP', '<=', $menorA)
+                ->orderby('grupo_economico', 'desc')
                 ->where('tasa_credito', '>', 0)
-                ->orderby('NLP', 'desc')
+                ->orderby('grupo_economico')
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
+                ->get();
+
+                $catalogoSobra = CotCatalogoCredito::where('NLP', '<=', $menorA)
+                ->orderby('grupo_economico', 'desc')
+                ->where('tasa_credito', '>', 0)
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
                 ->get();
             }else{
                 $catalogo = CotCatalogoCredito::where('tasa_credito', '>', 0)
+                ->orderby('grupo_economico')
                 ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
+                ->get();
+
+                $catalogoSobra = CotCatalogoCredito::where('tasa_credito', '>', 0)
+                ->orderBy('NLP', 'desc')
+                ->orderby('tasa_credito', 'desc')
                 ->get();
             }
             
@@ -124,10 +152,86 @@ class CotCatalogoCreditoController extends Controller
             
 
             
-            foreach($catalogo as $fila) {
-               
+            foreach($orderTable as $or) {   
+                foreach($catalogo as $fila){
+
+                    $band = true;
+                    //Exclusiones de grupos económicos °:::::::::::::::::°
+                    foreach($excluci as $ex){
+                        if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
+                             $band=false;
+                        }
+                    }
+
+                    foreach($noDisponibles as $no){
+                        if(strtoupper(trim($no->deudor)) == strtoupper(trim($fila->nombre_deudor))){
+                            $band=false;
+                        }
+                    }
+
+                    if($band){
                     
-                    array_push($inversionesDisponibles, 
+                        
+                        if($or->grupo_economico == $fila->grupo_economico){
+                            array_push($inversionesDisponibles, 
+                                [
+                                    'id' => $fila->id_credito,
+                                    'fecha_cartera' => $fila->fecha_cartera,
+                                    'id_credito' => $fila->id_credito,
+                                    'nombre_deudor' => $fila->nombre_deudor,
+                                    'grupo_economico' => $fila->grupo_economico,
+                                    'cant_participaciones' => $fila->cant_participaciones,
+                                    'saldo_principal' => $fila->saldo_principal,
+                                    'tasa_credito' => $fila->tasa_credito,
+                                    'porc_saldo_principal' => $fila->porc_saldo_principal,
+                                    'NLP' => $fila->NLP,
+                                    'costo_ponderado' => $fila->costo_ponderado,
+                                    'fecha_apertura' => $fila->fecha_apertura,
+                                    'fecha_vencimiento' => $fila->fecha_vencimiento,
+                                    'dias_inventario' => $fila->dias_inventario,
+                                    'dias_al_vencimiento' => $fila->dias_al_vencimiento,
+                                    'des_linea_negocio' => $fila->des_linea_negocio,
+                                    'ESTADO' => $fila->ESTADO,
+                                    'pais' => $fila->pais
+                                ]); 
+                        }
+                    }
+                }           
+            }
+
+           
+
+
+            foreach($catalogoSobra as $fila) {   
+                
+
+                    $band = true;
+                    //Exclusiones de grupos económicos °:::::::::::::::::°
+                    foreach($excluci as $ex){
+                        if(strtoupper(trim($fila->grupo_economico)) == strtoupper(trim($ex['grupo_economico']))){
+                             $band=false;
+                        }
+                    }
+
+                    foreach($orderTable as $or){
+                            
+                        if($or->grupo_economico == $fila->grupo_economico){
+                            $band=false;
+                        }
+                    }
+
+                    foreach($noDisponibles as $no){
+                        if($no->deudor == $fila->nombre_deudor){
+                            $band=false;
+                        }
+                    }
+                  
+                    
+
+                    if($band){
+                    
+
+                        array_push($inversionesDisponibles, 
                             [
                                 'id' => $fila->id_credito,
                                 'fecha_cartera' => $fila->fecha_cartera,
@@ -148,8 +252,13 @@ class CotCatalogoCreditoController extends Controller
                                 'ESTADO' => $fila->ESTADO,
                                 'pais' => $fila->pais
                             ]); 
+                        
+                    }
                        
             }
+
+
+             
 
                 
             

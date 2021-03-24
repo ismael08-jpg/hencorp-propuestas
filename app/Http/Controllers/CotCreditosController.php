@@ -21,8 +21,7 @@ use DateTime;
 
 class CotCreditosController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');   
     }
 
@@ -145,7 +144,7 @@ class CotCreditosController extends Controller
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
         ///set_time_limit(60000);
-        ///Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+        Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
         return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
     }
 

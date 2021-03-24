@@ -148,7 +148,11 @@
                             <td>{{$catalogos['id']}}</td>
                             <td scope="row">{{ $catalogos['nombre_deudor'] }}</td>
                             <td>${{ number_format($catalogos['NLP'], 2, '.', ',' ) }}</td>
-                            <td>{{ number_format(($catalogos['tasa_credito']-1.5), 2, '.' )  }}%</td>
+                            @if ($catalogos['tasa_credito']>0 and $catalogos['tasa_credito']<=1.5)
+                                <td>0%</td>
+                            @else
+                                <td>{{ number_format(($catalogos['tasa_credito']-1.5), 2, '.' )  }}%</td>
+                            @endif
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
                             <td>{{$catalogos['pais']}}</td>
@@ -225,7 +229,7 @@
                 },
                 'pageLength' : 15,
                 'lengthMenu' : [15, 25, 40],
-                //"order": [[ 2, "desc" ]],
+                "ordering": false
             });
 
             $('#participantes').select2();
