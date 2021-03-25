@@ -14,7 +14,8 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!--Select2 CSS-->
     <link href="{{asset('assets/select2/dist/css/select2.css')}}" rel="stylesheet" />
-    
+    <link href="{{asset('assets/css/toasty.css')}}" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.css"/>
     <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
     
@@ -40,7 +41,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
-    
+    <script src="{{asset('assets/js/toasty.js')}}"></script>
+    <script>
+        var toast = new Toasty();
+
+        // this show an informational message:
+        toast.info("Here is some information!");
+    </script>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
