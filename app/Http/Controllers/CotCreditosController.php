@@ -129,6 +129,7 @@ class CotCreditosController extends Controller
               'fecha_cot' => $det->fecha_cot,
               'comentarios' => $det->comentarios,
               'pais' => $det->pais,
+              'industria' => $det->industria,
               'concentracion' => $valor
               
           ]);
@@ -144,7 +145,7 @@ class CotCreditosController extends Controller
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
         ///set_time_limit(60000);
-        Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+        //Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
         return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
     }
 
@@ -194,12 +195,14 @@ class CotCreditosController extends Controller
     $idEnc = $request->idEnc;
     $monto = $request->monto;
     $tasa = $request->tasa;
+    $industria = $request->industria;
     $comentarios = $request->comentarios;
 
     $detalle = CotCreditosDet::find($idDet);
     $detalle->monto_cot = $monto;
     $detalle->tasa_cot = $tasa;
     $detalle->comentarios = $comentarios;
+    $detalle->industria = $industria;
     $detalle->save();
 
     //Recalculamos La tasa ponderada y los días ponderados.

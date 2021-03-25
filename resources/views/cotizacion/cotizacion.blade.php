@@ -53,7 +53,7 @@
     }
 
 
-    function editar(idEnc, idDet, monto, tasa, comentarios){
+    function editar(idEnc, idDet, monto, tasa, comentarios, industria){
         $('#monto').val('');
         $('#tasa').val('');
         $('#comentarios').val('');
@@ -61,6 +61,7 @@
         $('#idDet').val('');
 
         $('#monto').val(monto);
+        $('#industria').val(industria);
         $('#tasa').val(tasa);
         $('#comentarios').val(comentarios);
         $('#idEnc').val(idEnc);
@@ -100,6 +101,12 @@
                     <div class="col-6">
                         <label>Tasa Cotización</label>
                         <input type="number" step="0.000000001" required min="0" name="tasa" id="tasa" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label>Industria</label>
+                        <input type="text" name="industria" class="form-control" id="industria">
                     </div>
                 </div>
                 <div class="row">
@@ -181,6 +188,7 @@
                         <th class="h">Fecha Vencimiento</th>
                         <th class="h">Grupo</th>
                         <th class="h">País</th>
+                        <th class="h">Industria</th>
                         @if ($enc->estado_cot=="A")
                             <th style="color: white">Accción</th>
                         @endif
@@ -194,14 +202,15 @@
                             <td class="bl">{{$detalles->id_cotizacion}}</td>
                             <td class="bl">{{ $detalles->nombre_deudor }}</td>
                             <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-                            <td class="bl">{{ number_format($detalles->tasa_cot, 2, '.' ) }}%</td>
+                            <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.' ) }}%</td>
                             <td class="bl">{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td class="bl">{{ $detalles->grupo_economico }}</td>
-                            <td class="blr" >{{$detalles->pais}}</td>
+                            <td class="bl" >{{$detalles->pais}}</td>
+                            <td class="blr" >{{$detalles->industria}}</td>
                             @if ($enc->estado_cot=="A")
                                 <td  style="border-block-color: white">
                                     <input type="image" class="rounded-pill" height="40" width="40" 
-                                    src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}')"  />
+                                    src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}', '{{$detalles->industria}}')"  />
                                     <input type="image" class="rounded-pill" height="40" width="40" 
                                     src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
                                 </td>
@@ -216,6 +225,7 @@
                     <th class="h">-</th>
                     <th class="h">${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
                     <th class="h">{{number_format($enc->tasa_ponderada, 2)}}</th>
+                    <th class="h">-</th>
                     <th class="h">-</th>
                     <th class="h">-</th>
                     <th class="h">-</th>
@@ -236,12 +246,18 @@
                     </form>
                     <a href="{{route('cotizacion.mostrar', $enc)}}" class="btn mb-5 btn-round btn-naranja mt-2" name="btnPropuesta">Enviar</a>
                     <br>
-                    <a href="{{route('propuestas.index')}}" class="btn mb-5 btn-round btn-azul mt-2" name="btnPropuesta">Mis propuestas</a>
+                    <a href="{{route('propuestas.index')}}" class="btn mb-2 btn-round btn-griz  mt-2" name="btnPropuesta">Mis propuestas</a>
+                    <br>
+                    <a href="{{route('catalogo-creditos.index')}}" class="btn mb-5 btn-round btn-azul-oscuro " name="btnPropuesta">Nueva Propuesta</a>
                 </div>
             </div>
         
         </div>
         
+    </div>
+
+    <div class="row justify-content-center p-4" style="color:#fff">
+        <span>&copy <span id="cr-year"></span> AS Analytics. Todos los derechos reservados.</span>
     </div>
 
 @endsection
@@ -272,6 +288,7 @@
                 },
                 'pageLength' : 20,
                 'lengthMenu' : [20, 30, 45],
+                "ordering": false,
             });
 
             

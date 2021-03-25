@@ -132,6 +132,7 @@ class CotCatalogoCreditoController extends Controller
                 ->orderBy('NLP', 'desc')
                 ->orderby('tasa_credito', 'desc')
                 ->get();
+
             }else{
                 $catalogo = CotCatalogoCredito::where('tasa_credito', '>', 0)
                 ->orderby('grupo_economico')
@@ -192,7 +193,8 @@ class CotCatalogoCreditoController extends Controller
                                     'dias_al_vencimiento' => $fila->dias_al_vencimiento,
                                     'des_linea_negocio' => $fila->des_linea_negocio,
                                     'ESTADO' => $fila->ESTADO,
-                                    'pais' => $fila->pais
+                                    'pais' => $fila->pais,
+                                    'industria' => $fila->industria
                                 ]); 
                         }
                     }
@@ -250,7 +252,8 @@ class CotCatalogoCreditoController extends Controller
                                 'dias_al_vencimiento' => $fila->dias_al_vencimiento,
                                 'des_linea_negocio' => $fila->des_linea_negocio,
                                 'ESTADO' => $fila->ESTADO,
-                                'pais' => $fila->pais
+                                'pais' => $fila->pais,
+                                'industria' => $fila->industria
                             ]); 
                         
                     }
@@ -359,6 +362,7 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
                 $detalle->nombre_deudor = $inversion['nombre_deudor'];
                 $detalle->pais = $inversion['pais'];
+                $detalle->industria = $inversion['industria'];
                 $detalle->save();
                 $calcuDiasPonderados += (($inversion['dias_inventario']*$inversion['NLP'])/$totalNLP);
                 $calcuTasaPonderada += (($inversion['tasa_credito']*$inversion['NLP'])/$totalNLP);
@@ -376,11 +380,7 @@ class CotCatalogoCreditoController extends Controller
         
         
         $id=$encabezado->id_cotizacion;
-        //return view('cotizacion.cotizacion', compact('enc', 'det'));
         return redirect()->route('cotizacion.index', ['id' => $id]);
-        //return $PortafolioParti;
-        
-
     }
 
     

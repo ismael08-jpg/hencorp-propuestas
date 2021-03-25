@@ -126,6 +126,7 @@
                     <th>Rendimiento Promedio (%)</th>
                     <th>Vencimiento</th> 
                     <th>País</th>
+                    <th>Industria</th>
                     <th>Concentración actual en el  Grupo (%)</th>
                 </tr>
             </thead>
@@ -139,6 +140,7 @@
                         <td>{{ number_format($tb['tasa_cot'], 2, '.', ',' )  }}%</td>
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
+                        <td>{{$tb['industria']}}</td>
                         <td>{{number_format($tb['concentracion'], 2, '.', ',' )}}%</td>
                     </tr>
                 @endforeach

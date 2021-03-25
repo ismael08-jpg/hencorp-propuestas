@@ -105,10 +105,14 @@
                     <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
                 </form>
                 
-                <a href="{{route('catalogo-creditos.index')}}" class="btn mb-5 btn-round btn-azul mt-2" name="btnPropuesta">Nueva Propuesta</a>
+                <a href="{{route('catalogo-creditos.index')}}" class="btn mb-5 btn-round btn-azul-oscuro mt-2" name="btnPropuesta">Nueva Propuesta</a>
             </div>
         </div>
     </div>
+</div>
+
+<div class="row justify-content-center p-4" style="color:#fff">
+    <span>&copy <span id="cr-year"></span> AS Analytics. Todos los derechos reservados.</span>
 </div>
 
 @endsection

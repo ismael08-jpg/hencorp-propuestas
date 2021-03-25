@@ -139,6 +139,7 @@
                         <th scope="col">Vencimiento</th>
                         <th>Grupo</th>
                         <th>País</th>
+                        <th>Industria</th>
                     </tr>
                 </thead>
 
@@ -156,6 +157,7 @@
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
                             <td>{{$catalogos['pais']}}</td>
+                            <td>{{$catalogos['industria']}}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -169,7 +171,7 @@
                         @csrf
                         <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
                     </form>
-                    <a href="{{route('propuestas.index')}}" class="btn mb-3 btn-round btn-azul mt-2" name="btnPropuesta">Mis propuestas</a>
+                    <a href="{{route('propuestas.index')}}" class="btn mb-3 btn-round btn-griz mt-2" name="btnPropuesta">Mis propuestas</a>
                     <form action="{{ route('catalogo-creditos.post') }}" method="POST" >
                         @csrf
                         <?php 
@@ -196,6 +198,9 @@
         </div>
     </div>
 
+    <div class="row justify-content-center p-4" style="color:#fff">
+        <span>&copy <span id="cr-year"></span> AS Analytics. Todos los derechos reservados.</span>
+    </div>
 @endsection
 
 @section('scripts')
@@ -211,7 +216,7 @@
                     "decimal": "",
                     "emptyTable": "No hay información",
                     "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Carteras",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Carteras",
                     "infoFiltered": "(Filtrado de _MAX_ total entradas)",
                     "infoPostFix": "",
                     "thousands": ",",

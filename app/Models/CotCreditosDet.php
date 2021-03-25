@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $fecha_cot
  * @property string|null $comentarios
  * @property string|null $pais
+ * @property string|null $industria
  * 
  * @property CotCreditosEnc $cot_creditos_enc
  *
@@ -29,15 +30,18 @@ class CotCreditosDet extends Model
 {
 	protected $table = 'cot_creditos_det';
 	protected $primaryKey = 'id_cotizacion';
+	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
+		'id_cotizacion' => 'int',
 		'id_credito' => 'int',
 		'monto_cot' => 'float',
 		'tasa_cot' => 'float'
 	];
 
 	protected $fillable = [
+		'id_cotizacion',
 		'id_credito',
 		'nombre_deudor',
 		'grupo_economico',
@@ -45,7 +49,8 @@ class CotCreditosDet extends Model
 		'tasa_cot',
 		'fecha_cot',
 		'comentarios',
-		'pais'
+		'pais',
+		'industria'
 	];
 
 	public function cot_creditos_enc()

@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $des_linea_negocio
  * @property string $ESTADO
  * @property string|null $pais
+ * @property string|null $industria
  *
  * @package App\Models
  */
@@ -73,6 +74,7 @@ class CotCatalogoCredito extends Model
 		'dias_al_vencimiento',
 		'des_linea_negocio',
 		'ESTADO',
-		'pais'
+		'pais',
+		'industria'
 	];
 }

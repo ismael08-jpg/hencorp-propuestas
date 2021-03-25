@@ -139,6 +139,34 @@
     font-weight: bold;
 }
 
+.btn-azul-oscuro {
+    background-color: #02163a !important;
+    color: #fff !important;
+    transition: all 300ms ease-in;
+    width: 150px;
+}
+
+.btn-azul-oscuro:hover {
+    background-color: #043183 !important;
+    color: #fff !important;
+    transition: all 300ms ease-in;
+    width: 150px;
+}
+
+.btn-griz {
+    background-color: #606060 !important;
+    color: #fff!important;
+    transition: all 300ms ease-in;
+    width: 150px;
+}
+
+.btn-griz:hover {
+    background-color: #b7b7b7 !important;
+    color: #fff!important;
+    transition: all 300ms ease-in;
+    width: 150px;
+}
+
 .linea {
     width: 35%;
     height: 2px;
