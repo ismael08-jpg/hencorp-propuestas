@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="margin">
+<html lang="es" style="margin:0">
 <head>
     
     <meta charset="UTF-8">
@@ -9,7 +9,9 @@
     
     <style>
         .page-break {
+            
             page-break-after: always;
+           
         }
         .titulo{
             justify-content: center;
@@ -50,6 +52,8 @@
             
         }
 
+       
+
         .tabla,
         td {
             background-color: white;
@@ -62,6 +66,9 @@
             color: white;
             border-color: #02163a;
         }
+        table{
+            text-align: center;
+        }
         
         
         .margin{
@@ -70,19 +77,19 @@
         
 
         .fondo{
-            top: 0cm;
-            left: 0cm;
-            right: 0cm;
-            
-            
+
             background-color: #02163a;
             justify-content: center;
             align-items: center;
             text-align: center;
             height: 750px;
-            /* position: fixed; */
-            
+        }
 
+       
+        
+
+        td{
+            height: 30px;
         }
 
         .ima{
@@ -91,30 +98,40 @@
         }
 
         .principal{
-            margin-top: 2.5cm;
-            margin-left: 3cm;
-            margin-bottom: 0.5cm;
-            margin-right: 2.5cm;
+           
 
         }
 
         .arial{font-family:  "Arial Black", "Arial Bold", sans-serif; font-size: 12px;  
             
         }
+
+        .margin-page{
+            margin-top:2.5cm;
+            margin-bottom: 2.5cm;
+            margin-left: 3cm;
+           margin-right: 2.5cm;
+        }
+
+        .pie{
+            
+            
+           
+        }
         
     </style>
 </head>
-<body>
-    <section class="fondo">
+<body class="fondo">
+    
         <img  height="200" width="750" style="margin-top: 100px" src="{{ asset('assets/img/hencorp-nav.png') }}" alt="Hencorp">
         <header class="titulo arial"><h2 style="margin-top: 70px">Contacto</h2></header>
-        <p class="arial" style="color: #0684fc; font-size:20px">{{$contacto}}</p>
-    </section>
+        <p class="arial" style="color: #0684fc; font-size:20px">Correo: {{$contacto}}</p>
+    
     <footer  style="position: absolute; bottom: 0; background-color: #02163a;">
         <p class="arial" style="text-align: center; color: azure; font-size: 20px">Informe generado {{date("Y-m-d")}}</p>
     </footer>
-    
-    <div class="page-break" style="margin-bottom: 2.5cm"></div><!--Termina la primera Pagina-->
+</body>
+<body  class="margin-page">
     <div class="principal">
         <p class="arial" style=" font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
         <table style="" class="tabla arial">
@@ -147,22 +164,22 @@
             </tbody>
         </table>
     </div>
-    <div>
-        {{-- <img src="{{$chart->getUrl()}}" alt=""> --}}
-        <table style="margin-right: 2.5cm; float: right; text-align:center;" class="tabla arial">
-            <tr>
-                <th>Total invertido (US$)</th>
-                <th>Rendimiento Promedio (%)</th>
-                <th>Plazo Promedio (Días)</th>
-            </tr>
-            <tr>
-                <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
-                <td><p>{{number_format(($tasaPortafolio*100), 2, '.', ',' )}}%</p></td>
-                <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
-            </tr>
-        </table>
-    </div>
-    <footer style="position: absolute; bottom: 0;">
+    
+   
+    <table style=" margin-top: 25px; float: right; text-align:center;" class="tabla arial">
+        <tr>
+            <th>Total invertido (US$)</th>
+            <th>Rendimiento Promedio (%)</th>
+            <th>Plazo Promedio (Días)</th>
+        </tr>
+        <tr>
+            <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
+            <td><p>{{number_format(($tasaPortafolio*100), 2, '.', ',' )}}%</p></td>
+            <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
+        </tr>
+    </table>
+    
+    <footer class="pie" style="position: absolute; bottom: 0;">
         <p style="text-align: right; margin-right: 3cm;">Informe generado {{date("Y-m-d")}}</p>
     </footer>
 </body>
