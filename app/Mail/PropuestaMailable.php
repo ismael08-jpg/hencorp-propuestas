@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 use SplSubject;
 
 class PropuestaMailable extends Mailable
@@ -33,7 +34,7 @@ class PropuestaMailable extends Mailable
      */
     public function build()
     {
-        return $this->view('email.emailPropuesta')
+        return $this->from(Auth::user()->email)->view('email.emailPropuesta')
                     ->attachData($this->pdf, 'Propuesta.pdf', [
                         'mime' => 'application/pdf',
                     ]);

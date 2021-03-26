@@ -25,10 +25,18 @@
             color: white;
             
         }
-    </style>   
+    </style>
+    
 @endsection
 
 @section('content')
+
+ 
+        
+    
+
+
+
     <div class="row">
         <div class="col-12">
         </div>
@@ -204,7 +212,18 @@
 @endsection
 
 @section('scripts')
+
+    @if ($bandera==1)
+        <script type="text/javascript">
+            var toast = new Toasty();
+
+            toast.success("Propuesta generada con éxito");
+        </script>
+    @endif
+
     <script type="text/javascript">
+    
+
     const botonFiltar = document.querySelector("#fill");
     botonFiltar.addEventListener("click", () =>{
         

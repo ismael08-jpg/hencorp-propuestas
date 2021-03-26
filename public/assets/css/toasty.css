@@ -32,7 +32,7 @@
     padding: 16px;
     border: 1px solid;
     margin: 0.5em 0em;
-    border-left: 6px solid transparent;
+    border-left: 20px solid transparent;
     border-radius: 2px;
     pointer-events: none;
     -webkit-transition: all 0.32s ease-in-out;
@@ -114,7 +114,7 @@
 /* TRANSITION 01 - a [fade] transition (DEFAULT TRANSITION): */
 .toast-container--fade {
      right: 0;
-    bottom: 0;
+    bottom: 100;
 }
 .toast-container--fade .toast-wrapper { display: inline-block; }
 .toast.fade-init { opacity: 0; }

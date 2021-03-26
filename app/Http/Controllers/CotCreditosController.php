@@ -144,8 +144,8 @@ class CotCreditosController extends Controller
         //     $mail->to($correo);
         //     $mail->attachData($pdf->output(), 'test.pdf');
         // });
-        ///set_time_limit(60000);
-        //Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+        set_time_limit(60000);
+        Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
         return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
     }
 
