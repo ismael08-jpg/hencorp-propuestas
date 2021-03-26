@@ -26,6 +26,7 @@ class CotCreditosController extends Controller
     }
 
     public function index($id){
+        $band=0;
         Auth::user()->autorizarRol([1,2]);
 
         
@@ -36,7 +37,7 @@ class CotCreditosController extends Controller
           $sumMonto = CotCreditosDet::select(DB::raw('SUM(monto_cot) as monto'))
           ->where('id_credito', '=', $id)
           ->first();
-          return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto'));
+          return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto', 'band'));
         }else{
           return redirect()->route('catalogo-creditos.index');
         }
@@ -97,7 +98,7 @@ class CotCreditosController extends Controller
         
 
         //----------------------------
-
+        $contacto =  Auth::user()->email;
         $tablaPdf=[];
 
         foreach($porce as $por){
@@ -137,7 +138,7 @@ class CotCreditosController extends Controller
 
 
 
-        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
+        $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'contacto', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
 
         // Mail::send('email.emailPropuesta', compact('enc'), function ($mail) use ($correo, $pdf) {
         //     // $mail->from('ismaelcastillo@analyticsas.com', 'Ismael Castillo');
@@ -184,9 +185,11 @@ class CotCreditosController extends Controller
   }
 
   public function update(Request $request){
+    $band=0;
     $validacion = $request->validate([
       'tasa' => 'required|numeric|min:0.01',
-      'monto' => 'required|numeric'
+      'monto' => 'required|numeric|min:0.01',
+      'industria' => 'required'
   ]);
 
     Auth::user()->autorizarRol([1,2]);
@@ -225,8 +228,9 @@ class CotCreditosController extends Controller
     $encabezado->tasa_ponderada = $tasaPonderada;
     $encabezado->dias_ponderados = $diasPonderados;//Se deben poner los días ponderados bien
     $encabezado->save();
-
     
+
+    $band=1;
     return redirect()->route('cotizacion.index', $idEnc);
    
   }

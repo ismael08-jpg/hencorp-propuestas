@@ -108,7 +108,7 @@
     <section class="fondo">
         <img  height="200" width="750" style="margin-top: 100px" src="{{ asset('assets/img/hencorp-nav.png') }}" alt="Hencorp">
         <header class="titulo arial"><h2 style="margin-top: 70px">Contacto</h2></header>
-        <p class="arial" style="color: #0684fc; font-size:20px">Correo: propuestas@hencorp.com</p>
+        <p class="arial" style="color: #0684fc; font-size:20px">{{$contacto}}</p>
     </section>
     <footer  style="position: absolute; bottom: 0; background-color: #02163a;">
         <p class="arial" style="text-align: center; color: azure; font-size: 20px">Informe generado {{date("Y-m-d")}}</p>
@@ -137,7 +137,7 @@
                         <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
-                        <td>{{ number_format($tb['tasa_cot'], 2, '.', ',' )  }}%</td>
+                        <td>{{ number_format(($tb['tasa_cot']-1.5), 2, '.', ',' )  }}%</td>
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
                         <td>{{$tb['industria']}}</td>
@@ -157,7 +157,7 @@
             </tr>
             <tr>
                 <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
-                <td><p>{{number_format($tasaPortafolio, 2, '.', ',' )}}%</p></td>
+                <td><p>{{number_format(($tasaPortafolio*100), 2, '.', ',' )}}%</p></td>
                 <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
             </tr>
         </table>

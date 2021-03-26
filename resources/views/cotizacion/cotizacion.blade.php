@@ -209,9 +209,9 @@
                             <td class="blr" >{{$detalles->industria}}</td>
                             @if ($enc->estado_cot=="A")
                                 <td  style="border-block-color: white">
-                                    <input type="image" class="rounded-pill" height="40" width="40" 
+                                    <input type="image" class="rounded-pill" height="27" width="27" 
                                     src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}', '{{$detalles->industria}}')"  />
-                                    <input type="image" class="rounded-pill" height="40" width="40" 
+                                    <input type="image" class="rounded-pill" height="27" width="27" 
                                     src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
                                 </td>
                             @endif
@@ -263,6 +263,14 @@
 @endsection
 
 @section('scripts')
+@if ($band==1)
+<script type="text/javascript">
+    var toast = new Toasty();
+
+    toast.success("Propuesta generada con éxito");
+</script>
+@endif
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tabla-cot').DataTable({
