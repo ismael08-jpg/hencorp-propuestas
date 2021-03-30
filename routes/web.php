@@ -4,6 +4,7 @@ use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\CotCatalogoCreditoController;
 use App\Http\Controllers\cotCreditosController;
 use App\Http\Controllers\MisPropuestasController;
+use App\Http\Controllers\EnvioController;
 use App\Models\CotCatalogoCredito;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +30,12 @@ route::delete('/cotizacion/delete', [CotCreditosController::class, 'destroy'])->
 route::put('/cotizacion/update', [CotCreditosController::class, 'update'])->name('cotizazcion.update');
 
 Route::get('/envio-cotizacion/{id}', [CotCreditosController::class, 'mostrar'])->name('cotizacion.mostrar');
-Route::post('/envio-cotizacion', [CotCreditosController::class, 'enviar'])->name('cotizacion.enviar');
+Route::get('/envio-cotizacion', [EnvioController::class, 'index'])->name('enviar.index');
+Route::post('/envio-cotizacion', [EnvioController::class, 'enviar'])->name('cotizacion.enviar');
 
 Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
+
+
+
 
 Auth::routes(['register' => false]);

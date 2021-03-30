@@ -9,53 +9,75 @@
 
 
 @section('content')
-    <section  style="background-color: white"
-    class=" col-xs-12 rounded-lg mb-5">
-        <div class="d-flex w-100 justify-content-center mt-5"><h1>Enviar cotización</h1></div>
-        
-        <form action="{{ route('cotizacion.enviar') }}" method="POST">
-            @csrf
-            <div class="container-fluid ">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Correo electronico</label>
-                        <input type="email" name="correo" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <label>ID</label>
-                        <input readonly type="number"  value="{{$id}}" name="id" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        
-                    </div>
-                    <div class="col-md-6">
-            
-                    </div>
-                </div>
-                <div class="d-flex w-100 justify-content-center mt-5 ">
-                    <button type="submit" class="btn btn-info mb-5">Enviar PDF</button>
-                </div>
+    
 
+
+    <div class="row">
+        <div class="col-12">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div style="background-color: white; " class="ml-md-5 col-xs-12 table-responsive col-md-9 rounded-lg mb-5"> 
+            <form action="{{ route('cotizacion.enviar') }}" method="POST">
+                @csrf
+                <div class="container-fluid ">
+                    <div class="row">
+                        <div class="col-md-12 mt-5">
+                            <label>Correo electronico</label>
+                            <input type="email" required placeholder="someone@something.com" name="correo" class="numero">
+                        </div>
+                        <div>
+
+                            <input readonly type="hidden"  value="{{$id}}" name="id" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                        </div>
+                        <div class="col-md-6">
+                
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-center mt-5 mb-5">
+                        <button type="submit" name="enviar" class="btn btn-info mr-4 ">Enviar PDF</button>
+                        <button type="submit" name="ver" class="btn btn-naranja">Revisar PDF</button>
+                    </div>
+    
+                </div>
+            </form>            
+        </div>
+
+
+
+
+        <div style="height:70%" class="col-md-2 col-xs-12 rounded-lg ml-2 bg-white d-flex flex-column align-items-center">
+            <div>
+                <div class="menu-1 mt-5 ">
+                    
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
+                    </form>
+                    <a href="{{route('propuestas.index')}}" class="btn mb-3 btn-round btn-griz mt-2" name="btnPropuesta">Mis propuestas</a>
+                    <br>
+                    <a href="{{route('cotizacion.index', $id)}}" class="btn mb-3 btn-round btn-naranja mt-2" name="btnPropuesta">Regresar</a>
+                    
+                </div>
             </div>
-        </form>
-    </section>
+        </div>
+    </div>
+
+    <div class="row justify-content-center p-4" style="color:#fff">
+        <span>&copy <span id="cr-year"></span> AS Analytics. Todos los derechos reservados.</span>
+    </div>
+    
 
 @endsection
 
 @section('scripts')
     <script>
-        // var ctx = document.getElementById('myChart').getContext('2d');
-        // var myChart = new Chart(ctx,{
-        //     type: "bar",
-        //     data:{
-        //         labels:['col1', 'col2', 'col3'],
-        //         datasets:[{
-        //             label:'Num datos',
-        //             data:[10,9,15]
-        //         }]
-        //     }
-        // });
+        
     </script>
 @endsection
