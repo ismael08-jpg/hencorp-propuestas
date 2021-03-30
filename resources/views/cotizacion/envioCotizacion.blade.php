@@ -41,8 +41,8 @@
                         </div>
                     </div>
                     <div class="d-flex w-100 justify-content-center mt-5 mb-5">
-                        <button type="submit" name="enviar" class="btn btn-info mr-4 ">Enviar PDF</button>
-                        <button type="submit" name="ver" class="btn btn-naranja">Revisar PDF</button>
+                        <button type="submit" name="enviar" value="enviar" class="btn btn-info mr-4 ">Enviar por correo</button>
+                        <button type="submit" name="ver" value="revisar" class="btn btn-naranja">Visualizar PDF</button>
                     </div>
     
                 </div>

@@ -88,6 +88,7 @@ class CotCreditosController extends Controller
   }
 
   public function update(Request $request){
+    Auth::user()->autorizarRol([1,2]);
     $band=0;
     $validacion = $request->validate([
       'tasa' => 'required|numeric|min:0.01',
@@ -95,7 +96,7 @@ class CotCreditosController extends Controller
       'industria' => 'required'
   ]);
 
-    Auth::user()->autorizarRol([1,2]);
+    
     //monto, tasa, comentarios
     $idDet = $request->idDet;
     $idEnc = $request->idEnc;

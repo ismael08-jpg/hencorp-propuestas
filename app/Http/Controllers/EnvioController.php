@@ -35,6 +35,23 @@ class EnvioController extends Controller
 
     public function enviar(Request $request){
         Auth::user()->autorizarRol([1,2]);
+
+
+
+        //'email' => 'required|email|unique:users,email',
+        if($request->enviar == 'enviar'){
+            $validacion = $request->validate([
+                'correo' => 'required|email',
+                'id' => 'required|numeric'
+            ]);
+           
+        }else{
+            $validacion = $request->validate([
+                'id' => 'required|numeric'
+            ]);
+        }
+
+       
           $det = CotCreditosDet::where('id_credito', '=', $request->id)->get();
           $enc = CotCreditosEnc::where('id_cotizacion', '=', $request->id)->first();
   
@@ -118,17 +135,19 @@ class EnvioController extends Controller
             ]);
           }
   
-  
-  
+          
+          
           $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'contacto', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
   
-          
-          set_time_limit(60000);
-          Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
-          $encEstado = CotCreditosEnc::find($request->id);
-          $encEstado->estado_cot = 'B';
-          $encEstado->save();
-  
+        if($request->enviar == 'enviar'){
+            set_time_limit(60000);
+            Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
+            $encEstado = CotCreditosEnc::find($request->id);
+            $encEstado->estado_cot = 'B';
+            $encEstado->save();
+           
+        } 
+
           return $pdf->setPaper('a4', 'landscape')->stream('propuesta.pdf'); 
       }
 
