@@ -1,9 +1,26 @@
 @extends('layouts.master')
 
 @section('title', 'Inicio de Sesión')
+@section('logued', 'unLogued')
 
+@section('menu')
+    <nav class="navbar navbar-white bg-azul">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <center>
+                <a class="navbar-brand" href="#">
+                    <img src="{{ asset('assets/img/hencorp-nav.png') }}" width="200" height="" #02163a"
+                        class=" d-inline-block align-top" alt="">
+                </a>
+            </center>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </nav>
+@endsection
 
-@section('content')
+@section('content')   
     <div class="container-login">
         <div class="d-flex w-100 justify-content-center">
             <form method="POST" action="{{ route('login') }}" class="p-4 frm-login" id="frm-login">

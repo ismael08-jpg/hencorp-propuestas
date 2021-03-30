@@ -40,13 +40,11 @@
     </style>    
 @endsection
 
+@section('menu')
+    @include('layouts.nav')
+@endsection
+
 @section('content')
-
-
-
-
-
-
 
 <div class="row">
     <div class="col-12">

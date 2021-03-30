@@ -6,7 +6,9 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script> --}}
 @endsection
     
-
+@section('menu')
+    @include('layouts.nav')
+@endsection
 
 @section('content')
     
@@ -25,7 +27,12 @@
                     <div class="row">
                         <div class="col-md-12 mt-5">
                             <label>Correo electronico</label>
-                            <input type="email" required placeholder="someone@something.com" name="correo" class="numero">
+                            <input type="email"  placeholder="someone@something.com" name="correo" class="numero">
+                            <span class="text-danger">
+                                @error('correo')
+                                    {{ $message }}
+                                @enderror
+                            </span>
                         </div>
                         <div>
 

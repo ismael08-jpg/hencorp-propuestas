@@ -29,7 +29,9 @@
 <body class="foliva">
 
     <!--header-->
-    @include('layouts.nav')
+    
+    @yield('menu')
+
     <!--nav-->
 
     <div class="container-fluid">

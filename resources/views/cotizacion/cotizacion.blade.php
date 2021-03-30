@@ -30,6 +30,9 @@
     
 @endsection
 
+@section('menu')
+    @include('layouts.nav')
+@endsection
 
 @section('content')
 <script>
