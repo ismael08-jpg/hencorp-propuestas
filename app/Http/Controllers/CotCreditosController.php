@@ -48,6 +48,8 @@ class CotCreditosController extends Controller
 
     public function mostrar($id){
       Auth::user()->autorizarRol([1,2]);
+      $enc = CotCreditosEnc::find($id);
+      
         return view('cotizacion.envioCotizacion', compact('id'));
     }
 

@@ -22,8 +22,9 @@ class EnvioController extends Controller
     {
         $this->middleware('auth');   
     }
+    
     public function mostrar(){
-        return view('cotizacion.envioCotizacion');
+        return view('cotizacion.envioCotizacion', compact('enc'));
     }
 
     public function index(){
@@ -138,11 +139,11 @@ class EnvioController extends Controller
           
           
           $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'contacto', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
-  
-        if($request->enviar == 'enviar'){
+        
+        $encEstado = CotCreditosEnc::find($request->id);
+        if($request->enviar == 'enviar' and $encEstado->estado_cot == 'A'){
             set_time_limit(60000);
             Mail::to($correo)->send(new PropuestaMailable($enc, $pdf->output()));
-            $encEstado = CotCreditosEnc::find($request->id);
             $encEstado->estado_cot = 'B';
             $encEstado->save();
            

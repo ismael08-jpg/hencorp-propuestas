@@ -34,7 +34,7 @@ Route::get('/envio-cotizacion', [EnvioController::class, 'index'])->name('enviar
 Route::post('/envio-cotizacion', [EnvioController::class, 'enviar'])->name('cotizacion.enviar');
 
 Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
-
+Route::post('/mis-propuestas/copiar', [MisPropuestasController::class,'copiar'])->name('propuestas.copiar');
 
 
 

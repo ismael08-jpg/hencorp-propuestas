@@ -165,11 +165,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Rendimiento Promedio Ponderado (%)</label>
-                        <input type="text" readonly  class="numero" value="{{number_format($enc->tasa_ponderada, 2, '.') }}">
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->tasa_ponderada, 2, '.',',') }}">
                     </div>
                     <div class="col-md-6">
                         <label>Plazo Promedio Ponderado (Días)</label>
-                        <input type="text" readonly  class="numero" value="{{number_format($enc->dias_ponderados, 2, '.')}}">
+                        <input type="text" readonly  class="numero" value="{{number_format($enc->dias_ponderados, 2, '.', ',')}}">
                     </div>
                 </div>
                 <div class="row">
@@ -179,7 +179,30 @@
                 </div>
                 
             
-
+                <span class="text-danger">
+                    
+                        @error('industria')
+                            <div class="alert alert-danger" role="alert">
+                               No se pudo modificar porque {{ $message }}
+                            </div>
+                        @enderror
+                        @error('monto')
+                            <div class="alert alert-danger" role="alert">
+                                No se pudo modificar porque {{ $message }}
+                            </div>
+                        @enderror
+                        @error('comentarios')
+                            <div class="alert alert-danger" role="alert">
+                                No se pudo modificar porque {{ $message }}
+                            </div>
+                        @enderror
+                        @error('tasa')
+                            <div class="alert alert-danger" role="alert">
+                                No se pudo modificar porque {{ $message }}
+                            </div>
+                        @enderror
+                      
+                </span>
             
             <table style="text-align:center;" with="100%" class="w-100" id="tabla-cot">
                 <thead class="">
@@ -205,7 +228,7 @@
                             <td class="bl">{{$detalles->id_cotizacion}}</td>
                             <td class="bl">{{ $detalles->nombre_deudor }}</td>
                             <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-                            <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.' ) }}%</td>
+                            <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.', ',' ) }}%</td>
                             <td class="bl">{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td class="bl">{{ $detalles->grupo_economico }}</td>
                             <td class="bl" >{{$detalles->pais}}</td>
@@ -227,7 +250,7 @@
                     <th class="h">-</th>
                     <th class="h">-</th>
                     <th class="h">${{number_format($sumMonto->monto, 2, '.', ',' )}}</th>
-                    <th class="h">{{number_format($enc->tasa_ponderada, 2)}}</th>
+                    <th class="h">{{number_format($enc->tasa_ponderada, 2, '.', ',')}}</th>
                     <th class="h">-</th>
                     <th class="h">-</th>
                     <th class="h">-</th>

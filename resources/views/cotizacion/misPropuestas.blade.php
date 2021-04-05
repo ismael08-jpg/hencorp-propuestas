@@ -3,6 +3,7 @@
 @section('title', 'Mis Propuetas')
 
 @section('styles')
+    
     <style>
         table { 
             border: 2px solid #d88920;
@@ -46,6 +47,65 @@
 
 @section('content')
 
+
+<script>
+    function copiar(idEnc, participante){
+        $('#idEnc').val('');
+        $('#idEnc').val(idEnc); 
+        $('#participante').val('');
+        $('#participante').val(participante); 
+        $('#copiar').modal();
+
+       
+        
+        $('#nump').append(idEnc)
+
+        $("#monto").attr({
+        "max" : monto,        
+        "min" : 0          
+        });
+    }
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="copiar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Copiar Propuesta  N°</h5><h5 class="modal-title" ><div id="nump"></div></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('propuestas.copiar')}}" method="POST">
+            @csrf
+            <div class="modal-body">  
+                    <input type="hidden" name="idEnc" id="idEnc">
+                
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Participante</label>
+                            <input type="text" required  name="participante" class="form-control" id="participante">
+                        </div>
+                    </div>
+            </div>
+            <p class="ml-2">Posteriormente se podrá modificar los registros de la propuesta</p>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Si, Copiar</button>
+            </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  {{-- end modal --}}
+
+
 <div class="row">
     <div class="col-12">
     </div>
@@ -69,6 +129,7 @@
                     <th>Fecha</th>
                     <th>Estado</th>
                     <th>-</th>
+                    <th>-</th>
                 </tr>
             </thead>
     
@@ -88,6 +149,7 @@
                             <td><strong class="enviado">Enviado</strong></td>  
                         @endif
                         <td><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}">ver</a></td>
+                        <td><button class="btn btn-success" onclick="copiar({{$enc->id_cotizacion}}, '{{$enc->nombre_cotizacion}}')">Copiar</button></td>
                     </tr>
                 @endforeach
             </tbody>

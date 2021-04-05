@@ -164,7 +164,7 @@
                             @if ($catalogos['tasa_credito']>0 and $catalogos['tasa_credito']<=1.5)
                                 <td>0%</td>
                             @else
-                                <td>{{ number_format(($catalogos['tasa_credito']-1.5), 2, '.' )  }}%</td>
+                                <td>{{ number_format(($catalogos['tasa_credito']-1.5), 2, '.', ',' )  }}%</td>
                             @endif
                             <td>{{ substr($catalogos['fecha_vencimiento'], 0, -8) }}</td>
                             <td>{{ $catalogos['grupo_economico'] }}</td>
