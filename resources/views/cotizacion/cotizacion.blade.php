@@ -26,6 +26,29 @@
         .tbh:hover{
             background-color: rgb(226, 234, 248);
         }
+
+        .btn-calc {
+            margin: 4px;
+            width: 45px;
+            height: 45px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: capitalize;
+            font-size: .9em;
+            background: transparent;
+            color: #939393;
+            outline: none !important;
+        }
+
+        .btn-calc.sombra:focus {
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-calc::-moz-focus-inner {
+            border: none;
+        }
     </style>
     
 @endsection
@@ -102,7 +125,7 @@
                         <input type="number" step="0.000000001" required min="0" name="monto" class="form-control" id="monto">
                     </div>
                     <div class="col-6">
-                        <label>Tasa Cotización</label>
+                        <label>Rendimiento (%)</label>
                         <input type="number" step="0.000000001" required min="0" name="tasa" id="tasa" class="form-control">
                     </div>
                 </div>
@@ -216,7 +239,8 @@
                         <th class="h">País</th>
                         <th class="h">Industria</th>
                         @if ($enc->estado_cot=="A")
-                            <th style="color: white">Accción</th>
+                            <th style="color: white">-</th>
+                            <th style="color: white">-</th>
                         @endif
                     </tr>
                 </thead>
@@ -228,16 +252,25 @@
                             <td class="bl">{{$detalles->id_cotizacion}}</td>
                             <td class="bl">{{ $detalles->nombre_deudor }}</td>
                             <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-                            <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.', ',' ) }}%</td>
+
+                            
+                            @if ($detalles->tasa_cot>0 and $detalles->tasa_cot<=1.5)
+                                <td class="bl">0%</td>
+                            @else
+                                <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.', ',' ) }}%</td>
+                            @endif
+
                             <td class="bl">{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td class="bl">{{ $detalles->grupo_economico }}</td>
                             <td class="bl" >{{$detalles->pais}}</td>
                             <td class="blr" >{{$detalles->industria}}</td>
                             @if ($enc->estado_cot=="A")
                                 <td  style="border-block-color: white">
-                                    <input type="image" class="rounded-pill" height="27" width="27" 
+                                    <input type="image" class="btn-calc math sombra" height="40px" width="40px" 
                                     src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}', '{{$detalles->industria}}')"  />
-                                    <input type="image" class="rounded-pill" height="27" width="27" 
+                                </td>
+                                <td>
+                                    <input type="image" class="btn-calc math sombra" height="40px" width="40px" 
                                     src="{{asset('assets/img/del.png')}}" onclick="eliminar({{$detalles->id_cotizacion}});"  />
                                 </td>
                             @endif

@@ -133,6 +133,8 @@
                     </form>
                     {{-- <a href="#" class="btn mb-5 btn-round btn-naranja mt-2" name="btnPropuesta">Enviar</a> --}}
                     <br>
+                    <a href="{{route('admin.gestion')}}" class="btn mb-2 btn-round btn-naranja  mt-2" name="btnPropuesta">Gestión de Propuestas</a>
+                    <br>
                     <a href="{{route('propuestas.index')}}" class="btn mb-2 btn-round btn-griz  mt-2" name="btnPropuesta">Mis propuestas</a>
                     <br>
                     <a href="{{route('catalogo-creditos.index')}}" class="btn mb-5 btn-round btn-azul-oscuro " name="btnPropuesta">Nueva Propuesta</a>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\CotCatalogoCreditoController;
 use App\Http\Controllers\cotCreditosController;
+use App\Http\Controllers\CotCreditosDetController;
 use App\Http\Controllers\MisPropuestasController;
 use App\Http\Controllers\EnvioController;
 use App\Models\CotCatalogoCredito;
@@ -23,7 +24,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/catalogo-creditos', [CotCatalogoCreditoController::class, 'index'])->name('catalogo-creditos.index');
 Route::post('/catalogo-creditos', [CotCatalogoCreditoController::class, 'postIndex'])->name('catalogo-creditos.post');
+
 Route::get('/admin/index', [AdministradorController::class, 'index'])->name('administrador.index');
+Route::get('/admin/gestion-propuesta', [CotCreditosDetController::class,'index'])->name('admin.gestion');
+Route::put('/admin/gestion-propuesta/update', [CotCreditosDetController::class,'update'])->name('admin.update');
 
 Route::get('/cotizacion/{id}', [CotCreditosController::class,'index'])->name('cotizacion.index');
 route::delete('/cotizacion/delete', [CotCreditosController::class, 'destroy'])->name('cotizazcion.destroy');
@@ -35,6 +39,7 @@ Route::post('/envio-cotizacion', [EnvioController::class, 'enviar'])->name('coti
 
 Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
 Route::post('/mis-propuestas/copiar', [MisPropuestasController::class,'copiar'])->name('propuestas.copiar');
+
 
 
 

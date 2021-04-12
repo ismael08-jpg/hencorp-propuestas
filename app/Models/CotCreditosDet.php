@@ -48,6 +48,7 @@ class CotCreditosDet extends Model
 		'monto_cot',
 		'tasa_cot',
 		'fecha_cot',
+		'dias_inventario',
 		'comentarios',
 		'pais',
 		'industria'

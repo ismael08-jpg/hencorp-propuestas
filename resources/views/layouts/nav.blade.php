@@ -15,11 +15,8 @@
                 
                 
             </div>
-
-
-            <form class="form-inline">
-                <div class="input-group navbar-collapse justify-content-center" id="navbarCollapse">                    
-                    <center>
+                <div style="margin-left: 550px;" class="input-group navbar-collapse" id="navbarCollapse">                    
+                    
                         @if (auth()->user()->tipo_usuario==1)
                             <a class="navbar-brand" href="{{route('administrador.index')}}">
                                 <img src="{{ asset('assets/img/hencorp-nav.png') }}" width="200" height="" 
@@ -31,12 +28,9 @@
                                     class=" d-inline-block align-top" alt="">
                             </a>
                         @endif
-                    </center>
+                    
                 </div>
-            </form>
-
-
-            <div class="navbar-nav" style="padding-right: 90px;" >
+            <div class="navbar-nav" style="margin-right: 90px;" >
                
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" style="color:white; " data-toggle="dropdown">{{auth()->user()->nombre}}</a>

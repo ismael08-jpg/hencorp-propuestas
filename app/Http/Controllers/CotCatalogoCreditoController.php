@@ -17,10 +17,16 @@ use Carbon\Carbon;
 
 class CotCatalogoCreditoController extends Controller
 {
+
+
+    
     public function __construct()
     {
         $this->middleware('auth');   
     }
+
+    
+    
 
     public function index($filtros = []){
         Auth::user()->autorizarRol([1,2]);
@@ -147,10 +153,12 @@ class CotCatalogoCreditoController extends Controller
             }
             
             
+
             
             //Llamamos al procedimiento almacenado que nos trae la tabla que define el orden de los catalogos
             $orderTable = DB::select("call consultarOrdenCatalogo()", array());
-            
+            session(['ordenCatalogo' => $orderTable]);
+
 
             
             foreach($orderTable as $or) {   
@@ -276,6 +284,18 @@ class CotCatalogoCreditoController extends Controller
         return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA'));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
     public function postIndex(Request $request) {
         Auth::user()->autorizarRol([1,2]);
         
@@ -363,6 +383,7 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->nombre_deudor = $inversion['nombre_deudor'];
                 $detalle->pais = $inversion['pais'];
                 $detalle->industria = $inversion['industria'];
+                $detalle->dias_inventario = $inversion['dias_inventario'];
                 $detalle->save();
                 $calcuDiasPonderados += (($inversion['dias_inventario']*$inversion['NLP'])/$totalNLP);
                 $calcuTasaPonderada += (($inversion['tasa_credito']*$inversion['NLP'])/$totalNLP);

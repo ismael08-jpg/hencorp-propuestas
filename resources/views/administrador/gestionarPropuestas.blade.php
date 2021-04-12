@@ -1,22 +1,25 @@
 @extends('layouts.master')
 
-@section('title', 'Mis Propuetas')
+@section('title', 'Gestionar Propuestas')
 
 @section('styles')
     
     <style>
-         .h{
+
+        .h{
             background-color: #02163a;
             color: white;
             border: #02163a 2px solid;
         }
 
         .bl{
-            border-left: #02163a 2px solid;
+            /* border-left: #02163a 2px solid; */
+            text-align: center;
         }
         .blr{
             border-left: #02163a 2px solid;
             border-right: #02163a 2px solid;;
+            
         }
 
         .bb{
@@ -25,29 +28,6 @@
 
         .tbh:hover{
             background-color: rgb(226, 234, 248);
-        }
-
-        .btn-calc {
-            margin: 4px;
-            width: 45px;
-            height: 45px;
-            border: none;
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-transform: capitalize;
-            font-size: .9em;
-            background: transparent;
-            color: #939393;
-            outline: none !important;
-        }
-
-        .btn-calc.sombra:focus {
-            box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
-        }
-
-        .btn-calc::-moz-focus-inner {
-            border: none;
         }
 
         .enviado{
@@ -65,19 +45,17 @@
 
 
 <script>
-    function copiar(idEnc, participante){
+    function editarProp(idEnc, participante, monto){
         $('#idEnc').val('');
         $('#idEnc').val(idEnc); 
         $('#participante').val('');
-        $('#participante').val(participante); 
+        $('#participante').val(participante);
+        $('#Participante').val('');
+        $('#monto').val(monto); 
         $('#copiar').modal();
 
-       
-        
-        $('#nump').append(idEnc)
 
-        $("#monto").attr({
-        "max" : monto,        
+        $("#monto").attr({     
         "min" : 0          
         });
     }
@@ -90,27 +68,32 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Copiar Propuesta  N°</h5><h5 class="modal-title" ><div id="nump"></div></h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Editar Propuesta</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{route('propuestas.copiar')}}" method="POST">
+        <form action="{{route('admin.update')}}" method="POST">
             @csrf
+            @method('put')
             <div class="modal-body">  
                     <input type="hidden" name="idEnc" id="idEnc">
                 
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label>Participante</label>
                             <input type="text" required  name="participante" class="form-control" id="participante">
                         </div>
+                        <div class="col-6">
+                            <label>Monto</label>
+                            <input type="number" step="0.01" required  name="monto" class="form-control" id="monto">
+                        </div>
                     </div>
             </div>
-            <p class="ml-2">Posteriormente se podrá modificar los registros de la propuesta</p>
+            <p class="ml-2"></p>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Si, Copiar</button>
+            <button type="submit" class="btn btn-warning">Editar</button>
             </div>
         </form>
 
@@ -120,6 +103,8 @@
   </div>
 
   {{-- end modal --}}
+
+ 
 
 
 <div class="row">
@@ -132,9 +117,9 @@
         class="ml-md-5 col-xs-12  col-md-9 rounded-lg mb-5">
         <br>
 
-        <center><h4>Mis Propuestas</h4></center>
+        <center><h4>Gestión Propuestas</h4></center>
         
-        <table with="100%" style="" class="w-100 table-responsive" id="tabla-propuestas">
+        <table with="100%" style="" class="table-striped table-responsive" id="tabla-propuestas">
             <thead class="">
                 <tr>
                     <th class="h">N° Propuesta</th>
@@ -144,8 +129,9 @@
                     <th class="h">Plazo Promedio (Días)</th>
                     <th class="h">Fecha</th>
                     <th class="h">Estado</th>
-                    <th style="color: white">-</th>
-                    <th style="color: white">-</th>
+                    <th class="h">Usuario</th>
+                    <th class="h">-</th>
+                    <th class="h">-</th>
                 </tr>
             </thead>
     
@@ -164,8 +150,9 @@
                         @if ($enc->estado_cot=="B")
                             <td class="bl"><strong class="enviado">Enviado</strong></td>  
                         @endif
-                        <td><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}"><img src="{{asset('assets/img/ojo.png')}}" height="40px"  alt="40px"></a></td>
-                        <td><button class="btn-calc math sombra" onclick="copiar({{$enc->id_cotizacion}}, '{{$enc->nombre_cotizacion}}')"><img src="{{asset('assets/img/copiar.png')}}" height="40px" width="40px" alt=""></button></td>
+                        <td class="bl">{{$enc->usuario}}</td>
+                        <td class="bl"><a href="{{route('cotizacion.index', $enc->id_cotizacion)}}"><img src="{{asset('assets/img/ojo.png')}}" width="30px" height="30px" alt=""></a></td>
+                        <td><button class="btn" onclick=" editarProp({{$enc->id_cotizacion}}, '{{$enc->nombre_cotizacion}}', '{{$enc->monto_cot}}')"><img src="{{asset('assets/img/up.png')}}" width="40px" height="40px" alt=""></button></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -181,7 +168,9 @@
                     <input type="submit" class="btn btn-round mb-3 btn-azul"  value="Cerrar sesión">
                 </form>
                 
-                <a href="{{route('catalogo-creditos.index')}}" class="btn mb-5 btn-round btn-azul-oscuro mt-2" name="btnPropuesta">Nueva Propuesta</a>
+                <a href="{{route('catalogo-creditos.index')}}" class="btn btn-round btn-azul-oscuro mt-2" name="btnPropuesta">Nueva Propuesta</a>
+                <br>
+                <a href="{{route('administrador.index')}}" class="btn mt-2 mb-5 btn-round btn-naranja " name="btnPropuesta">Admin Menú</a>
             </div>
         </div>
     </div>

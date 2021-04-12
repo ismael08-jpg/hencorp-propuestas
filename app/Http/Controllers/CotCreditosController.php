@@ -21,27 +21,31 @@ use DateTime;
 
 class CotCreditosController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');   
+  public function __construct(){
+      $this->middleware('auth');   
+  }
+
+  public function index($id){
+    $band=0;
+    Auth::user()->autorizarRol([1,2]);
+    $enc = [];
+
+    if(Auth::user()->tipo_usuario == 1){
+      $enc = CotCreditosEnc::where('id_cotizacion', '=', $id)->first();
+    } else{
+      $enc = CotCreditosEnc::where('id_cotizacion', '=', $id)->where('usuario_cot', '=', Auth::user()->id)->first();
     }
 
-    public function index($id){
-        $band=0;
-        Auth::user()->autorizarRol([1,2]);
-
-        
-        $enc = CotCreditosEnc::where('id_cotizacion', '=', $id)->where('usuario_cot', '=', Auth::user()->id)->first();
-
-        if($enc != []){
-          $det = CotCreditosDet::where('id_credito', '=', $id)->get();
-          $sumMonto = CotCreditosDet::select(DB::raw('SUM(monto_cot) as monto'))
-          ->where('id_credito', '=', $id)
-          ->first();
-          return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto', 'band'));
-        }else{
-          return redirect()->route('catalogo-creditos.index');
-        }
+    if($enc != []){
+        $det = CotCreditosDet::where('id_credito', '=', $id)->get();
+        $sumMonto = CotCreditosDet::select(DB::raw('SUM(monto_cot) as monto'))
+        ->where('id_credito', '=', $id)
+        ->first();
+        return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto', 'band'));
+    }else{
+        return redirect()->route('catalogo-creditos.index');
     }
+  }
 
 
 
@@ -58,6 +62,7 @@ class CotCreditosController extends Controller
   public function destroy(Request $request){
     Auth::user()->autorizarRol([1,2]);
     $id_propuesta=0;
+
     $detalle = CotCreditosDet::find($request->id);
     $id_propuesta = $detalle->id_credito;// Id de la propuesta
     $detalle->delete();
@@ -74,9 +79,8 @@ class CotCreditosController extends Controller
     }
 
     foreach($detalle as $det){
-      $catalogo = CotCatalogoCredito::find($det->id_cotizacion);
       $tasaPonderada = $tasaPonderada + ($det->tasa_cot*$det->monto_cot)/$totalMonto;
-      $diasPonderados = $diasPonderados + ($catalogo->dias_inventario*$det->monto_cot)/$totalMonto;
+      $diasPonderados = $diasPonderados + ($det->dias_inventario*$det->monto_cot)/$totalMonto;
     }
 
     $encabezado = CotCreditosEnc::find($id_propuesta);
@@ -86,6 +90,7 @@ class CotCreditosController extends Controller
  
 
     return redirect()->route('cotizacion.index', $id_propuesta);
+    
    
   }
 
@@ -96,7 +101,7 @@ class CotCreditosController extends Controller
       'tasa' => 'required|numeric|min:0.01',
       'monto' => 'required|numeric|min:0.01',
       'industria' => 'required'
-  ]);
+    ]);
 
     
     //monto, tasa, comentarios
@@ -124,10 +129,9 @@ class CotCreditosController extends Controller
       $totalMonto = $totalMonto + $det->monto_cot;
     }
 
-    foreach($detalle as $det){
-      $catalogo = CotCatalogoCredito::find($det->id_cotizacion);
+    foreach($detalle as $det){    
       $tasaPonderada = $tasaPonderada + ($det->tasa_cot*$det->monto_cot)/$totalMonto;
-      $diasPonderados = $diasPonderados + ($catalogo->dias_inventario*$det->monto_cot)/$totalMonto;
+      $diasPonderados = $diasPonderados + ($det->dias_inventario*$det->monto_cot)/$totalMonto;
     }
 
     $encabezado = CotCreditosEnc::find($idEnc);

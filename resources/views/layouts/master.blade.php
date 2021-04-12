@@ -15,7 +15,7 @@
     <!--Select2 CSS-->
     <link href="{{asset('assets/select2/dist/css/select2.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/css/toasty.css')}}" rel="stylesheet">
-
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.css"/>
     <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
     

@@ -97,10 +97,7 @@
             
         }
 
-        .principal{
-           
-
-        }
+       
 
         .arial{font-family:  "Arial Black", "Arial Bold", sans-serif; font-size: 12px;  
             
@@ -110,7 +107,7 @@
             margin-top:2.5cm;
             margin-bottom: 2.5cm;
             margin-left: 3cm;
-           margin-right: 2.5cm;
+            margin-right: 2.5cm;
         }
 
         .pie{
@@ -132,7 +129,7 @@
     </footer>
 </body>
 <body  class="margin-page">
-    <div class="principal">
+    <div>
         <p class="arial" style=" font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
         <table style="" class="tabla arial">
             <thead class="">
@@ -154,7 +151,13 @@
                         <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
-                        <td>{{ number_format(($tb['tasa_cot']-1.5), 2, '.', ',' )  }}%</td>
+
+                        
+                        @if ($tb['tasa_cot']>0 and $tb['tasa_cot']<=1.5)
+                            <td>0%</td>
+                        @else
+                            <td>{{ number_format(($tb['tasa_cot']-1.5), 2, '.', ',' )  }}%</td>
+                        @endif
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
                         <td>{{$tb['industria']}}</td>
