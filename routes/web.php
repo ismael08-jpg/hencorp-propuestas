@@ -6,6 +6,7 @@ use App\Http\Controllers\cotCreditosController;
 use App\Http\Controllers\CotCreditosDetController;
 use App\Http\Controllers\MisPropuestasController;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\HencorpPropuestasConfigController;
 use App\Models\CotCatalogoCredito;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -40,7 +41,7 @@ Route::post('/envio-cotizacion', [EnvioController::class, 'enviar'])->name('coti
 Route::get('/mis-propuestas', [MisPropuestasController::class,'index'])->name('propuestas.index');
 Route::post('/mis-propuestas/copiar', [MisPropuestasController::class,'copiar'])->name('propuestas.copiar');
 
-
+Route::put('configuracion/update', [HencorpPropuestasConfigController:: class, 'update'])->name('config.update');
 
 
 Auth::routes(['register' => false]);

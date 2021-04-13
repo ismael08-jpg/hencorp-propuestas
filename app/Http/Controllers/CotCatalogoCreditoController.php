@@ -10,6 +10,7 @@ use App\Models\Fecha;
 use App\Models\Participante;
 use App\Models\VwSaldosXParticipacion;
 use App\Models\VwSaldosXCredito;
+use App\Models\HencorpPropuestasConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -280,8 +281,9 @@ class CotCatalogoCreditoController extends Controller
         if($inversionesDisponibles == []){
             $bandera = 0;
         }
-        
-        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA'));
+
+        $parametro = HencorpPropuestasConfig::where('id_config', '=', 1)->first();
+        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA', 'parametro'));
     }
 
 
@@ -349,6 +351,7 @@ class CotCatalogoCreditoController extends Controller
 
         $monto = $filtros[0];
         $parti = $filtros[1];
+        $parametro = HencorpPropuestasConfig::where('id_config', '=', 1)->first();
         //$montoTotal = $filtros[2];
         //$parti = $filtros[3];       
         $encabezado = new CotCreditosEnc();
@@ -379,6 +382,10 @@ class CotCatalogoCreditoController extends Controller
                 $detalle->grupo_economico = $inversion['grupo_economico'];
                 $detalle->monto_cot = $inversion['NLP'];
                 $detalle->tasa_cot = $inversion['tasa_credito'];
+                if(($inversion['tasa_credito']-$parametro->rendimiento_hbc)>=0)
+                $detalle->rendimiento = ($inversion['tasa_credito']-$parametro->rendimiento_hbc);
+                else
+                $detalle->rendimiento = 0.0;
                 $detalle->fecha_cot = $inversion['fecha_vencimiento'];
                 $detalle->nombre_deudor = $inversion['nombre_deudor'];
                 $detalle->pais = $inversion['pais'];

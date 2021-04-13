@@ -120,16 +120,16 @@
 </head>
 <body class="fondo">
     
-        <img  height="200" width="750" style="margin-top: 100px" src="{{ asset('assets/img/hencorp-nav.png') }}" alt="Hencorp">
-        <header class="titulo arial"><h2 style="margin-top: 70px">Contacto</h2></header>
+        <img  height="200" width="750" style="margin-top: 150px" src="{{ asset('assets/img/hencorp-nav.png') }}" alt="Hencorp">
+        <header class="titulo arial"><h2 style="margin-top: 100px">Contacto</h2></header>
         <p class="arial" style="color: #0684fc; font-size:20px">Correo: {{$contacto}}</p>
     
     <footer  style="position: absolute; bottom: 0; background-color: #02163a;">
         <p class="arial" style="text-align: center; color: azure; font-size: 20px">Informe generado {{date("Y-m-d")}}</p>
     </footer>
 </body>
-<body  class="margin-page">
-    <div>
+<body class="margin-page" >
+    
         <p class="arial" style=" font-size: 30px; color: #02163a; text-align:center">{{$enc->nombre_cotizacion}}</p>
         <table style="" class="tabla arial">
             <thead class="">
@@ -151,13 +151,7 @@
                         <td>{{$tb['grupo_economico']}}</td>
                         <td scope="row">{{$tb['nombre_deudor'] }}</td>
                         <td>${{ number_format($tb['monto_cot'], 2, '.', ',' )  }}</td>
-
-                        
-                        @if ($tb['tasa_cot']>0 and $tb['tasa_cot']<=1.5)
-                            <td>0%</td>
-                        @else
-                            <td>{{ number_format(($tb['tasa_cot']-1.5), 2, '.', ',' )  }}%</td>
-                        @endif
+                        <td>{{ number_format(($tb['tasa_cot']), 2, '.', ',' )  }}%</td>
                         <td>{{ substr($tb['fecha_cot'], 0, -8) }}</td>
                         <td>{{$tb['pais']}}</td>
                         <td>{{$tb['industria']}}</td>
@@ -166,24 +160,23 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
-    
-   
-    <table style=" margin-top: 25px; float: right; text-align:center;" class="tabla arial">
-        <tr>
-            <th>Total invertido (US$)</th>
-            <th>Rendimiento Promedio (%)</th>
-            <th>Plazo Promedio (Días)</th>
-        </tr>
-        <tr>
-            <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
-            <td><p>{{number_format(($tasaPortafolio*100), 2, '.', ',' )}}%</p></td>
-            <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
-        </tr>
-    </table>
-    
-    <footer class="pie" style="position: absolute; bottom: 0;">
-        <p style="text-align: right; margin-right: 3cm;">Informe generado {{date("Y-m-d")}}</p>
-    </footer>
+        @if ($contador==12 || $contador == 13 || $contador == 11)
+        @include('pfd.footer')
+        <div class="page-break" ></div>
+        @endif
+        <table style=" margin-top: 25px; float: right; text-align:center;" class="tabla arial">
+            <tr>
+                <th>Total invertido (US$)</th>
+                <th>Rendimiento Promedio (%)</th>
+                <th>Plazo Promedio (Días)</th>
+            </tr>
+            <tr>
+                <td>${{number_format($totalSaldo, 2, '.', ',' )}}</td>
+                <td><p>{{number_format(($tasaPortafolio*100), 2, '.', ',' )}}%</p></td>
+                <td><p>{{number_format($diasPortafolio, 2, '.', ',' )}}</p></td>
+            </tr>
+        </table>
+        
+        @include('pfd.footer')
 </body>
 </html>

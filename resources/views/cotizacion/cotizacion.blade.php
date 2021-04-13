@@ -79,16 +79,18 @@
     }
 
 
-    function editar(idEnc, idDet, monto, tasa, comentarios, industria){
+    function editar(idEnc, idDet, monto, tasa, comentarios, industria, rendimiento, pais){
         $('#monto').val('');
-        $('#tasa').val('');
+        $('#rendimiento').val('');
         $('#comentarios').val('');
         $('#idEnc').val('');
         $('#idDet').val('');
+        $('#pais').val('');
 
+        $('#pais').val(pais);
         $('#monto').val(monto);
         $('#industria').val(industria);
-        $('#tasa').val(tasa);
+        $('#rendimiento').val(rendimiento);
         $('#comentarios').val(comentarios);
         $('#idEnc').val(idEnc);
         $('#idDet').val(idDet);
@@ -126,20 +128,26 @@
                     </div>
                     <div class="col-6">
                         <label>Rendimiento (%)</label>
-                        <input type="number" step="0.000000001" required min="0" name="tasa" id="tasa" class="form-control">
+                        <input type="number" step="0.000000001" required min="0" name="rendimiento" id="rendimiento" class="form-control">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
+                        <label>País</label>
+                        <input type="text" name="pais" class="form-control" id="pais">
+                    </div>
+                    <div class="col-6">
                         <label>Industria</label>
                         <input type="text" name="industria" class="form-control" id="industria">
                     </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <label>comentarios</label>
                         <input type="text" name="comentarios" class="form-control" id="comentarios" cols="15" rows="5">
                     </div>
+                    
                 </div>
         </div>
         <div class="modal-footer">
@@ -252,14 +260,7 @@
                             <td class="bl">{{$detalles->id_cotizacion}}</td>
                             <td class="bl">{{ $detalles->nombre_deudor }}</td>
                             <td class="bl">${{ number_format($detalles->monto_cot, 2, '.', ',' ) }}</td>
-
-                            
-                            @if ($detalles->tasa_cot>0 and $detalles->tasa_cot<=1.5)
-                                <td class="bl">0%</td>
-                            @else
-                                <td class="bl">{{ number_format(($detalles->tasa_cot-1.5), 2, '.', ',' ) }}%</td>
-                            @endif
-
+                            <td class="bl">{{ number_format(($detalles->rendimiento), 2, '.', ',' ) }}%</td>
                             <td class="bl">{{ substr($detalles->fecha_cot, 0, -8) }}</td>
                             <td class="bl">{{ $detalles->grupo_economico }}</td>
                             <td class="bl" >{{$detalles->pais}}</td>
@@ -267,7 +268,7 @@
                             @if ($enc->estado_cot=="A")
                                 <td  style="border-block-color: white">
                                     <input type="image" class="btn-calc math sombra" height="40px" width="40px" 
-                                    src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}', '{{$detalles->industria}}')"  />
+                                    src="{{asset('assets/img/up.png')}}" onclick="editar({{$detalles->id_credito}},{{$detalles->id_cotizacion}},{{$detalles->monto_cot}}, {{$detalles->tasa_cot}}, '{{$detalles->comentarios}}', '{{$detalles->industria}}', {{$detalles->rendimiento}}, '{{$detalles->pais}}')"  />
                                 </td>
                                 <td>
                                     <input type="image" class="btn-calc math sombra" height="40px" width="40px" 

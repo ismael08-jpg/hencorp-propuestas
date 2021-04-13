@@ -34,8 +34,41 @@
 @endsection
 
 @section('content')
+
     
- 
+<div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content ">
+        <div class="modal-header ">
+          <h5 class="modal-title" id="exampleModalLongTitle">Configuración</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('config.update')}}" method="POST">
+            @csrf
+            @method('put')
+            <div class="modal-body">          
+                    <div class="row">
+                        <div class="col-12">
+                            <label>Rendimiento HBC</label>
+                            <input type="number" step="0.0001" min="0.00000" value="{{$parametro->rendimiento_hbc}}" name="rendimientohbc" class="form-control" id="rendimientohbc" cols="15" rows="5">
+                        </div>         
+                    </div>
+                    <input type="hidden" value="{{$parametro->id_config}}" name="id">
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
         
     
 
@@ -49,7 +82,13 @@
     <div class="row">
         <div style="background-color: white; "
             class="ml-md-5 col-xs-12 table-responsive col-md-9 rounded-lg mb-5">
-            <br>
+            
+            <div class="d-flex flex-row-reverse">
+                <div class="p-3 mt-2">
+                    <input type="image" id="configure" onclick="$('#config').modal();" height="20px" width="20px" 
+                    src="{{asset('assets/img/engranaje.png')}}">
+                </div>
+            </div>
             
             <form action="{{ route('catalogo-creditos.post') }}" method="POST">
                 @csrf

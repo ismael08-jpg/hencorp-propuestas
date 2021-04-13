@@ -98,7 +98,7 @@ class CotCreditosController extends Controller
     Auth::user()->autorizarRol([1,2]);
     $band=0;
     $validacion = $request->validate([
-      'tasa' => 'required|numeric|min:0.01',
+      'rendimiento' => 'required|numeric|min:0.01',
       'monto' => 'required|numeric|min:0.01',
       'industria' => 'required'
     ]);
@@ -108,15 +108,17 @@ class CotCreditosController extends Controller
     $idDet = $request->idDet;
     $idEnc = $request->idEnc;
     $monto = $request->monto;
-    $tasa = $request->tasa;
+    $rendimiento = $request->rendimiento;
     $industria = $request->industria;
     $comentarios = $request->comentarios;
+    $pais = $request->pais;
 
     $detalle = CotCreditosDet::find($idDet);
     $detalle->monto_cot = $monto;
-    $detalle->tasa_cot = $tasa;
+    $detalle->rendimiento = $rendimiento;
     $detalle->comentarios = $comentarios;
     $detalle->industria = $industria;
+    $detalle->pais = $pais;
     $detalle->save();
 
     //Recalculamos La tasa ponderada y los días ponderados.

@@ -126,7 +126,7 @@ class EnvioController extends Controller
                 'nombre_deudor' => $det->nombre_deudor,
                 'grupo_economico' => $det->grupo_economico,
                 'monto_cot' => $det->monto_cot,
-                'tasa_cot' => $det->tasa_cot,
+                'tasa_cot' => $det->rendimiento,
                 'fecha_cot' => $det->fecha_cot,
                 'comentarios' => $det->comentarios,
                 'pais' => $det->pais,
@@ -136,9 +136,9 @@ class EnvioController extends Controller
             ]);
           }
   
+          $contador = count($tablaPdf);
           
-          
-          $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'contacto', 'enc', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
+          $pdf = PDF::loadView('pfd.propuesta', compact('tablaPdf', 'contacto', 'enc', 'contador', 'tasaPortafolio', 'diasPortafolio', 'totalSaldo'))->setPaper('letter', 'landscape');
         
         $encEstado = CotCreditosEnc::find($request->id);
         if($request->enviar == 'enviar' and $encEstado->estado_cot == 'A'){

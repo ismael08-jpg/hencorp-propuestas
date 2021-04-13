@@ -17,7 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $grupo_economico
  * @property float|null $monto_cot
  * @property float|null $tasa_cot
+ * @property float|null $rendimiento
  * @property string|null $fecha_cot
+ * @property int|null $dias_inventario
  * @property string|null $comentarios
  * @property string|null $pais
  * @property string|null $industria
@@ -37,7 +39,9 @@ class CotCreditosDet extends Model
 		'id_cotizacion' => 'int',
 		'id_credito' => 'int',
 		'monto_cot' => 'float',
-		'tasa_cot' => 'float'
+		'tasa_cot' => 'float',
+		'rendimiento' => 'float',
+		'dias_inventario' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,6 +51,7 @@ class CotCreditosDet extends Model
 		'grupo_economico',
 		'monto_cot',
 		'tasa_cot',
+		'rendimiento',
 		'fecha_cot',
 		'dias_inventario',
 		'comentarios',
