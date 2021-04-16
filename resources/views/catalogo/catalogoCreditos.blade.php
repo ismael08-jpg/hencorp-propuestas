@@ -51,16 +51,24 @@
             @method('put')
             <div class="modal-body">          
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label>Rendimiento HBC</label>
                             <input type="number" step="0.0001" min="0.00000" value="{{$parametro->rendimiento_hbc}}" name="rendimientohbc" class="form-control" id="rendimientohbc" cols="15" rows="5">
+                        </div>
+                        <div class="col-6">
+                            <label>Fecha cartera</label>
+                            <input type="text" disabled  value="{{$fechaCartera}}" name="rendimientohbc" class="form-control" id="rendimientohbc" cols="15" rows="5">
                         </div>         
                     </div>
                     <input type="hidden" value="{{$parametro->id_config}}" name="id">
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Actualizar</button>
+            @if (Auth::user()->tipo_usuario == 1)
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success">Actualizar</button>
+            @else
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            @endif
             </div>
         </form>
 

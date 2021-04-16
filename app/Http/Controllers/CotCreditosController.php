@@ -21,12 +21,17 @@ use DateTime;
 
 class CotCreditosController extends Controller
 {
+  
   public function __construct(){
       $this->middleware('auth');   
   }
 
+  
+
   public function index($id){
+    
     $band=0;
+    
     Auth::user()->autorizarRol([1,2]);
     $enc = [];
 
@@ -43,6 +48,7 @@ class CotCreditosController extends Controller
         ->first();
         return view('cotizacion.cotizacion', compact('enc', 'det', 'sumMonto', 'band'));
     }else{
+        $_SESSION["alerta"] = 'noAutorizado';
         return redirect()->route('catalogo-creditos.index');
     }
   }
@@ -63,10 +69,22 @@ class CotCreditosController extends Controller
     Auth::user()->autorizarRol([1,2]);
     $id_propuesta=0;
 
-    $detalle = CotCreditosDet::find($request->id);
-    $id_propuesta = $detalle->id_credito;// Id de la propuesta
-    $detalle->delete();
-
+    if($request->bandera == 1){
+      $detalle = CotCreditosDet::find($request->id);
+      $id_propuesta = $detalle->id_credito;// Id de la propuesta
+      $detalle->delete();
+      $_SESSION["alerta"] = 'delete';
+    }else if($request->bandera == 2 and $request->eliminar != []){
+      foreach($request->eliminar as $id){
+        $detalle = CotCreditosDet::find($id);
+        $id_propuesta = $detalle->id_credito;// Id de la propuesta
+        $detalle->delete();
+        $_SESSION["alerta"] = 'delete';
+      }
+    } else{
+        return redirect()->route('catalogo-creditos.index');
+        $_SESSION["alerta"] = 'error';
+    }
     //Recalculamos la tasa ponderada y los días ponderados.
     $tasaPonderada=0; //Acumula la tasa * NLP
     $diasPonderados=0; 
@@ -120,7 +138,7 @@ class CotCreditosController extends Controller
     $detalle->industria = $industria;
     $detalle->pais = $pais;
     $detalle->save();
-
+    $_SESSION["alerta"] = 'update';
     //Recalculamos La tasa ponderada y los días ponderados.
     $totalMonto = 0;
     $tasaPonderada =0;

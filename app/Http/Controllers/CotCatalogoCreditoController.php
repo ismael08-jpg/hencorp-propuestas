@@ -160,7 +160,7 @@ class CotCatalogoCreditoController extends Controller
             $orderTable = DB::select("call consultarOrdenCatalogo()", array());
             session(['ordenCatalogo' => $orderTable]);
 
-
+            $fechaCartera='0000-00-00';
             
             foreach($orderTable as $or) {   
                 foreach($catalogo as $fila){
@@ -205,6 +205,7 @@ class CotCatalogoCreditoController extends Controller
                                     'pais' => $fila->pais,
                                     'industria' => $fila->industria
                                 ]); 
+                                $fechaCartera = $fila->fecha_cartera;
                         }
                     }
                 }           
@@ -264,16 +265,13 @@ class CotCatalogoCreditoController extends Controller
                                 'pais' => $fila->pais,
                                 'industria' => $fila->industria
                             ]); 
-                        
+                            $fechaCartera = $fila->fecha_cartera;
                     }
                        
             }
-
-
-             
-
-                
-            
+        }else{
+            $c=CotCatalogoCredito::select('fecha_cartera')->first();
+            $fechaCartera = $c->fecha_cartera->format('d-m-Y');
         }
         
         session(['inversionesDisponibles' => $inversionesDisponibles]);
@@ -283,7 +281,8 @@ class CotCatalogoCreditoController extends Controller
         }
 
         $parametro = HencorpPropuestasConfig::where('id_config', '=', 1)->first();
-        return view('catalogo.catalogoCreditos', compact('inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA', 'parametro'));
+        
+        return view('catalogo.catalogoCreditos', compact('fechaCartera','inversionesDisponibles', 'saldoParti', 'parti', 'monto', 'bandera', 'participante', 'mayorA', 'menorA', 'parametro'));
     }
 
 
